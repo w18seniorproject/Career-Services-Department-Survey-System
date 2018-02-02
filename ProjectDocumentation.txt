@@ -1,35 +1,34 @@
-Survey User Page 
+Survey User Page:
 
-~ loadNextQuestion()
-    - called on scroll event
-    - queries DB for next question
-    - dynamically presents the next question on the page w/out postback
-    
-~ submitResults()
-    - called by onSubmitButtonClicked()
-    - calls buildSQL() to get SQL command
-    - submits SQL command to DB
-    - calls redirectToResources(advancementLevel)
-    
-~ buildSQL()
-    - called by submitResults()
-    - runs through all questions on page and gathers results
-    - calls calculateAdvancementLevel() to get advancementLevel
-    - builds and returns SQL command
-    
-~ calculateAdvancementLevel()
-    - calculates and returns advancementLevel
-    
-~ onSubmitButtonClicked()
-    - called on Submit Button being clicked
-    - checks questions for completeness:
-        if complete, call submitResults()
-        if not, display error message
-    
-~ redirectToResources(advancementLevel)
-    - called by submitResults()
-    - redirects to EX:"https://www.csdss.ewu.edu/?level=$advancementLevel"
-    
+    Functional Elements: Front End
+        Answers to questions will not trigger any behavior until the "Continue" button is pressed on the page.
+        Continue button: Will trigger the following methods:
+        
+            void onSubmitButtonClicked(){
+                if(passOrFail()){
+                    sessionStorage.setItem(sql, buildSQL());
+                    sessionStorage.setItem(advancementLevel, currentAdvancementLevel);
+                    redirect to next page
+                }
+                else{
+                    submit data to database (<-- not sure how this will work) and go to resources page
+                    https://csdss.ewu.edu/take-survey/?level=<whatever_the_level_is>
+                }
+            }
+        
+            boolean passOrFail(){
+                returns true if the user can advance to the next level
+                returns false if the user cannot
+            }
+            
+            String buildSQL(){
+                returns an SQL string that when run can log all responses in the database
+            }
+            
+    Functional elements: Back End
+        Basically outlined in Andy's previous project. There will be one tiny bit more complex in that there will have to be a PIN check to make sure the right survey is being pulled, but other than that, little difference.
+
+
 Survey User Page : Resources Landing Page
 
     php will take the key/value pair in the url (seen above) and use that to determine what to render on screen
@@ -60,6 +59,10 @@ Admin Dashboard : New Survey Page
 ~ newQuestion()
     - loads a bootstrap modal for creating a new question
     - called when the "Add Question" button is clicked
+    
+~ addSeparator()
+    - called when the "Add New Advancement Level" button is clicked
+    - adds a new separator to the survey, which will, on the user side, be a new page with a "Continue" button before it. This is also a new advancement level.
     
 ~ saveSurvey()
     - called when clicking "Save" button
@@ -165,15 +168,15 @@ Something like this? : https://www.safaribooksonline.com/library/view/data-visua
 
 Problems to address:
 
-1) Session Management
+1) dynamic controls loading
 
-2) dynamic database queries
+2) data Visualization (Chart.js)?
 
-3) dynamic controls loading
+3) View Results: intuitive organization, etc.
 
-4) data Visualization
+4) Generic, generic, generic
 
-5) View Results: intuitive organization, etc.
+5) Maybe an initial tutorial for new admins??????
 
 -----------------------------------------------
 
@@ -182,6 +185,10 @@ References:
 Bootstrap Modal : https://www.w3schools.com/bootstrap/bootstrap_modal.asp
 
 PHP Query Strings: http://www.worldbestlearningcenter.com/index_files/php_query-string.htm
+
+Session Storage: http://html5doctor.com/storing-data-the-simple-html5-way-and-a-few-tricks-you-might-not-have-known/
+
+Chart.JS: http://www.chartjs.org/
     
 
 
