@@ -1,0 +1,219 @@
+Survey User Page:
+
+    Functional Elements: Front End
+        Answers to questions will not trigger any behavior until the "Continue" button is pressed on the page.
+        Continue button: Will trigger the following methods:
+        
+            void onSubmitButtonClicked(){
+                if(passOrFail()){
+                    sessionStorage.setItem(sql, buildSQL());
+                    sessionStorage.setItem(advancementLevel, currentAdvancementLevel);
+                    redirect to next page
+                }
+                else{
+                    submit data to database (<-- not sure how this will work) and go to resources page
+                    https://csdss.ewu.edu/take-survey/?level=<whatever_the_level_is>
+                }
+            }
+        
+            boolean passOrFail(){
+                returns true if the user can advance to the next level
+                returns false if the user cannot
+            }
+            
+            String buildSQL(){
+                returns an SQL string that when run can log all responses in the database
+            }
+            
+    Functional elements: Back End
+        Basically outlined in Andy's previous project. There will be one tiny bit more complex in that there will have to be a PIN check to make sure the right survey is being pulled, but other than that, little difference.
+
+
+Survey User Page : Resources Landing Page
+
+    php will take the key/value pair in the url (seen above) and use that to determine what to render on screen
+    
+-----------------------------------------------------------------------------------------------------------------------
+
+Admin Dashboard
+
+No scripts needed on the landing page. Simply 3 <href> links (with fancy css and stuff) to the 3 parts of the dashboard:
+
+3 parts of the dashboard are: New Survey, Modify Survey, View Results
+
+UNLESS: 
+MasterPage:
+    Mainly just for the header if we have a Notifications bell. Pretty sure Notifications can just be HTML and CSS, but there may be some scripting involved with querying the DB for notifications.
+    
+
+    
+Admin Dashboard : New Survey Page
+
+~ loadSurvey(ID)
+    - called on initial page load by php
+    - either loads existing survey or a blank new survey depending on if ID exists or not
+        if ID exists, queries DB for everything and populates page with it
+        else, creates entry for new survey in DB but marks it as "incomplete"
+    - creates and saves the ID of the new survey on creation so that subsequent functions can find the right ID in the DB
+
+~ newQuestion()
+    - loads a bootstrap modal for creating a new question
+    - called when the "Add Question" button is clicked
+    
+~ addSeparator()
+    - called when the "Add New Advancement Level" button is clicked
+    - adds a new separator to the survey, which will, on the user side, be a new page with a "Continue" button before it. This is also a new advancement level.
+    
+~ saveSurvey()
+    - called when clicking "Save" button
+    - marks survey (by previously saved ID) as "complete" in DB
+    - presents bootstrap modal w/ "your survey is saved" <href>Go back to Dashboard?</href>
+    
+~ cancelSurvey()
+    - called when clicking "close without saving"
+    - checks survey by ID in DB
+        if survey is marked as "incomplete", deletes it in DB
+    - presents bootstram modal with "Survey Cancelled" <href>Go back to Dashboard?</href>
+    
+~ deleteQuestion()
+    - deletes question by ID from DB
+    - called on clicking "Delete Question" button //This Button is dynamically created
+    - un-presents question from page
+    
+~ modifyQuestion()
+    - opens bootstrap modal to modify question
+    - called on clicking "Modify Question" button //This button is dynamically created
+    - populates modal with current values as queried from database
+    
+Admin Dashboard : New Survey Page : Question Modal
+
+~ selectQuestionType()
+    - called when an item is selected from the "type" dropdown menu
+    - populates the modal with items based on the type selected
+        if "checkmark" is selected, call newCheckmarkQuestion()
+        if "radio" is selected, call newRadioQuestion()
+        if "long form" is selected, call newLongFormQuestion()
+        if "true/false" is selected, call newTrueFalseQuestion()
+        if "scale" is selected, call newScaleQuestion()
+
+~ newCheckMarkQuestion()
+    - called by selectQuestionType()
+    - creates an "Add Item" button and other things in the modal
+    
+~ newRadioQuestion()
+    - called by selectQuestionType()
+    - creates an "Add Item" button and other things in the modal
+    
+~ newLongFormQuestion()
+    - called by selectQuestionType()
+
+~ newTrueFalseQuestion()
+    - called by selectQuestionType()
+
+~ newScaleQuestion()
+    - called by selectQuestionType()
+
+~ onSaveQuestionButtonClicked()
+    - called on clicking "Save" button
+    - calls checkQuestionCompleteness()
+
+~ checkQuestionCompleteness()
+    - checks to make sure question is completed
+        if it is, call saveQuestion()
+        else, display error message
+
+~ saveQuestion()
+    - called by checkQuestionCompleteness()
+    - creates Question ID and question in database based on info entered by admin in modal
+    - creates element in main page for question, "Modify Question" button, "Delete Question" button
+    - closes Modal
+    
+~ addCheckmark()
+    - called by addItem()
+    - creates element in Modal for Admin to add checkmark option to the question
+    
+~ addRadioButton()
+    - called by addItem()
+    - creates element in Modal for Admin to add radio optino to the question
+    
+~ addItem()
+    - called by clicking "Add Item" in modal //This button is dynamically created
+    - checks "type" dropdown menu
+        if "checkmark" is selected, call addCheckmark()
+        if "radio" is selected, call addRadioButton()
+        
+----------------------------------------------------------------------------------------------------------------
+
+Admin Dashboard : Modify Survey Page
+
+Mostly HTML and CSS with fancy links to "New Survey Page"
+
+~ loadSurveys()
+    - called on page load
+    - queries database for existing surveys and loads them on the page
+
+When clicked, these links give the ID of the survey to modify through the "New Survey Page", except it redirects with key/value pairs in the url, so when the page loads and php calls the loadSurvey(ID) function, it passes the ID and the page loads an existing survey instead of a blank one.
+
+----------------------------------------------------------------------------------------------------
+
+Admin Dashboard : View Results
+
+There's got to be some existing Data Analytics Framework that we can use here for visualization and stuff
+
+IDK...
+
+Something like this? : https://www.safaribooksonline.com/library/view/data-visualization-with/9781491920565/ch04.html
+
+---------------------------------------------------------------------------------------------------------
+
+Problems to address:
+
+1) dynamic controls loading
+
+2) data Visualization (Chart.js)?
+
+3) View Results: intuitive organization, etc.
+
+4) Generic, generic, generic
+
+5) Maybe an initial tutorial for new admins??????
+
+-----------------------------------------------
+
+References: 
+
+Bootstrap Modal : https://www.w3schools.com/bootstrap/bootstrap_modal.asp
+
+PHP Query Strings: http://www.worldbestlearningcenter.com/index_files/php_query-string.htm
+
+Session Storage: http://html5doctor.com/storing-data-the-simple-html5-way-and-a-few-tricks-you-might-not-have-known/
+
+Chart.JS: http://www.chartjs.org/
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
