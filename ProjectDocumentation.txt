@@ -8,11 +8,16 @@ Survey User Page:
                 if(passOrFail()){
                     sessionStorage.setItem(sql, buildSQL());
                     sessionStorage.setItem(advancementLevel, currentAdvancementLevel);
-                    redirect to next page
+                    hideSection(cur); //or leave it showing, need to decide
+                    showSection(next);
+                    cur++, next++;
+                }
+                if(surveyDone()){
+                    sendData();
+                    https://csdss.ewu.edu/take-survey/?level=<whatever_the_level_is>
                 }
                 else{
-                    submit data to database (<-- not sure how this will work) and go to resources page
-                    https://csdss.ewu.edu/take-survey/?level=<whatever_the_level_is>
+                    error case, shouldn't be reached.
                 }
             }
         
@@ -20,9 +25,25 @@ Survey User Page:
                 returns true if the user can advance to the next level
                 returns false if the user cannot
             }
+
+            boolean surveyDone(){
+                returns true if survey done, false if not
+            }
             
             String buildSQL(){
                 returns an SQL string that when run can log all responses in the database
+            }
+            
+            void sendData(){
+                sends an SQL string containing the survey data to the DB
+            }
+            
+            void showSection(int num){
+                sets section matching num to visible
+            }
+            
+            void hideSection(int num){
+                set section matching num to hidden
             }
             
     Functional elements: Back End
