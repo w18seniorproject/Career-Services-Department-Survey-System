@@ -47,8 +47,18 @@ Survey User Page:
             }
             
     Functional elements: Back End
-        Basically outlined in Andy's previous project. There will be one tiny bit more complex in that there will have to be a PIN check to make sure the right survey is being pulled, but other than that, little difference.
-
+        Basically outlined in Andy's previous project. There will be one tiny bit more complex in that there will have to be a PIN check to make sure the right survey is being pulled, but other than that, little difference. Note from Andy: There will be a slight difference in that we will be using views to help secure and separate our data, each pollster getting a seperate view that only contains entries\info from their account. Also, multiple php files (one for each user type at least) should be used.
+        Stuff that needs to be done:
+        -Setup Databases.
+        -Setup view system.
+        -Setup new account creation.
+        -Setup account alteration.
+        -Setup account deletion (self-delete, we don't have to implement this)
+        -Setup survey/question creation.
+        -Setup survey/question editing.
+        -Setup survey/question deletion.
+        
+        
 
 Survey User Page : Resources Landing Page
 
