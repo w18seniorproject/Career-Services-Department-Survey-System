@@ -43,7 +43,7 @@
     }
     
     //creates and executes next query to get the questions
-    $sql = "SELECT * FROM questions WHERE account='$account' AND surveyname='$surveyname';"
+    $sql = "SELECT * FROM questions WHERE account='$account' AND surveyname='$surveyname';";
     $query = $conn->prepare($sql);
     $result = $conn->query($query);
     
