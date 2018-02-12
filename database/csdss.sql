@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 11, 2018 at 04:12 PM
+-- Generation Time: Feb 11, 2018 at 04:21 PM
 -- Server version: 5.7.21-0ubuntu0.16.04.1
 -- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
@@ -52,7 +52,8 @@ CREATE TABLE `bans` (
 CREATE TABLE `pins` (
   `pin` int(11) NOT NULL,
   `surveyname` varchar(30) DEFAULT NULL,
-  `groupname` varchar(20) DEFAULT NULL
+  `groupname` varchar(20) DEFAULT NULL,
+  `account` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -63,7 +64,7 @@ CREATE TABLE `pins` (
 
 CREATE TABLE `questions` (
   `surveyname` varchar(30) NOT NULL,
-  `questnum` int(11) DEFAULT NULL,
+  `questnum` int(11) NOT NULL,
   `questiontype` varchar(20) DEFAULT NULL,
   `questiontext` text,
   `answerone` text,
@@ -117,7 +118,7 @@ ALTER TABLE `pins`
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
-  ADD PRIMARY KEY (`surveyname`,`account`);
+  ADD PRIMARY KEY (`surveyname`,`questnum`,`account`);
 
 --
 -- Indexes for table `results`
