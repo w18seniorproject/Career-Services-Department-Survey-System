@@ -1,11 +1,14 @@
 <?php 
     //mitigates brute-force by limiting requests to one per second
     $cur_time = time();
-    $timer_file = fopen("time.txt", "w+");
+    $timer_file = fopen("time.txt", "w+")
+    or die("Could not open time.txt");
+
     $last_time = fgets($timer_file);
     if($cur_time == $last_time){
         fclose($timer_file);
-        die("You're doing that too much. Try again");
+        header("login.php?error=tooFast");
+        die("You're doing that too much. Try again.");
     }
     fwrite($timer_file, time());
     fclose($timer_file);
@@ -37,9 +40,13 @@
         $account = $row["account"];
         $groupname = $row["groupname"];
     }
+    else if($result->num_rows > 1){
+        die("We messed up. Pins aren't unique");
+        //THIS SHOULD NEVER HAPPEN
+    }
     else{
-        die("Oops! Couldn't find that PIN");
-        //TODO Nice error message for the user
+        header("login.php?error=wrongPin");
+        die("Oops! Wrong PIN");
     }
     
     //creates and executes next query to get the questions
