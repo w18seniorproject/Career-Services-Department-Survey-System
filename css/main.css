@@ -1,0 +1,45 @@
+.navigation{
+
+  list-style:none;
+  display:flex;
+  background:red;
+  flex-flow:row wrap-reverse;
+  justify-content:flex-start;
+}
+#EasternLogo{
+
+  width:5em;
+  height:5em;
+  max-width:10em;
+  max-height:10em;
+  margin-top:auto;
+  margin-bottom:auto;
+  margin-left:1.5em;
+  margin-right:1em;
+}
+.navigation a{
+  text-decoration:none;
+  color:white;
+  padding:1em;
+  display:block;
+  font-family: 'Arial Black', sans-serif;
+}
+.navigation a:hover{
+  background-color: white;
+  color:black;
+
+}
+.head
+{
+  font-family: 'Lobster', cursive;
+  font-size:2em;
+  display:flex;
+  background-color:black;
+}
+.head p
+{
+  font-family: 'Lobster', cursive;
+  font-size:1.5em;
+  padding-top:0.5em;
+  color:white;
+}
