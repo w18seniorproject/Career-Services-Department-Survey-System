@@ -43,3 +43,41 @@
   padding-top:0.5em;
   color:white;
 }
+
+@media all and (max-width: 800px)
+{
+.navigation {
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    padding: 0;
+  }
+  .navigation a {
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .navigation li:last-of-type a {
+    border-bottom: none;
+  }
+  .head
+  {
+    font-family: 'Lobster', cursive;
+    font-size:2em;
+    display:flex;
+    -webkit-flex-flow: column wrap;
+   background-color:black;
+    text-align: center;
+  }
+  #EasternLogo{
+
+  width:4em;
+  height:4em;
+  max-width:6em;
+  max-height:6em;
+  margin-top:auto;
+  margin-bottom:auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
