@@ -5,6 +5,8 @@
   background:red;
   flex-flow:row wrap-reverse;
   justify-content:flex-start;
+  border-bottom: 1px solid rgba(0,0,0,0.8);
+
 }
 #EasternLogo{
 
@@ -23,6 +25,8 @@
   padding:1em;
   display:block;
   font-family: 'Arial Black', sans-serif;
+  border-left: 1px solid rgba(0,0,0,0.8);
+  border-right: 1px solid rgba(0,0,0,0.8);
 }
 .navigation a:hover{
   background-color: white;
