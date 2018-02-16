@@ -1,4 +1,6 @@
 <?php 
+    //include db connection file
+    include_once '/config/database.php';
     //mitigates brute-force by limiting requests to one per second
     $cur_time = time();
     $timer_file = fopen("time.txt", "w+")
@@ -13,17 +15,12 @@
     fwrite($timer_file, time());
     fclose($timer_file);
     
-    //basic database connection variables
-    $host = 'localhost';
-    $db = 'csdss';
-    $user = 'surveytaker';
-    $pass = 'surveytaker';
-        
+    $database = new Database();
     //establishes connection
-    $conn = mysql_connect($host, $user, $pass, $db);
-    if ($conn->connect_error){
-        die('Error connecting to mysql: ' .mysql_error());
-    }
+    //Note here: getConnection uses PDO rather than mysql_connect (generally preferable)
+    //I believe the syntax for use is the same ie. query()/prepare() etc. but there may
+    //need to be some changes made to account for this. (Remove this comment when no longer needed)
+    $conn = $database->getConnection();
     
     //grabs pin from post data
     $pin = $_POST["pin"];
