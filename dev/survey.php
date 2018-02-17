@@ -1,6 +1,6 @@
 <?php 
     //include db connection file
-    include_once '/config/database.php';
+    include_once './config/database.php';
     //mitigates brute-force by limiting requests to one per second
     $cur_time = time();
     $timer_file = fopen("time.txt", "w+")
