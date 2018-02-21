@@ -10,11 +10,13 @@
     $username = $_POST["username"];
     $pass = $_POST["pword"];
 
-$sql = "SELECT accountname, pass FROM accounts WHERE accountname= '$username' AND pass= '$pass'";
+$sql = "SELECT accountname, pass FROM accounts WHERE accountname= ? AND pass= ?";
 $query = $conn->prepare($sql);
-$result = $conn->query($query);
+$query->execute(array($username, $pass));
+$result = $query->fetchAll();
+//$result = $conn->query($query);
 
-if($result->num_rows == 1){
+if($result->rowCount == 1){
 
 //Scrub input here. 
 // Make a new page that will scrub input for all login pages.
@@ -26,7 +28,7 @@ if($result->num_rows == 1){
     //Probably don't need to store the username and password here.
     //Redirect to the pollster's home page.
 }
-else if($result->num_rows > 0){
+else if($result->rowCount > 0){
     die("Internal error. Multiple matches for username/password.");
 }
 else{
