@@ -9,10 +9,22 @@
 
 
   $sqlquery = "SELECT groupname, ROUND(AVG(relationlevel),0) AS average_relationship FROM results GROUP BY groupname ORDER BY groupname; ";
-  $relations = mysqli_query($con, $sqlquery);
+  $stg
+  $groupNameArray=array();
+  $relationLevelArray=array();
 
-  $groupNameArray=$relationLevel->fetch_array(MYSQLI_ASSOC);
-  $relationLevelArray=$relationLevel->fetch_array(MYSQLI_NUM);
+
+    foreach($conn->quert($sqlquery) as $row){
+      $groupNameArray[]=$row['groupname'];
+      $relationLevelArray[]=$row['average_relationship'];
+    }
+
+
+  };
+
+
+
+
 
  ?>
 
@@ -26,9 +38,15 @@
    data: {
      datasets: [{
 
-       labels: js_groupArray,
+       label: 'Bar_Set',
        data: js_relationArray
-     }]
-   }
- })
+     }, {
+     label:'Line_Set',
+     data: js_relationArray,
+
+     type: 'line'
+   }],
+   labels:js_groupArray
+ },
+});
  </script>
