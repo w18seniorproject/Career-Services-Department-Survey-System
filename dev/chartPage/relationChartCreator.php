@@ -48,5 +48,14 @@
    }],
    labels:js_groupArray
  },
+ options: {
+     scales: {
+         yAxes: [{
+             ticks: {
+                 beginAtZero:true
+             }
+         }]
+     }
+ }
 });
  </script>
