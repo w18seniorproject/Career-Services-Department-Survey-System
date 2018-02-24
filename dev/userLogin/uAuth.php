@@ -3,7 +3,7 @@
     include_once '../config/database.php';
 
     sleep(1);
-    
+        
     // see ../config/database.php for how this works
     $database = new Database();
 
@@ -27,6 +27,7 @@
         $account = $row['account'];
     }
     else if($numOfRows > 1){
+        header("Location: login.php?error=notUnique");
         die("We messed up. Pins aren't unique");
         //THIS SHOULD NEVER HAPPEN
     }
@@ -38,10 +39,6 @@
     //creates and executes next query to get the questions 
     $sql = "SELECT * FROM questions WHERE account='$account' AND surveyname='$surveyname';";
     $result = $conn->prepare($sql);
-    $result.execute();
+    $result->execute();
 
-    //sends info to front-end TODO
-    
-
-    
-        
+    echo "Success";
