@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">		
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-        <link href="/CSS/styles.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="/scripts/utils.js"></script>
+        <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../scripts/utils.js"></script>
     </head>
     <body id="pLoginBody">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
