@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">		
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-        <link href="styles.css" rel="stylesheet" type="text/css">
+        <link href="/CSS/styles.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="/scripts/utils.js"></script>
     </head>
     <body id="pLoginBody">
@@ -23,7 +23,7 @@
                             </h1>
                         </div>
                         <div class= "panel-body">
-                            <form action= "survey.php" method= "post">
+                            <form action= "uAuth.php" method= "post">
                                 <fieldset>
                                     <legend>Login:</legend>
                                     <p>
@@ -36,11 +36,12 @@
                                 <label id="errorMessage" style="color: red"></label>
                                 <script type="text/javascript">
                                     var string = getUrlParameter("error");
+                                    var message = "";
                                     if(string == "wrongPin"){
-                                        var message = "Wrong PIN. Please try again."
+                                        message = "Wrong PIN. Please try again."
                                     }
                                     else if(string == "notUnique"){
-                                        var message = "devteam messed up. PINS aren't unique";
+                                        message = "devteam messed up. PINS aren't unique";
                                     }
                                     document.getElementById("errorMessage").innerText = message;
                                 </script>

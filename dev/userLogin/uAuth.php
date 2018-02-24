@@ -27,12 +27,12 @@
         $account = $row['account'];
     }
     else if($numOfRows > 1){
-        header("Location: login.php?error=notUnique");
+        header("Location: uLogin.php?error=notUnique");
         die("We messed up. Pins aren't unique");
         //THIS SHOULD NEVER HAPPEN
     }
     else{
-        header("Location: login.php?error=wrongPin");
+        header("Location: uLogin.php?error=wrongPin");
         die("Oops! Wrong PIN");
     }
       
