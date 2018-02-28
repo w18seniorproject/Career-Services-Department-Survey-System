@@ -1,7 +1,7 @@
 <?php
 
     //include db connection file
-    include_once "./config/pollsterDB.php";
+    include_once "../config/pollsterDB.php";
 
     $database = new Database();
 
@@ -46,7 +46,7 @@
 
     //check for profane usernames or emails TODO
 
-    $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
+    $hashedPass = password_hash($pass, PASSWORD_BCRYPT);
 
     $sql = "INSERT INTO `accounts` (`pass`, `email`, `accountname`) VALUES (?, ?, ?);";
 

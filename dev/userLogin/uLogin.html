@@ -2,33 +2,25 @@
 <html lang= en>
 	<head>
         <title>User Login</title>
-		<meta charset="utf-8">		
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../scripts/utils.js"></script>
+        <script>
+            $(function(){
+                $("#header").load("../header.html"); 
+            });
+        </script>
+        <script>
+            $(function(){
+                $("#footer").load("../footer.html"); 
+            });
+        </script>
     </head>
     <body>
-        <!-- Figure Out how to get Header and Footer Included Dynamically -->
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>                        
-                </button>
-                <a class="navbar-brand" href="#">USS</a>
-                <a class="logo"><img src="../graphics/logo_white_small.png" width="48"/></a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../pSignup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="../pollsterLogin/pLogin.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                </ul>
-                </div>
-            </div>
-        </nav>
+        <div id="header"></div>
         
         <div class="form-centered">
             <legend>Take the Survey</legend>
@@ -52,9 +44,6 @@
             </script>
         </div>
 
-        <!-- Figure Out how to get Header and Footer included dynamically -->
-        <div class="footer">
-            <p>This is a Footer</p>
-        </div>
+        <div id="footer"></div>
     </body>
 </html>

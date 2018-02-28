@@ -50,6 +50,8 @@ html, body{
     background-color: #a10022;
     border-color: #a10022;
     border-radius: 0 !important;
+    height: 60px;
+    padding-top: 5px;
 }
 /* Title */
 .navbar-default .navbar-brand {
@@ -91,14 +93,18 @@ html, body{
 .navbar-default .navbar-toggle .icon-bar {
     background-color: #ffffff;
 }
-.logo{
+.logo,
+.logo:hover,
+.logo:focus{
     position: absolute;
     left:50%;
     margin-left: -24px !important;
     display: block;
+    color: #a10022;
 }
 
-.btn-primary{
+.btn-primary,
+.btn-primary:focus{
     background-color: #a10022;
     border: none;
     border-radius: 0 !important;
