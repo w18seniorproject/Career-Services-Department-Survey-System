@@ -7,7 +7,7 @@ WHY: To ensure the pollster can access the pollster home page securely -->
 	<head>
 		<meta charset="utf-8">		
 			<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-
+			<script type="text/javascript" src="../scripts/utils.js"></script>
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 				<link rel="stylesheet" href="../CSS/styles.css"  type="text/css">
 
@@ -47,8 +47,19 @@ WHY: To ensure the pollster can access the pollster home page securely -->
 																<br>
 																<br>
 															<input  id= "buttonSubmit" class= "btn btn-primary btn-block" type="submit" value= "Submit">
+															<p id="errorMessage" style="text-align: center; color: red"></p>
+															<script type="text/javascript">
+																var string = getUrlParameter("error");
+																var message = "";
+																if(string == "wrongAuth"){
+																	message = "Wrong Username/Password. Please try again."
+																}
+																else if(string == "notUnique"){
+																	message = "devteam messed up. Usernames/Passwords aren't unique";
+																}
+																document.getElementById("errorMessage").innerText = message;
+															</script>
 													</fieldset>
-																<br>
 																<br>
 															<p style="text-align: center">
 																<i> 

@@ -1,9 +1,7 @@
 <?php 
     //include db connection file
-    include_once '../config/database.php';
-
-    sleep(1);
-        
+    include_once '../config/takerDB.php';
+       
     // see ../config/database.php for how this works
     $database = new Database();
 
@@ -14,9 +12,9 @@
     $pin = $_POST["pin"];
     
     //creates and executes query to get surveyname, groupname, and account from pins table
-    $sql = "SELECT surveyname, account FROM pins WHERE pin='$pin';";
+    $sql = "SELECT surveyname, account FROM pins WHERE pin= ?;";
     $result = $conn->prepare($sql);
-    $result->execute();
+    $result->execute(array($pin));
 
     $numOfRows = $result->rowCount();
     
@@ -27,13 +25,12 @@
         $account = $row['account'];
     }
     else if($numOfRows > 1){
-        header("Location: uLogin.php?error=notUnique");
+        header("Location: uLogin.html?error=notUnique");
         die("We messed up. Pins aren't unique");
         //THIS SHOULD NEVER HAPPEN
     }
     else{
-        header("Location: uLogin.php?error=wrongPin");
-        die("Oops! Wrong PIN");
+        header("Location: uLogin.html?error=wrongPin");
     }
       
     //creates and executes next query to get the questions 
