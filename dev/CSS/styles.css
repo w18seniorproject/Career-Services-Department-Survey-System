@@ -162,3 +162,19 @@ html, body{
     color: #a10022;
     font-weight: bold;
 }
+
+.survey-wrapper{
+    width: 60%;
+    margin: auto;
+    margin-top: 60px !important;
+}
+
+.questions-wrapper {
+    background-color: #fafafa;
+    border: none;
+    box-shadow: 0px 2px 5px #cccccc;
+    border-radius: 0;
+    margin: 80px auto;
+    padding: 0;
+    width: 100%;
+  }
