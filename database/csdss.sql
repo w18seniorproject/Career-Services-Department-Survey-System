@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Feb 11, 2018 at 04:21 PM
--- Server version: 5.7.21-0ubuntu0.16.04.1
--- PHP Version: 7.0.22-0ubuntu0.16.04.1
+-- Host: 127.0.0.1
+-- Generation Time: Feb 28, 2018 at 05:30 AM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -29,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `accounts` (
   `pass` text,
   `email` varchar(30) NOT NULL,
-  `accountname` varchar(20) DEFAULT NULL
+  `acctName` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -40,7 +42,7 @@ CREATE TABLE `accounts` (
 
 CREATE TABLE `bans` (
   `email` varchar(30) NOT NULL,
-  `description` text
+  `desc` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -51,9 +53,9 @@ CREATE TABLE `bans` (
 
 CREATE TABLE `pins` (
   `pin` int(11) NOT NULL,
-  `surveyname` varchar(30) DEFAULT NULL,
-  `groupname` varchar(20) DEFAULT NULL,
-  `account` varchar(20) NOT NULL
+  `surName` varchar(30) DEFAULT NULL,
+  `groupName` varchar(20) DEFAULT NULL,
+  `acctName` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -63,19 +65,19 @@ CREATE TABLE `pins` (
 --
 
 CREATE TABLE `questions` (
-  `surveyname` varchar(30) NOT NULL,
-  `questnum` int(11) NOT NULL,
-  `questiontype` varchar(20) DEFAULT NULL,
-  `questiontext` text,
-  `answerone` text,
-  `answertwo` text,
-  `answerthree` text,
-  `answerfour` text,
-  `questionanswer` int(11) DEFAULT NULL,
-  `questionweight` int(11) DEFAULT NULL,
-  `relationlevel` int(11) DEFAULT NULL,
-  `relationname` text,
-  `account` varchar(20) NOT NULL
+  `surName` varchar(30) NOT NULL,
+  `qNum` int(11) NOT NULL,
+  `qType` varchar(20) DEFAULT NULL,
+  `qText` text,
+  `ansOne` text,
+  `ansTwo` text,
+  `ansThree` text,
+  `ansFour` text,
+  `qAns` int(11) DEFAULT NULL,
+  `qWeight` int(11) DEFAULT NULL,
+  `rLevel` int(11) DEFAULT NULL,
+  `rName` text,
+  `acctName` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -85,11 +87,11 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `results` (
-  `recordnumber` int(11) NOT NULL,
-  `surveyname` varchar(30) DEFAULT NULL,
-  `groupname` varchar(20) DEFAULT NULL,
-  `surveyanswers` text,
-  `relationlevel` int(11) DEFAULT NULL
+  `recNum` int(11) NOT NULL,
+  `surName` varchar(30) DEFAULT NULL,
+  `groupName` varchar(20) DEFAULT NULL,
+  `surResults` text,
+  `rLevel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -118,13 +120,14 @@ ALTER TABLE `pins`
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
-  ADD PRIMARY KEY (`surveyname`,`questnum`,`account`);
+  ADD PRIMARY KEY (`surName`,`qNum`,`acctName`);
 
 --
 -- Indexes for table `results`
 --
 ALTER TABLE `results`
-  ADD PRIMARY KEY (`recordnumber`);
+  ADD PRIMARY KEY (`recNum`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
