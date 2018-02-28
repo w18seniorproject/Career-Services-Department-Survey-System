@@ -52,14 +52,18 @@ html, body{
     border-radius: 0 !important;
     height: 60px;
     padding-top: 5px;
+    margin: 0 auto;
+    margin-bottom: 20px !important;
 }
 /* Title */
 .navbar-default .navbar-brand {
     color: #ffffff;
+    padding-left: 25px;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
     color: #ffffff;
+    background-color: #a32244;
 }
 /* Link */
 .navbar-default .navbar-nav > li > a {
@@ -93,6 +97,16 @@ html, body{
 .navbar-default .navbar-toggle .icon-bar {
     background-color: #ffffff;
 }
+.navbar-item-list{
+    background-color: #a10022 !important;
+    color: #ffffff;
+    border: none;
+    margin: 0 auto;
+}
+.navbar-item-list .navbar-item:hover{
+    background-color: #a32244;
+}
+/* logo in middle */
 .logo,
 .logo:hover,
 .logo:focus{
