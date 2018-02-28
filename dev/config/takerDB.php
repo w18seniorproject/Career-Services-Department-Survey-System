@@ -1,6 +1,5 @@
 <?php
-	class Database
-	{
+	class Database{
 		private $host = 'localhost';
 		private $db   = 'csdss';
 		private $user = 'surveytaker';
@@ -16,16 +15,13 @@
 			
 		public $dbCon = null;
 		
-		public function getConnection()
-		{
+		public function getConnection(){
 			$dsn = "mysql:host=$this->host;port=3306;dbname=$this->db;charset=$this->charset";
 					
-			try
-			{
+			try{
 				$this->dbCon = new PDO($dsn, $this->user, $this->pass, $this->opt);
 			}
-			catch(PDOException $exc)
-			{
+			catch(PDOException $exc){
 				echo "Connection Error: " . $exc->getMessage();
 			}
 			return $this->dbCon;
