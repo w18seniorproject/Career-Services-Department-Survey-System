@@ -156,3 +156,9 @@ html, body{
     height: 50px;
     background-color: #e0e0e0;
 }
+
+.errorMessage{
+    text-align: center;
+    color: #a10022;
+    font-weight: bold;
+}
