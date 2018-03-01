@@ -7,6 +7,9 @@
 
     $conn = $database->getConnection();
 
+    echo " \$conn: ";
+    var_dump($conn);
+
     $username = $_POST["username"];
     $pass = $_POST["pword"];
 
