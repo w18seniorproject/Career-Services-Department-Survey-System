@@ -10,4 +10,6 @@
 
     $array = $questionStatement->fetch(PDO::FETCH_ASSOC);
 
+
+    //This is just a test to make sure Questions object is working.
     echo $array['qNum'] . $array['qText'];
