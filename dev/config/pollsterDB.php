@@ -19,13 +19,9 @@
 			$dsn = "mysql:host=$this->host;port=3306;dbname=$this->db;charset=$this->charset";
 					
 			try{
-				$this->$dbCon = new PDO($dsn, $this->user, $this->pass, $this->opt);
-
-				echo " dbCon: ";
-				var_dump($dbCon);
+				$this->dbCon = new PDO($dsn, $this->user, $this->pass, $this->opt);
 			}
 			catch(PDOException $exc){
-			
 				echo "Connection Error: " . $exc->getMessage();
 			}
 			return $this->dbCon;

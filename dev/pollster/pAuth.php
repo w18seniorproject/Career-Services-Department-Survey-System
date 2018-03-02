@@ -7,13 +7,10 @@
 
     $conn = $database->getConnection();
 
-    echo " \$conn: ";
-    var_dump($conn);
-
     $username = $_POST["username"];
     $pass = $_POST["pword"];
 
-$sql = "SELECT pass FROM accounts WHERE accountname= ?";
+$sql = "SELECT pass FROM accounts WHERE acctName= ?";
 $result = $conn->prepare($sql);
 $result->execute(array($username));
 

@@ -34,7 +34,7 @@
     }
     
     //check for duplicate username
-    $sql = "SELECT accountname FROM accounts;";
+    $sql = "SELECT acctName FROM accounts;";
     $result = $conn->prepare($sql);
     $result->execute();
     for($i = 0; $i < $result->rowCount(); $i++){
@@ -48,7 +48,7 @@
 
     $hashedPass = password_hash($pass, PASSWORD_BCRYPT);
 
-    $sql = "INSERT INTO `accounts` (`pass`, `email`, `accountname`) VALUES (?, ?, ?);";
+    $sql = "INSERT INTO `accounts` (`pass`, `email`, `acctName`) VALUES (?, ?, ?);";
 
     $result = $conn->prepare($sql);
     $result->execute(array($hashedPass, $email, $username));

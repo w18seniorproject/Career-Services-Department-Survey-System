@@ -1,61 +1,15 @@
-html, body{
-    height: 100%;
-}
-
-#pLoginBody{
-    background-image: url(../graphics/EWU_seal.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center bottom; /*optional to center image*/
-}
-
-#secondContent{
-    border-left: solid;
-    border-right: solid;
-    border-bottom: solid;
-    background-color:rgb(110,109,113);
-}
-
-#loginPanel{
-    border:solid; 
-    background-color:white;
-}
-
-#headerRow{
-    border-bottom: solid;
-    border-color: #a10022;
-}
-
-#buttonSubmit{
-    background-color: #a10022; 
-    border:solid; border-width:.50px; 
-    border-color:black
-}
-
-#headerEWU{
-    width:100%; 
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto; 
-    background-color: #a10022; 
-    color: #a10022;
-}
-
-#forgotPword{
-    color: #a10022;
-}
- 
-/* navbar */
+/*Header*/
 .navbar-default {
+    position: absolute;
+    top: 0;
     background-color: #a10022;
     border-color: #a10022;
     border-radius: 0 !important;
     height: 60px;
     padding-top: 5px;
     margin: 0 auto;
-    margin-bottom: 20px !important;
+    width: 100% !important;
 }
-/* Title */
 .navbar-default .navbar-brand {
     color: #ffffff;
     padding-left: 25px;
@@ -65,7 +19,6 @@ html, body{
     color: #ffffff;
     background-color: #a32244;
 }
-/* Link */
 .navbar-default .navbar-nav > li > a {
     color: #ffffff;
 }
@@ -85,8 +38,6 @@ html, body{
     color: #ffffff;
     background-color: #a32244;
 }
-
-/* Mobile version */
 .navbar-default .navbar-toggle {
     border-color: #a10022;
 }
@@ -106,7 +57,6 @@ html, body{
 .navbar-item-list .navbar-item:hover{
     background-color: #a32244;
 }
-/* logo in middle */
 .logo,
 .logo:hover,
 .logo:focus{
@@ -117,34 +67,33 @@ html, body{
     color: #a10022;
 }
 
+/*For Login, Signin, Subit, etc.*/
 .btn-primary,
 .btn-primary:focus{
     background-color: #a10022;
     border: none;
     border-radius: 0 !important;
 }
-
 .btn-primary:hover{
     background-color: #a32244;
 }
 
+/*For forms that are the main content on the page*/
 .form-centered{
     width: 60%;
-    padding-top: 80px;
     margin-left: auto;
     margin-right: auto;
 }
-
-.form-centered > legend{
-    font-weight: bold;
-    font-size: 20pt;
-    text-align: center;
-}
-
 .form-control{
     border-radius: 0 !important;
 }
+.errorMessage{
+    text-align: center;
+    color: #a10022;
+    font-weight: bold;
+}
 
+/*Footer*/
 .footer{
     padding-top: 5px;
     position: fixed;
@@ -157,24 +106,33 @@ html, body{
     background-color: #e0e0e0;
 }
 
-.errorMessage{
-    text-align: center;
+/*Common to All pages*/
+.hyperlink,
+.hyperlink:hover,
+.hyperlink:visited,
+.hyperlink:focus{
     color: #a10022;
-    font-weight: bold;
 }
-
-.survey-wrapper{
-    width: 60%;
-    margin: auto;
+.legend{
+    padding-top: 80px;
+    font-weight: bold;
+    font-size: 20pt;
+    text-align: center;
     margin-top: 60px !important;
 }
 
+/*Survey page*/
+.survey-wrapper{
+    margin-left: 10px;
+    margin-right: 10px;
+}
 .questions-wrapper {
     background-color: #fafafa;
     border: none;
     box-shadow: 0px 2px 5px #cccccc;
     border-radius: 0;
-    margin: 80px auto;
     padding: 0;
     width: 100%;
   }
+
+  
