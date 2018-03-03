@@ -1,4 +1,10 @@
-var checkboxQuestion='<div class="checkbox">\
+
+$.get("dev\\backend\\getQuestions.php", function(data){
+  var questions=jQuery.parseJSON(data);
+})
+
+var checkboxQuestion='
+<div class="checkboxList">\
         <label class="firstchoice">\
           <input type="checkbox" class="choice1 choiceCheck" value="A">\
           </label>\
@@ -28,3 +34,5 @@ var radioButtonQuestion='<div class="radioQuestion">\
                 <input type="radio" id="choice4" class="choiceRadio" value="D">\
                 </label><br/>\
                 </div>';
+
+var level1Div=document.getElementById("")
