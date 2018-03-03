@@ -8,9 +8,11 @@
     $conn = $database->getConnection();
 
     $username = $_POST["username"];
+    
     $pass = $_POST["pword"];
 
-$sql = "SELECT pass FROM accounts WHERE acctName= ?";
+$sql = "SELECT pass FROM accounts WHERE acctName= ?;";
+
 $result = $conn->prepare($sql);
 $result->execute(array($username));
 
