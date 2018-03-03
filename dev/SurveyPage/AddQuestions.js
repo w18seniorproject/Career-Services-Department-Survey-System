@@ -45,7 +45,7 @@ if("includes" in Array.prototype)
 {
   if(!questions.includes("message:No questions."))
   {
-    questions.forEach(function(currentQuestion)){
+    questions.forEach(function(currentQuestion){
       const newQuestion=[];
       if(questions.qType==="checkbox")
       {
