@@ -18,9 +18,6 @@ $result->execute(array($username));
 
 if($result->rowCount() == 1){
 
-//Scrub input here. 
-// Make a new page that will scrub input for all login pages.
-
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $hash = $row["pass"];
 
@@ -32,9 +29,6 @@ if($result->rowCount() == 1){
         echo "Success";
     }
 
-
-    //Probably don't need to store the username and password here.
-    //Redirect to the pollster's home page.
 }
 else if($result->rowCount() > 0){
     header("Location: pLogin.html?error=notUnique");
