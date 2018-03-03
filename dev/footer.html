@@ -1,3 +1,10 @@
-<div class="footer">
+<div class="footer" data-role="footer">
     This is a Footer
 </div>
+<script type="text/javascript">
+    $(document).on(
+        'focus', 'input, textarea', function(){
+            $.mobile.activePage.find("div[data-role='footer']").hide();
+        }
+    );
+</script>

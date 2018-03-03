@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="../user/uLogin.html">University Survey System</a>
+      <a class="navbar-brand" id="brand" href="../user/uLogin.html">University Survey System</a>
       <a class="logo" href="../user/uLogin.html"><img src="../graphics/logo_white_small.png" width="48"/></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
@@ -17,3 +17,16 @@
     </div>
   </div>
 </nav>
+<script type="text/javascript">
+  $(window).resize(
+    function(){
+        var width = $(window).width();
+        if(width < 720){
+          document.getElementById("brand").innerHTML = "USS";
+        }
+        else{
+          document.getElementById("brand").innerHTML = "University Survey System";
+        }
+    }
+  ).resize();
+</script>
