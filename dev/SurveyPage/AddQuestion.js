@@ -11,3 +11,20 @@ var checkboxQuestion='<div class="checkbox">\
               <label id="fourthchoice">\
                 <input type="checkbox" id="choice4" class="choiceRadio" value="D">\
                 </label>\
+                </div>';
+
+
+var radioButtonQuestion='<div class="radioQuestion">\
+        <label class="firstchoice">\
+          <input type="radio" class="choice1 choiceCheck" value="A">\
+          </label><br/>\
+          <label id="secondchoice">\
+            <input type="radio" class="choice2 choiceCheck" value="B">\
+            </label><br/>\
+            <label id="thirdchoice">\
+              <input type="radio" id="choice3" class="choiceCheck" value="C">\
+              </label><br/>\
+              <label id="fourthchoice">\
+                <input type="radio" id="choice4" class="choiceRadio" value="D">\
+                </label><br/>\
+                </div>';

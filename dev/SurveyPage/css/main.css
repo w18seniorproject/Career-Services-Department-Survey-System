@@ -1,0 +1,109 @@
+.navigation{
+
+  list-style:none;
+  display:flex;
+  background:red;
+  flex-flow:row wrap-reverse;
+  justify-content:flex-start;
+  border-bottom: 1px solid rgba(0,0,0,0.8);
+
+}
+#EasternLogo{
+
+  width:5em;
+  height:5em;
+  max-width:10em;
+  max-height:10em;
+  margin-top:auto;
+  margin-bottom:auto;
+  margin-left:1.5em;
+  margin-right:1em;
+}
+.navigation a{
+  text-decoration:none;
+  color:white;
+  padding:1em;
+  display:block;
+  font-family: 'Arial Black', sans-serif;
+  border-left: 1px solid rgba(0,0,0,0.8);
+  border-right: 1px solid rgba(0,0,0,0.8);
+}
+.navigation a:hover{
+  background-color: white;
+  color:black;
+
+}
+.head
+{
+  font-family: 'Lobster', cursive;
+  font-size:2em;
+  display:flex;
+  background-color:black;
+}
+.head p
+{
+  font-family: 'Lobster', cursive;
+  font-size:1.5em;
+  padding-top:0.5em;
+  color:white;
+}
+
+#surveyLanding {
+    display:block;
+    max-width:50%;
+    background-color: white;
+
+    position: absolute;
+    top:25%;
+    bottom:25%;
+    left: 25%;
+    right:25%;
+
+    margin: auto;
+}
+#surveyStartButton
+{
+  display: flex;
+  justify-content: center;
+}
+body
+{
+  background-color: red;
+}
+@media all and (max-width: 800px)
+{
+.navigation {
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    padding: 0;
+  }
+  .navigation a {
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .navigation li:last-of-type a {
+    border-bottom: none;
+  }
+  .head
+  {
+    font-family: 'Lobster', cursive;
+    font-size:2em;
+    display:flex;
+    -webkit-flex-flow: column wrap;
+   background-color:black;
+    text-align: center;
+  }
+  #EasternLogo{
+
+  width:4em;
+  height:4em;
+  max-width:6em;
+  max-height:6em;
+  margin-top:auto;
+  margin-bottom:auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

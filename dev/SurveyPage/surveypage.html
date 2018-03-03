@@ -4,23 +4,38 @@
   <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link href="css\main.css" type="text/css" rel="stylesheet">
     <script src="JQuery/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>University Survey System</title>
   </head>
 <body>
+    <div class="top"><header class="head"><img src="https://sites.ewu.edu/hpfw/files/2017/08/dropdown_logo.png" alt="Eastern Washington University Logo" id="EasternLogo"><p>Career Services<br>Department Survey System</p></header>
   <noscript>
    For full functionality of this site it is necessary to enable JavaScript.
    Here are the <a href="https://www.enable-javascript.com/" target="_blank">
    instructions how to enable JavaScript in your web browser</a>.
   </noscript>
+  <div id="SurveyPage">
+    <div id="surveyLanding" class="container">
+    <h1>Welcome to the Survey!</h1>
+    <h3>In this survey, you will be asked questions in order to help determine your department's relationship Career Services</h3>
+    <br/>
+    <h3>Incomplete surveys will not be saved, but you may restart at any time as long as the PIN you entered is still valid</h3>
+    <div id="pollster-content"></div>
+    <br/>
+    <button id="surveyStartButton" class="btn btn-primary" type="button">Start Survey</button>
+  </div>
+
+
 <div id="Surveys">
     <div class="view hide container-fluid" id="rel1"></div>
     <div class="view hide container-fluid" id="rel2"></div>
     <div class="view hide container-fluid" id="rel3"></div>
     <div class="view hide container-fluid" id="rel4"></div>
     <div class="view hide container-fluid" id="rel5"></div>
+</div>
+</div>
 </body>
 </html>
