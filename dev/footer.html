@@ -1,3 +1,16 @@
 <div class="footer" id="footer">
     This is a Footer
 </div>
+<script type="text/javascript">
+    $(window).resize(
+        function(){
+            var height = $(document).height();
+            if(height < 760){
+                $('#footer').css('visibility', 'hidden');
+            }
+            else{
+                $('#footer').css('visibility', 'visible');
+            }
+        }
+    ).resize();
+</script>

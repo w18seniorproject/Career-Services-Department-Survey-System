@@ -106,9 +106,7 @@
     background-color: #6d6e71;
     color: white;
 }
-input:focus ~ .footer{
-    position: absolute;
-}
+
 
 /*Common to All pages*/
 .hyperlink,
