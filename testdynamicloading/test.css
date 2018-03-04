@@ -1,0 +1,17 @@
+.qsection{
+    visibility: hidden;
+    margin-top: 0;
+    margin-bottom: 20;
+    position: fixed;
+}
+
+.ppppp{
+    visibility: visible !important;
+}
+
+.btn{
+    margin-top: 700px;
+    position: fixed;
+    background-color: red;
+    color: white;
+}

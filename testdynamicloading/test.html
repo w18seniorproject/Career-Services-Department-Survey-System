@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="test.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            document.getElementById("continue").onclick = function loadNext(){
+                $('div').each(function(i, ele){
+                    ele.className += "p";
+                })
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="qsection ppppp">
+        <h1>This is the first set of questions</h1>
+        <h2>Question 1</h2>
+        <p>blah blah blah</p>
+        <h2>Question 2</h2>
+        <p>picture just to show that anything can be in here</p>
+        <img src="../dev/graphics/EWU_seal.png">
+    </div>
+    <div class="qsection pppp">
+        <h1>This is the second set of questions</h1>
+        <h2>Question 1</h2>
+        <p>blah blah blah</p>
+        <input type="checkbox">tada</input></br>
+        <input type="checkbox">it's</input></br>
+        <input type="checkbox">checkboxes</input>
+    </div>
+    <div class="qsection ppp">
+        <h1>This is the third set of questions</h1>
+        <h2>Question 1</h2>
+        <p>blah blah blah</p>
+        <input type="radio">Radios too</input></br>
+        <input type="range">And scales</input>
+    </div>
+    <button id="continue" class="btn">Continue</button>
+</body>
