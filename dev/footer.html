@@ -4,8 +4,8 @@
 <script type="text/javascript">
     $(window).resize(
         function(){
-            var width = $(window).width();
-            if(width < 720){
+            var height = $(document).height();
+            if(height < 720){
                 $('#footer').css('visibility', 'hidden');
             }
             else{
