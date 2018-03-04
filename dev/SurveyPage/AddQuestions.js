@@ -50,7 +50,7 @@ if("includes" in Array.prototype)
       if(questions.qType==="checkbox")
       {
         question.push(
-          <div class="question" id="question${currentQuestion.qNum}">
+          <fieldset class="question" id="question${currentQuestion.qNum}">
           <div class="questionText">${currentQuestion.qNum}<br/>${currentQuestion.qText}</div><br/>
 
           <div class="checkboxAnswers">
@@ -130,7 +130,7 @@ if("includes" in Array.prototype)
           level6Div.innerHTML+=newQuestion.join('');
           break;
         default:
-
+          break;
       }
     });
   }
