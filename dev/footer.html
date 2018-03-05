@@ -1,29 +1,16 @@
 <div class="footer" id="footer">
     This is a Footer
 </div>
-</div>
 <script type="text/javascript">
-    $(document).ready(function() {
-        var initialHeight = $("#height-div").height();//gives current height in pixels! We save it for later comparisons 
-    });
-
-    $("input").focus(function(){
-        setTimeout(function(){
-            if((initialHeight*0.7) > $("#height-div").height()){//if the current viewport height is smaller than 70% of the original size, it means that the keyboard is up
+    $(window).resize(
+        function(){
+            var width = $(window).width();
+            if(width < 720){
                 $('#footer').css('visibility', 'hidden');
-            }else if((initialHeight*0.7) < parent.$submit.height()){//if the current viewport height is larger than 70% of the original size, it means that the keyboard is down
+            }
+            else{
                 $('#footer').css('visibility', 'visible');
             }
-        },500);
-    });
-
-    $("input").blur(function(){
-        setTimeout(function(){
-            if((initialHeight*0.7) > $("#height-div").height()){//if the current viewport height is smaller than 70% of the original size, it means that the keyboard is up
-                $('#footer').css('visibility', 'hidden');
-            }else if((initialHeight*0.7) < parent.$submit.height()){//if the current viewport height is larger than 70% of the original size, it means that the keyboard is down
-                $('#footer').css('visibility', 'visible');
-            }
-        },500);
-    });
+        }
+    ).resize();
 </script>
