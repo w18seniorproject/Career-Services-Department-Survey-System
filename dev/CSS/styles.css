@@ -96,7 +96,6 @@
 /*Footer*/
 .footer{
     padding-top: 5px;
-    position: fixed;
     bottom: 0;
     text-align: center;
     font-size: 12pt;
@@ -135,6 +134,7 @@
     border-radius: 0;
     padding: 0;
     width: 100%;
+    margin-bottom: 200px;
   }
 
   
