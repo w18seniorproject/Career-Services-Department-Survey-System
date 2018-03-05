@@ -104,13 +104,17 @@
     height: 50px;
     background-color: #6d6e71;
     color: white;
+    position: static;
+    margin-top: 230px;
 }
 
 
 /*Common to All pages*/
 html{
-    height: 100%;
+    min-height: 100% !important;
+    height: 100% !important;
 }
+
 .hyperlink,
 .hyperlink:hover,
 .hyperlink:visited,
