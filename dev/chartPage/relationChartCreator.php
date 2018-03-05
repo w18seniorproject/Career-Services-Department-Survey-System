@@ -29,11 +29,19 @@
  ?>
 
  <script type="text/javascript">
- var js_relationArray=<?php echo json_encode($relationLevelArray);  ?>;
- var js_groupArray=<?php echo json_encode($groupNameArray); ?>;
-
- var ctx=document.getElementById("myChart");
- var resultChart= new Chart(ctx, {
+ var js_relationArrayJSON=<?php echo json_encode($relationLevelArray);  ?>;
+ var js_relationArray=jQuery.parseJSON(js_relationArrayJSON);
+ var js_groupArrayJSON=<?php echo json_encode($groupNameArray); ?>;
+var js_groupArray=jQuery.parseJSON(js_groupArrayJSON);
+ var temp=document.getElementById("myChart");
+ var ctx=temp.getContext("2d");
+ var resultChart=null;
+ function createMixedChart(){
+   if(resultChart!=null)
+   {
+        resultChart.destroy();
+   }
+   resultChart= new Chart(ctx, {
    type: 'bar';
    data: {
      datasets: [{
@@ -58,4 +66,47 @@
      }
  }
 });
+}
+
+function createLineChart(){
+  if(resultChart!=null)
+  {
+       resultChart.destroy();
+  }
+  resultChart= new Chart(ctx, {
+  type: 'line',
+  data: js_relationArray,
+  labels:js_groupArray,
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    }
+  }
+});
+}
+
+function createBarChart(){
+  if(resultChart!=null)
+  {
+       resultChart.destroy();
+  }
+  resultChart= new Chart(ctx, {
+  type: 'bar',
+  data: js_relationArray,
+  labels:js_groupArray,
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    }
+  }
+});
+}
  </script>
