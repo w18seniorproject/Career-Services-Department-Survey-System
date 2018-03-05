@@ -33,9 +33,11 @@
         header("Location: uLogin.html?error=wrongPin");
     }
       
-    //creates and executes next query to get the questions 
-    $sql = "SELECT * FROM questions WHERE acctName='$account' AND surName='$surveyname';";
-    $result = $conn->prepare($sql);
-    $result->execute();
-
-    echo "Success";
+    //creates session for use in survey after destroying any old remnants
+    session_start();
+    session_destroy();
+    session_start();
+    $_SESSION["surName"] = $surveyname;
+    $_SESSION["acctName"] = $account;
+    
+    header("Location: uSurvey.php");
