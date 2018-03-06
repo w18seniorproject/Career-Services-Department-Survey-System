@@ -11,6 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.bundle.min.js"></script>
     <script src="js\testChart2.js"></script>
+    <script src="js\relationChartCreator.js"></script>
     <title>EWU Career Services Department Survey System Survey Page</title>
   </head>
 <body>
@@ -28,8 +29,11 @@
     <li class="Comments"><a href="#">Comments</a></li>
   </ul>
   </div>
-  <button type="button" class="btn btn-primary" onclick="createTestChart()">Relation Chart</button>
-<div id="graphContainer">
+  <div id=surveyButtons>
+  <button type="button" class="btn btn-primary" onclick="createBarChart()">Relation Chart(Bar)</button>
+  <button type="button" class="btn btn-primary" onclick="createLineChart()">Relation Chart(Line)</button>
+  <button type="button" class="btn btn-primary" onclick="createMixedChart()">Relation Chart(Mixed)</button></div>
+  <div id="graphContainer">
   <canvas id="myChart" width="400" height="400"></canvas>
 </div>
 
