@@ -2,7 +2,7 @@
 	header("Access-Control-Allow-Origin: *");
 	header("Content-Type: application/json; charset=UTF-8");
 	
-	include_once '../config/takerDB.php'; //this will need to be changed to point to the pollster db file.
+	include_once '../config/pollsterDB.php';
 	include_once '../objects/result.php';
 	
 	//TO-DO: Account verification/security, refactor to use views rather than results table.

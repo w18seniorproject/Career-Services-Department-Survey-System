@@ -2,7 +2,7 @@
 	header("Access-Control-Allow-Origin: *");
 	header("Content-Type: application/json; charset=UTF-8");
 	
-	include_once '../config/takerDB.php'; //this will need to be changed to point to the pollster db file.
+	include_once '../config/pollsterDB.php';
 	include_once '../objects/question.php';
 	
 	//TO-DO: Account verification/security, refactor to use views rather than questions table.
@@ -85,7 +85,7 @@
 			parse_str(file_get_contents('php://input'), $_DELETE);
 			
 			try{
-				if(isset($_DELETE['surName']) && isset($_DELTE['qNum']){
+				if(isset($_DELETE['surName']) && isset($_DELTE['qNum'])){
 					$remove = "DELETE FROM questions WHERE surName = ? AND qNum = ?";
 				}	
 				else{
