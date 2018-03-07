@@ -3,7 +3,7 @@
 	header("Content-Type: application/json; charset=UTF-8");
 	 
 	include_once '../config/takerDB.php';
-	include_once '../objects/question.php';
+	include_once '../objects/result.php';
 	 
 	$database = new Database();
 	$db = $database->getConnection();
@@ -12,37 +12,29 @@
 		try{
 			$questions = new Question($db);
 	
-			$stmt = $questions->getQuestions($_GET['surName'], $_GET['acctName']);
+			$stmt = $questions->getQuestions($_GET['surName'], $_GET['groupName']);
 
 			$num = $stmt->rowCount();
 			 
-			if($num>0){ 
-				$questionsArr=array();
+			if($num > 0){ 
+				$resultsArr=array();
 			 
 				while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){	
 					extract($row);
 			 
-					$question=array(
+					$result=array(
+						"recNum" => $recNum,
 						"surName" => $surName,
-						"qNum" => $qNum,
-						"qType" => $qType,
-						"qText" => $qText,
-						"ansOne" => $ansOne,
-						"ansTwo" => $ansTwo,
-						"ansThree" => $ansThree,
-						"ansFour" => $ansFour,
-						"qAns" => $qAns,
-						"qWeight" => $qWeight,
-						"rLevel" => $rLevel,
-						"rName" => $rName,
-						"acctName" => $acctName
+						"groupName" => $groupName,
+						"surResults" => $surResults,
+						"rLevel" => $rLevel
 					);
-					$questionsArr[] = $question;
+					$resultsArr[] = $result;
 				}
-				echo json_encode($questionsArr);	
+				echo json_encode($resultsArr);	
 			}	 
 			else{
-				echo json_encode(array("message" => "No questions."));
+				echo json_encode(array("message" => "No results."));
 			}
 		}
 		catch(Exception $exc){
