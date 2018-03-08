@@ -67,15 +67,15 @@
     color: #a10022;
 }
 
-/*For Login, Signin, Subit, etc.*/
+/*For Login, Signin, Submit, etc.*/
 .btn-primary,
 .btn-primary:focus{
-    background-color: #a10022;
+    background-color: #a10022 !important;
     border: none;
     border-radius: 0 !important;
 }
 .btn-primary:hover{
-    background-color: #a32244;
+    background-color: #a32244 !important;
 }
 
 /*For forms that are the main content on the page*/
@@ -139,11 +139,34 @@ html{
     border: none;
     box-shadow: 0px 2px 5px #cccccc;
     border-radius: 0;
-    padding: 0;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 50px;
     width: 100%;
     max-width: 800px !important;
     margin: 0 auto;
     margin-bottom: 200px;
   }
+.question{
+    display: none;
+}
+.iiiiii{
+    display: block !important;
+    visibility: visible;
+}
+.btn-survey{
+    background-color: #6d6e71;
+    color: #ffffff;
+    border: none;
+    border-radius: 0 !important;
+    float: right;
+    margin-left: 10px;
+}
+.btn-survey:hover,
+.btn-survey:focus{
+    background-color: #7e7f82;
+    color: #ffffff;
+}
+
 
   
