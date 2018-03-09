@@ -1,45 +1,47 @@
+var questions;
+
 function getQuestionString(qNum, qText, rLevelClass){
     var toReturn = "<h3 class='question " + rLevelClass + "'>" + qNum + ") " + qText + "</h3>";
     return toReturn;
 }
 
 function getCheckboxString(ansOne, ansTwo, ansThree, ansFour, qNum, rLevelClass){
-    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="checkbox" name=' + qNum + '" value="' + ansOne + '">' + ansOne + '</label>' + 
-                    '<label class="question ' + rLevelClass + '"><input type="checkbox" name=' + qNum + '" value="' + ansTwo + '">' + ansTwo + '</label>';
+    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="checkbox" name="' + qNum + '" value="' + ansOne + '">' + ansOne + '</label>' + 
+                    '<label class="question ' + rLevelClass + '"><input type="checkbox" name="' + qNum + '" value="' + ansTwo + '">' + ansTwo + '</label>';
     if(ansThree != null){
-        toReturn += '<label class="question ' + rLevelClass + '"><input type="checkbox" name=' + qNum + '" value="' + ansThree + '">' + ansThree + '</label>';
+        toReturn += '<label class="question ' + rLevelClass + '"><input type="checkbox" name="' + qNum + '" value="' + ansThree + '">' + ansThree + '</label>';
     }
     if(ansFour != null){
-        toReturn += '<label class="question ' + rLevelClass + '"><input type="checkbox" name=' + qNum + '" value="' + ansFour + '">' + ansFour + '</label>';
+        toReturn += '<label class="question ' + rLevelClass + '"><input type="checkbox" name="' + qNum + '" value="' + ansFour + '">' + ansFour + '</label>';
     }
     return toReturn;
 }
 
 function getMultipleChoiceString(ansOne, ansTwo, ansThree, ansFour, qNum, rLevelClass){
-    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="' + ansOne + '">' + ansOne + '</label>' + 
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="' + ansTwo + '">' + ansTwo + '</label>';
+    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="' + ansOne + '">' + ansOne + '</label>' + 
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="' + ansTwo + '">' + ansTwo + '</label>';
     if(ansThree != null){
-        toReturn += '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="' + ansThree + '">' + ansThree + '</label>';
+        toReturn += '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="' + ansThree + '">' + ansThree + '</label>';
     }
     if(ansFour != null){
-        toReturn += '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="' + ansFour + '">' + ansFour + '</label>';
+        toReturn += '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="' + ansFour + '">' + ansFour + '</label>';
     }
     return toReturn;
 }
 
 function getScaleString(qNum, rLevelClass){
-    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="sta">Strongly Agree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="a">Agree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="sla">Slightly Agree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="sld">Slightly Disagree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="d">Disagree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="std">Strongly Disagree</label>';
+    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="sta">Strongly Agree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="a">Agree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="sla">Slightly Agree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="sld">Slightly Disagree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="d">Disagree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="std">Strongly Disagree</label>';
     return toReturn;
 }
 
 function getTrueFalseString(qNum, rLevelClass){
-    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="true">True</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" name=' + qNum + '" value="false">False</label>';
+    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="t">True</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" name="' + qNum + '" value="f">False</label>';
     return toReturn;
 }
 
@@ -49,7 +51,7 @@ function showQuestions(){
             url:'uSurvey.php',
             cache:false,
             success:function(data){
-                var questions = JSON.parse(data);
+                questions = JSON.parse(data);
                 var index = "I";
                 var rLevelClass;
                 for(i=0; i<Object.keys(questions).length; i++){
@@ -105,18 +107,23 @@ function showQuestions(){
 }
 
 function loadNext(){
-    $('.question').each(function(i, ele){
-        ele.className += "i";
-    });
-    if($('#submit').is(':visible')){
-        $('#continue').css('display', 'none');
-    }
-    if($("#back").length){
-        $('#back').css('display', 'block');
+    if(checkAnswers()){
+        $('.question').each(function(i, ele){
+            ele.className += "i";
+        });
+        if($('#submit').is(':visible')){
+            $('#continue').css('display', 'none');
+        }
+        if($("#back").length){
+            $('#back').css('display', 'block');
+        }
+        else{
+            $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
+            document.getElementById("back").onclick = function(){loadLast();};
+        }
     }
     else{
-        $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
-        document.getElementById("back").onclick = function(){loadLast();};
+        document.getElementById("submit").click();
     }
 }
 
@@ -130,4 +137,20 @@ function loadLast(){
     if(!($(".iiiiiii").length)){
         $('#back').css('display', 'none');
     }
+}
+
+function checkAnswers(){
+    $('label.iiiiii input').each(function(i, ele){
+        var index = "";
+        var qNum = $(ele).attr("name");
+        var ans = $(ele).attr("value");
+        for(i=0; i < qNum; i++){
+            index += "I";
+        }
+        if(ans != questions[index]["qAns"] && questions[index]["qWeight"] == 2){
+            alert(ans);
+            return false;
+        }
+    });
+    return true;
 }
