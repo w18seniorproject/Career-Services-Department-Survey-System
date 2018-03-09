@@ -1,4 +1,6 @@
 var questions;
+var checkboxArray = [];
+var radioArray = [];
 
 function getQuestionString(qNum, qText, rLevelClass){
     var toReturn = "<h3 class='question " + rLevelClass + "'>" + qNum + ") " + qText + "</h3>";
@@ -101,6 +103,16 @@ function showQuestions(){
                 $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey " + rLevelClass + "'>");
                 $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');
                 document.getElementById("continue").onclick = function(){loadNext();};
+                $('[type="checkbox"]').each(function(i, ele){
+                    $(ele).on("click", function(){
+                        updateCheckboxes(ele);
+                    });
+                });
+                $('[type="radio"]').each(function(i, ele){
+                    $(ele).on("click", function(){
+                        updateRadioButtons(ele);
+                    });
+                });
             }
         });
     });
@@ -122,9 +134,6 @@ function loadNext(){
             document.getElementById("back").onclick = function(){loadLast();};
         }
     }
-    else{
-        document.getElementById("submit").click();
-    }
 }
 
 function loadLast(){
@@ -140,17 +149,63 @@ function loadLast(){
 }
 
 function checkAnswers(){
-    $('label.iiiiii input').each(function(i, ele){
+    for(i = 0; i < radioArray.length; i++){
         var index = "";
-        var qNum = $(ele).attr("name");
-        var ans = $(ele).attr("value");
-        for(i=0; i < qNum; i++){
+        var qNum = radioArray[i].name;
+        var ans = radioArray[i].value;
+        for(j=0; j<qNum; j++){
             index += "I";
         }
         if(ans != questions[index]["qAns"] && questions[index]["qWeight"] == 2){
-            alert(ans);
-            return false;
+            document.getElementById("submit").click();
         }
-    });
+    }
+    for(i=0; i<checkboxArray.length; i++){
+        var index = "";
+        var qNum = checkboxArray[i].name;
+        var ans = "";
+        for(j=0; j < checkboxArray.length; j++){
+            if(checkboxArray[j].name == qNum){
+                ans += checkboxArray[j].value;
+            }
+        }
+        for(j=0; j < qNum; j++){
+            index += "I";
+        }
+        if(ans != questions[index]["qAns"] && questions[index]["qWeight"] == 2){
+            document.getElementById("submit").click();
+        }
+    }
     return true;
+}
+
+function updateCheckboxes(sender){
+    var exists = false;
+    var entry = {
+        checked: $(sender).is(":checked"),
+        value: $(sender).attr("value"),
+        name: $(sender).attr("name")
+    };
+    for(i = 0; i < checkboxArray.length; i++){
+        if(checkboxArray[i].value+checkboxArray[i].name == entry.value+entry.name){
+            exists = true;
+            checkboxArray.splice(i, 1);
+        }
+    }
+    if(!exists){
+        checkboxArray.push(entry);
+    }
+}
+
+function updateRadioButtons(sender){
+    var entry = {
+        value: $(sender).attr("value"),
+        name: $(sender).attr("name")
+    };
+    for(i = 0; i < radioArray.length; i++){
+        if(radioArray[i].name == entry.name){
+            radioArray.splice(i, 1);
+        }
+    }
+    radioArray.push(entry);
 }
