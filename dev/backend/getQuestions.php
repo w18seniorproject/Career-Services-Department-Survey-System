@@ -48,7 +48,7 @@
 		catch(Exception $exc){
 			http_response_code(400);
 			echo "Error: " . $exc->getMessage();
-			break;
+			exit();
 		}
 		http_response_code(200);
 	}
