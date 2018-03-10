@@ -93,22 +93,6 @@
     font-weight: bold;
 }
 
-/*Footer*/
-.footer{
-    padding-top: 5px;
-    bottom: 0 !important;
-    text-align: center;
-    font-size: 12pt;
-    font-family: Arial;
-    width: 100%;
-    height: 50px;
-    background-color: #6d6e71;
-    color: white;
-    position: static;
-    margin-top: 400px;
-}
-
-
 /*Common to All pages*/
 html{
     min-height: 100% !important;
@@ -133,6 +117,7 @@ html{
 .survey-wrapper{
     margin-left: 10px;
     margin-right: 10px;
+    margin-bottom: 100px;
 }
 .questions-wrapper {
     background-color: #fafafa;
@@ -145,7 +130,6 @@ html{
     width: 100%;
     max-width: 800px !important;
     margin: 0 auto;
-    margin-bottom: 200px;
   }
 .question{
     display: none;
