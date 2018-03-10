@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2018 at 05:30 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.9
+-- Generation Time: Mar 10, 2018 at 07:54 PM
+-- Server version: 10.1.30-MariaDB
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -93,6 +93,19 @@ CREATE TABLE `results` (
   `surResults` text,
   `rLevel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tokens`
+--
+
+CREATE TABLE `tokens` (
+  `acctName` varchar(20) NOT NULL,
+  `tokenHash` varbinary(32) NOT NULL,
+  `expiration` time NOT NULL,
+  `linkUsed` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Password reset link functionality';
 
 --
 -- Indexes for dumped tables
