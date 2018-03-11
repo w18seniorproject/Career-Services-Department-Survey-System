@@ -12,7 +12,7 @@
 		try{
 			$pins = new pin($db);
 	
-			$stmt = $bans->getPins($_GET['pin']);
+			$stmt = $pins->getPins($_GET['pin']);
 
 			$num = $stmt->rowCount();
 			
@@ -39,7 +39,7 @@
 		catch(Exception $exc){
 			http_response_code(400);
 			echo "Error: " . $exc->getMessage();
-			break;
+			exit();
 		}
 		http_response_code(200);
 	}
