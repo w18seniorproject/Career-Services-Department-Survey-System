@@ -5,7 +5,7 @@ $.ajax({
 
   type: "POST",
   url: 'include/relationChartCreator.php',
-  dataType: 'json'
+  dataType: 'json',
   success: function(json){
     js_relationArrayJSON=json.rLA;
     js_groupArrayJSON=json.gNA;
@@ -24,7 +24,7 @@ function createMixedChart(){
        resultChart.destroy();
   }
   resultChart= new Chart(ctx, {
-  type: 'bar';
+  type: 'bar',
   data: {
     datasets: [{
 
