@@ -95,8 +95,7 @@ function showQuestions(){
         
         $('#back').css('display', 'none');
         
-        loadNextSec();
-        
+        loadNextSec(); 
     });
 }
 
@@ -148,6 +147,5 @@ function loadLastSec(){
     if($('#submit').is(':visible')){
         $('#continue').css('display', 'block');
         $('#submit').css('display', 'none');
-    }
-        
+    }    
 }
