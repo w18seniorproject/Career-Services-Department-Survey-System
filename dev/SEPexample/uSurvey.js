@@ -78,11 +78,14 @@ function showQuestions(){
         }
         
         $("#maxSection").val(maxSec);
+        
         $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey'>");
         $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');   
         $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
+        
         $('#continue').click(loadNextSec);
         $('#back').click(loadLastSec);
+        $('#submit').click(sendResults);
         
         if(maxSec == 1){
             $('#continue').css('display', 'none');
@@ -100,6 +103,10 @@ function showQuestions(){
 }
 
 function loadNextSec(){
+    //TO-DO: Notify of unaswered questions, implement checkAns()
+    if(!checkAns())
+       return;
+   
     var curSec = parseInt($("#curSection").val());
     var maxSec = parseInt($("#maxSection").val());
     
@@ -107,7 +114,7 @@ function loadNextSec(){
         curSec = curSec + 1;
         $("#curSection").val(curSec);
     }
-
+    
     var questions = document.querySelectorAll('.quest');
     questions.forEach( (e) => {
         if(e.classList.contains("s" + curSec))
@@ -148,4 +155,13 @@ function loadLastSec(){
         $('#continue').css('display', 'block');
         $('#submit').css('display', 'none');
     }    
+}
+
+function checkAns(){
+    //TO-DO: Implement checking of answers
+    return true;
+}
+
+function sendResults(){
+    //TO-DO: Implement sending survey's results
 }
