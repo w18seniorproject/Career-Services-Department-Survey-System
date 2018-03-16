@@ -12,7 +12,7 @@
     $pin = $_POST["pin"];
     
     //creates and executes query to get surveyname, groupname, and account from pins table
-    $sql = "SELECT surName, acctName FROM pins WHERE pin= ?;";
+    $sql = "SELECT surName, acctName, surText FROM pins WHERE pin= ?;";
     $result = $conn->prepare($sql);
     $result->execute(array($pin));
 
@@ -23,6 +23,7 @@
         $row = $result->fetch(PDO::FETCH_ASSOC);
         $surveyname = $row['surName'];
         $account = $row['acctName'];
+        $surText = $row['surText'];
     }
     else if($numOfRows > 1){
         header("Location: uLogin.html?error=notUnique");
@@ -39,5 +40,6 @@
     session_start();
     $_SESSION["surName"] = $surveyname;
     $_SESSION["acctName"] = $account;
+    $_SESSION["surText"] = $surText;
     
     header("Location: uSurvey.php");

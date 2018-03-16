@@ -21,8 +21,10 @@
         <div class="survey-wrapper" id="survey-wrapper">
             <legend class="legend">Survey</legend>
             <form action="submit.php" method="post" id="questions-wrapper" onsubmit="return checkForEmpty()" class="questions-wrapper">
+                <h3 id="msg" style="text-align: center"></h3>
+                <input type="button" value="Continue" id="continue" class="btn btn-survey">
                 <script type="text/javascript">
-                    showQuestions();
+                    showLanding();
                 </script>
             </form>
             <p id="errorMessage" class="errorMessage"></p>

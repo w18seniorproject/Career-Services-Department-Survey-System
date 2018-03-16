@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
+-- version 4.5.4.1deb2ubuntu2
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 10, 2018 at 07:54 PM
--- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.1
+-- Host: localhost
+-- Generation Time: Mar 16, 2018 at 03:06 PM
+-- Server version: 5.7.21-0ubuntu0.16.04.1
+-- PHP Version: 7.0.25-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -55,7 +53,8 @@ CREATE TABLE `pins` (
   `pin` int(11) NOT NULL,
   `surName` varchar(30) DEFAULT NULL,
   `groupName` varchar(20) DEFAULT NULL,
-  `acctName` varchar(20) NOT NULL
+  `acctName` varchar(20) NOT NULL,
+  `surText` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -69,11 +68,8 @@ CREATE TABLE `questions` (
   `qNum` int(11) NOT NULL,
   `qType` varchar(20) DEFAULT NULL,
   `qText` text,
-  `ansOne` text,
-  `ansTwo` text,
-  `ansThree` text,
-  `ansFour` text,
-  `qAns` int(11) DEFAULT NULL,
+  `qChoices` varchar(256) DEFAULT NULL,
+  `qAns` varchar(256) DEFAULT NULL,
   `qWeight` int(11) DEFAULT NULL,
   `rLevel` int(11) DEFAULT NULL,
   `rName` text,
@@ -93,19 +89,6 @@ CREATE TABLE `results` (
   `surResults` text,
   `rLevel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tokens`
---
-
-CREATE TABLE `tokens` (
-  `acctName` varchar(20) NOT NULL,
-  `tokenHash` varbinary(32) NOT NULL,
-  `expiration` time NOT NULL,
-  `linkUsed` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Password reset link functionality';
 
 --
 -- Indexes for dumped tables
@@ -140,7 +123,6 @@ ALTER TABLE `questions`
 --
 ALTER TABLE `results`
   ADD PRIMARY KEY (`recNum`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
