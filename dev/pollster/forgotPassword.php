@@ -10,7 +10,7 @@ $conn = $database->getConnection();
 $known_value = $_POST["known_value"];
 
 //Determine if user input is a valid email address. If not, assume that it is a username.
-if(filter_var($known_value, FILTER_VALIDATE_EMAIL) && preg_match('/@.+\./', known_value)){
+    if(filter_var($known_value, FILTER_VALIDATE_EMAIL)){
 
     $sql = "SELECT acctName, email FROM accounts WHERE email = ?;";
 }
@@ -31,8 +31,8 @@ if( $numRows == 1){
         $acctName = $row['acctName'];
         $email = $row['email'];
 
-//Create random token
-$bytes = random_bytes(10);
+//Create random token. Using bin2hex so that it can be used in a query string.
+$bytes = bin2hex(random_bytes(10));
 
 //Hash the token
 $tokenHash = hash("sha256", $bytes, false);
@@ -42,8 +42,6 @@ $expiration = date("Y-m-d H:i:s", strtotime("+ 30 minutes"));
 
 //Set linkUsed to false
 $linkUsed = false;
-
-echo $expiration;
 
 //Save account info to token table
 $sql = "INSERT INTO tokens (acctName, tokenHash, linkUsed, expiration) VALUES (?, ?, ?, ?)";
@@ -59,10 +57,11 @@ $stmt->execute();
 
 
 //CHANGE TO CORRECT EXTERNAL LINK
-//ADD QUERY STRING TO LINK
+
 // MAKE SURE YOU CAUSE THE TOKEN TO EXPIRE
-$msg = "Please click on this link to retrieve your username or reset your password: </br><a href= http://localhost:10080/csdss/dev/pollster/passwordReset.html</br></br>Do not reply to this email.";
-       
+$msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/csdss/dev/pollster/passwordReset.html?";
+
+$msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
     //(start by sending unhashed username, just to make sure it works). When link is clicked, open 
     //"update password" page. Send the same query string along with it, so that the correct account is opened.
     // On the "update password" page, display the username and provide two password boxes (do this on front end and back end).
@@ -71,6 +70,8 @@ $msg = "Please click on this link to retrieve your username or reset your passwo
     // applied to the function.
     //DO SOMETHING WITH THE "FROM" PARAM, SINCE THAT ISN'T OUR EMAIL ADDRESS.
     mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
+
+    echo "<h2>A link has been sent to the email address associated with this account.<h2>";
     }
     else{
 
