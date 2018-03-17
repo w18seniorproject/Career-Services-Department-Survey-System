@@ -22,7 +22,15 @@ if($numRows == 1){
     $row = $result->fetch(PDO::FETCH_ASSOC);
 
 //IF TOKEN HASN'T EXPIRED...
+$expiration = $row['expiration'];
 
+if($expiration < date("Y-m-d H:i:s")){
+?>
+
+<script> alert("The link used to access this page has expired. Please try again."); window.location.href='forgotPassword.html'</script>
+
+<?php
+}
     $acctName = $row['acctName'];
 
 //MARK TOKEN AS HAVING BEEN USED IN tokens TABLE, or REMOVE THE RECORD FROM THE TABLE. IS THERE A REASON NOT TO DELETE IT?

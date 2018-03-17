@@ -43,9 +43,9 @@ $expiration = date("Y-m-d H:i:s", strtotime("+ 30 minutes"));
 //Set linkUsed to false
 $linkUsed = false;
 
-//Save account info to token table
+//Save account and tokenHash info to token table
 $sql = "INSERT INTO tokens (acctName, tokenHash, linkUsed, expiration) VALUES (?, ?, ?, ?)";
-//$acctName, $tokenHash," .(0). ", $expiration
+
 $stmt = $conn->prepare($sql);
 
 $stmt->bindParam(1, $acctName);
@@ -64,16 +64,18 @@ $msg .= "token=". $bytes . "\n\nDo not reply to this email.";
     //"update password" page. Send the same query string along with it, so that the correct account is opened.
     // On the "update password" page, display the username and provide two password boxes (do this on front end and back end).
    
-    // mail() is secure in this case. User input is validated by account association, and no other user input is 
-    // applied to the function.
     //DO SOMETHING WITH THE "FROM" PARAM, SINCE THAT ISN'T OUR EMAIL ADDRESS.
     mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
+.
+    ?>
+    <script> alert("A link has been sent to the email address associated with this account."); window.location.href='pLogin.html'</script>
+    <?php
 
-    echo "<h2>A link has been sent to the email address associated with this account.<h2>";
-    }
+    }// end if(rows==1)
     else{
-
-        echo "<h2>There is no account associated with this user name or email address.</h2>";
-    }
-
 ?>
+    <script> alert("There is no account associated with this user name or email address."); window.location.href='forgotPassword.html'</script>
+<?php
+    }
+?>
+

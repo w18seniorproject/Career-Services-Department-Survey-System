@@ -22,6 +22,7 @@
 				$this->dbCon = new PDO($dsn, $this->user, $this->pass, $this->opt);
 			}
 			catch(PDOException $exc){
+			
 				echo "Connection Error: " . $exc->getMessage();
 			}
 			return $this->dbCon;
