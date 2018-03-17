@@ -7,18 +7,15 @@
         public $qNum;
         public $qType;
         public $qText;
-        public $ansOne;
-        public $ansTwo;
-        public $ansThree;
-        public $ansFour;
+        public $qChoices;
         public $qAns;
         public $qWeight;
         public $rLevel;
         public $rName;
         public $acctName;
 
-        public function __construct($db){
-                $this->conn = $db;
+        public function __construct($conn){
+                $this->conn = $conn;
         }
 
         public function getQuestions($surName, $acctName){
@@ -39,10 +36,7 @@
                             "qNum" => $qNum,
                             "qType" => $qType,
                             "qText" => $qText,
-                            "ansOne" => $ansOne,
-                            "ansTwo" => $ansTwo,
-                            "ansThree" => $ansThree,
-                            "ansFour" => $ansFour,
+                            "qChoices" => $qChoices,
                             "qAns" => $qAns,
                             "qWeight" => $qWeight,
                             "rLevel" => $rLevel,
@@ -74,4 +68,3 @@
                 }
         }
     }
-?>

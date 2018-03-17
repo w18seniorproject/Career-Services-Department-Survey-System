@@ -12,15 +12,13 @@
         <script type="text/javascript" src="./uSurvey.js"></script>
     </head>
     <body>
-        <input type="hidden" id="curSection">
-        <input type="hidden" id="maxSection">
         <div id="header"></div>
         <div class="survey-wrapper" id="survey-wrapper">
             <legend class="legend">Survey</legend>
-            <form action="submit.php" method="post" id="questions-wrapper" class="questions-wrapper">
-                
-            </form>
-            <label id="errorMessage" class="errorMessage"></label>
+            <div id="questions-wrapper" class="questions-wrapper">
+                Error - Not logged into quiz. Please return to the login page and enter a pin.
+            </div>
+            <p id="errorMessage" class="errorMessage"></p>
         </div>
     </body>
 </html>

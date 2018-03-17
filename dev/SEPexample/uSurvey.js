@@ -1,8 +1,13 @@
 $(document).ready(setupPage);
 
+var curSec;
+var maxSec;
+var sectBound;
+
 function setupPage(){
     $("#header").load("../header.html");
-    $("#curSection").val('0');
+    
+    curSec = 0;
     showQuestions();
 }
 
@@ -12,104 +17,121 @@ function getQuest(quest){
 }
 
 function getCBAns(quest){
-    var toReturn =  '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a1"><input type="checkbox" name="' +quest.qNum + '" value="' + quest.ansOne + '">' + quest.ansOne + '</label>' + 
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a2"><input type="checkbox" name="' +quest.qNum + '" value="' + quest.ansTwo + '">' + quest.ansTwo + '</label>';
-    if(quest.ansThree !== null){
-        toReturn += '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a3"><input type="checkbox" name="' +quest.qNum + '" value="' + quest.ansThree + '">' + quest.ansThree + '</label>';
-    }
-    if(quest.ansFour !== null){
-        toReturn += '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a4"><input type="checkbox" name="' +quest.qNum + '" value="' + quest.ansFour + '">' + quest.ansFour + '</label>';
-    }
+    var toReturn = "";
+    var choiceArr = quest.qChoices.split(",");
+    choiceArr.forEach(element =>{
+        toReturn += '<label class="quest s' + quest.rLevel + '">' + 
+                    '<input class="ans n' + quest.qNum + ' s' + quest.rLevel + 
+                    '" type="checkbox" ' +
+                    '" name="' + quest.qNum + 
+                    '" value="' + element + '">' + 
+                    element + '</label>';
+    });
     return toReturn;
 }
 
 function getMCAns(quest){
-    var toReturn =  '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a1"><input type="radio" name="' + quest.qNum + '" value="' + quest.ansOne + '">' + quest.ansOne + '</label>' + 
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a2"><input type="radio" name="' + quest.qNum + '" value="' + quest.ansTwo + '">' + quest.ansTwo + '</label>';
-    if(quest.ansThree !== null){
-        toReturn += '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a3"><input type="radio" name="' + quest.qNum + '" value="' + quest.ansThree + '">' + quest.ansThree + '</label>';
-    }
-    if(quest.ansFour !== null){
-        toReturn += '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a4"><input type="radio" name="' + quest.qNum + '" value="' + quest.ansFour + '">' + quest.ansFour + '</label>';
-    }
+    var toReturn = "";
+    var choiceArr = quest.qChoices.split(",");
+    choiceArr.forEach(element =>{
+        toReturn += '<label class="quest s' + quest.rLevel + '">' + 
+                    '<input class="ans n' + quest.qNum + ' s' + quest.rLevel +
+                    '" type="radio" ' +
+                    '" name="' + quest.qNum + 
+                    '" value="' + element + '">' + 
+                    element + '</label>';
+    });
     return toReturn;
 }
 
 function getSCAns(quest){
-    var toReturn =  '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a1"><input type="radio" name="' +quest.qNum + '" value="sta">Strongly Agree</label>' +
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a2"><input type="radio" name="' + quest.qNum + '" value="a">Agree</label>' +
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a3"><input type="radio" name="' +quest.qNum + '" value="sla">Slightly Agree</label>' +
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a4"><input type="radio" name="' +quest.qNum + '" value="sld">Slightly Disagree</label>' +
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a5"><input type="radio" name="' +quest.qNum + '" value="d">Disagree</label>' +
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' a6"><input type="radio" name="' +quest.qNum + '" value="std">Strongly Disagree</label>';
+    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sta">Strongly Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' + quest.qNum + '" value="a">Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sla">Slightly Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sld">Slightly Disagree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="d">Disagree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="std">Strongly Disagree</label>';
     return toReturn;
 }
 
 function getTFAns(quest){
-    var toReturn =  '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' aT"><input type="radio" name="' +quest.qNum + '" value="t">True</label>' +
-                    '<label class="quest n'+ quest.qNum + ' s'+ quest.rLevel + ' aF"><input type="radio" name="' +quest.qNum + '" value="f">False</label>';
+    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="t">True</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="f">False</label>';
     return toReturn;
 }
 
 function showQuestions(){
     $.post("index.php", function(data){
         var questions = JSON.parse(data);
-        var maxSec = 0;
-        for(var i = 0; i < questions.length; i++){
-           $('#questions-wrapper').append(getQuest(questions[i]));
-            switch(questions[i].qType){
-                case 'mc':
-                    $('#questions-wrapper').append(getMCAns(questions[i]));
-                    break;
-                case 'chk':
-                    $('#questions-wrapper').append(getCBAns(questions[i]));
-                    break;
-                case 'tf':
-                    $('#questions-wrapper').append(getTFAns(questions[i]));
-                    break;
-                case 's':
-                    $('#questions-wrapper').append(getSCAns(questions[i]));
-                    break;
-                default:
-                    break;                
+        if(questions.length > 0){
+            $('#questions-wrapper').html("");
+            
+            window.onbeforeunload = function(){
+                return 'Are you sure you want to leave?';
+            };
+            
+            maxSec = 0;
+            sectBound = new Array();
+
+            for(var i = 0; i < questions.length; i++){
+               $('#questions-wrapper').append(getQuest(questions[i]));
+                switch(questions[i].qType){
+                    case 'mc':
+                        $('#questions-wrapper').append(getMCAns(questions[i]));
+                        break;
+                    case 'chk':
+                        $('#questions-wrapper').append(getCBAns(questions[i]));
+                        break;
+                    case 'tf':
+                        $('#questions-wrapper').append(getTFAns(questions[i]));
+                        break;
+                    case 's':
+                        $('#questions-wrapper').append(getSCAns(questions[i]));
+                        break;
+                    default:
+                        break;                
+                }
+                if(questions[i].rLevel > maxSec)
+                {    
+                    maxSec = questions[i].rLevel;
+
+                }
+                sectBound[maxSec] = questions[i].qNum;
             }
-            if(questions[i].rLevel > maxSec)
-                maxSec = questions[i].rLevel;
+
+            $("#maxSection").val(maxSec);
+
+            $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey'>");
+            $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');   
+            $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
+
+            $('#continue').click(loadNextSec);
+            $('#back').click(loadLastSec);
+            $('#submit').click(sendResults);
+
+            if(maxSec == 1){
+                $('#continue').css('display', 'none');
+                $('#submit').css('display', 'block');
+            }
+            else{
+                $('#continue').css('display', 'block');
+                $('#submit').css('display', 'none');
+            }
+
+            $('#back').css('display', 'none');
+
+            loadNextSec(); 
         }
-        
-        $("#maxSection").val(maxSec);
-        
-        $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey'>");
-        $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');   
-        $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
-        
-        $('#continue').click(loadNextSec);
-        $('#back').click(loadLastSec);
-        $('#submit').click(sendResults);
-        
-        if(maxSec == 1){
-            $('#continue').css('display', 'none');
-            $('#submit').css('display', 'block');
-        }
-        else{
-            $('#continue').css('display', 'block');
-            $('#submit').css('display', 'none');
-        }
-        
-        $('#back').css('display', 'none');
-        
-        loadNextSec(); 
     });
 }
 
 function loadNextSec(){
-    //TO-DO: Notify of unaswered questions, implement checkAns()
-    if(!checkAns())
-       return;
-   
-    var curSec = parseInt($("#curSection").val());
-    var maxSec = parseInt($("#maxSection").val());
-    
+    $('#errorMessage').html("");
+    if(checkAns() !== true && curSec !== 0){
+        $('#errorMessage').html("Please answer all questions");
+        return;
+    }
+        
     if(curSec < maxSec){
         curSec = curSec + 1;
         $("#curSection").val(curSec);
@@ -133,8 +155,7 @@ function loadNextSec(){
 }
 
 function loadLastSec(){
-    var curSec = parseInt($("#curSection").val());
-    
+    $('#errorMessage').html("");
     if(curSec > 1){
         curSec = curSec - 1;
         $("#curSection").val(curSec);
@@ -158,10 +179,45 @@ function loadLastSec(){
 }
 
 function checkAns(){
-    //TO-DO: Implement checking of answers
+    var answers;
+    var firstQ, lastQ;
+    
+    if(curSec === 1)
+        firstQ = 1;
+    else
+        firstQ = sectBound[curSec - 1] + 1;
+    
+    lastQ = sectBound[curSec];
+    
+    for(var curQ = firstQ; curQ <= lastQ; curQ++){
+        answers = document.querySelectorAll('.ans.n' + curQ);
+        var completed = false;
+        answers.forEach( (ans) => {
+            if(ans.checked)
+                completed = true; 
+        });
+        if(completed !== true)
+            return false;
+    }  
     return true;
 }
 
 function sendResults(){
-    //TO-DO: Implement sending survey's results
+    if(checkAns() !== true && curSec !== 0){
+        $('#errorMessage').html("Please answer all questions");
+        return;
+    }else{
+        //TO-DO: Implement sending survey's results
+        $.ajax({
+            url: 'index.php',
+            type: 'post',
+            data: {
+                response: 'XXXXXXXXXXXXXXXXXXX'
+            },
+            success: function (data) {
+                //TO-DO: implement success function
+                location.replace("index.php");
+            }
+        });
+    }
 }
