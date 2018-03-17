@@ -122,6 +122,8 @@ function showQuestions(){
 
             loadNextSec(); 
         }
+    }).fail(function(){
+        $('#questions-wrapper').html("Error - Not logged into quiz. Please return to the login page and enter a pin.");
     });
 }
 
@@ -207,6 +209,7 @@ function sendResults(){
         $('#errorMessage').html("Please answer all questions");
         return;
     }else{
+        window.onbeforeunload = null;
         //TO-DO: Implement sending survey's results
         $.ajax({
             url: 'index.php',
