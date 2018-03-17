@@ -8,11 +8,11 @@
         public $groupName;
         public $acctName;
 
-        public function __construct($db){
-            $this->conn = $db;
+        public function __construct($conn){
+            $this->conn = $conn;
         }
 
-        public function getPins($pin){
+        public function getPin($pin){
             try{
                 $stmt = $this->buildQuery($pin);
             }catch(Exception $e){
@@ -23,7 +23,7 @@
             
             $rNum = $stmt->rowCount();
             
-            if($rNum == 1){ 
+            if($rNum === 1){ 
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);	
                 extract($row);
 
@@ -61,6 +61,5 @@
             else{
                     throw new Exception('Variable not set.');
             }
+        }
     }
-    }
-?>
