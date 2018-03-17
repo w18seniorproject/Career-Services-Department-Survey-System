@@ -67,7 +67,7 @@
     color: #a10022;
 }
 
-/*For Login, Signin, Submit, etc.*/
+/*Common to any page that needs them*/
 .btn-primary,
 .btn-primary:focus{
     background-color: #a10022 !important;
@@ -78,7 +78,6 @@
     background-color: #a32244 !important;
 }
 
-/*For forms that are the main content on the page*/
 .form-centered{
     width: 60%;
     margin-left: auto;
@@ -93,12 +92,10 @@
     font-weight: bold;
 }
 
-/*Common to All pages*/
 html{
     min-height: 100% !important;
     height: 100% !important;
 }
-
 .hyperlink,
 .hyperlink:hover,
 .hyperlink:visited,
@@ -111,6 +108,40 @@ html{
     font-size: 20pt;
     text-align: center;
     margin-top: 60px !important;
+}
+.select{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    line-height: 5px;
+}
+.btn-secondary,
+.btn-secondary:focus{
+    background-color: #6d6e71;
+    color: #ffffff;
+    border-radius: 0;
+}
+.btn-secondary:hover{
+    background-color: #7e7f82;
+}
+
+/*Survey Creation Page*/
+.new-survey-wrapper{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 100px;
+}
+.new-section{
+    background-color: #fafafa;
+    border: none;
+    box-shadow: 0px 2px 5px #cccccc;
+    border-radius: 0;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
 }
 
 /*Survey page*/
@@ -134,9 +165,14 @@ html{
 .question{
     display: none;
 }
+@keyframes appear{
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
 .iiiiii{
-    display: block !important;
-    visibility: visible;
+    display: block;
+    animation-name: appear;
+    animation-duration: 1s;
 }
 .btn-survey{
     background-color: #6d6e71;

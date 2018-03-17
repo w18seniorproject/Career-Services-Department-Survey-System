@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang= en>
 	<head>
-        <title>Survey</title>
+        <title>Your Title Here</title>
         <meta charset="utf-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../scripts/utils.js"></script>
-        <script type="text/javascript" src="./uSurvey.js"></script>
+        <script type="text/javascript" src="pSurvey.js"></script>
         <script>
             $(function(){
                 $("#header").load("../header.html"); 
@@ -18,16 +18,16 @@
     </head>
     <body>
         <div id="header"></div>
-        <div class="survey-wrapper" id="survey-wrapper">
-            <legend class="legend">Survey</legend>
-            <form action="uSubmit.php" method="post" id="questions-wrapper" onsubmit="return checkForEmpty()" class="questions-wrapper">
-                <h3 id="msg" style="text-align: center"></h3>
-                <input type="button" value="Continue" id="continue" class="btn btn-survey">
-                <script type="text/javascript">
-                    showLanding();
-                </script>
+        <legend class="legend">Create Survey</legend>
+        <div class="form-centered">
+            <form method="POST" action="pSubmit.php" id="new-survey-wrapper" onsubmit="return validate()" id="new-survey-wrapper">
+                <input class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title">
+            </br>
+                <div id="section-wrapper"></div>
+            </br>
+                <input class="btn btn-primary btn-lg btn-block" type="button" value="Add Section" onclick="addSection()">
             </form>
-            <p id="errorMessage" class="errorMessage"></p>
         </div>
+
     </body>
 </html>
