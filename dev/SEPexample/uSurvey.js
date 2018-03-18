@@ -203,19 +203,35 @@ function checkAns(){
     }  
     return true;
 }
+function getResults(){
+    var answers;
+    var results = "";
+    var lastQ = sectBound[maxSec];
+    
+    for(var curQ = 1; curQ <= lastQ; curQ++){
+        results = results + " Q" + curQ + ":";
+        answers = document.querySelectorAll('.ans.n' + curQ);
+        answers.forEach( (ans) => {
+            if(ans.checked)
+                results = results + "|" + ans.value + "|"; 
+        });
+    }
+    
+    return results;
+}
 
 function sendResults(){
     if(checkAns() !== true && curSec !== 0){
         $('#errorMessage').html("Please answer all questions");
         return;
     }else{
-        $(window).unbind('beforeunload');        
-        //TO-DO: Implement sending survey's results
+        var results = getResults();
+        $(window).unbind('beforeunload');
         $.ajax({
             url: 'index.php',
             type: 'post',
             data: {
-                response: 'XXXXXXXXXXXXXXXXXXX'
+                response: results
             },
             success: function (data) {
                 //TO-DO: implement success function

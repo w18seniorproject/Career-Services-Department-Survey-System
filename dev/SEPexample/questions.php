@@ -3,17 +3,6 @@
         private $conn;
         private $table = "questions";
 
-        public $surName;
-        public $qNum;
-        public $qType;
-        public $qText;
-        public $qChoices;
-        public $qAns;
-        public $qWeight;
-        public $rLevel;
-        public $rName;
-        public $acctName;
-
         public function __construct($conn){
             $this->conn = $conn;
         }
@@ -22,7 +11,6 @@
             $quest = new Questions($db->getConnection('taker'));
             $_SESSION['questions'] = $quest->getQuestions($_SESSION['surName'], $_SESSION['acctName']);
             echo $_SESSION['questions'];
-            session_unset();
             exit();
         }
         

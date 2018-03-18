@@ -6,8 +6,9 @@
             $survey = json_decode($pin->getPin($_POST['pin']), true);
 
             if(isset($survey['surName']) && isset($survey['acctName'])){
-                $surveyname = $survey['surName'];
+                $surveyName = $survey['surName'];
                 $account = $survey['acctName'];
+                $groupName = $survey['groupName'];
             }
             elseif(isset($survey['message'])){
                 if($survey['message'] === 'notUni'){
@@ -26,8 +27,9 @@
             }
 
             session_unset();
-            $_SESSION["surName"] = $surveyname;
+            $_SESSION["surName"] = $surveyName;
             $_SESSION["acctName"] = $account;
+            $_SESSION["groupName"] = $groupName;
 
             header("Location: uSurvey.html");
             exit();

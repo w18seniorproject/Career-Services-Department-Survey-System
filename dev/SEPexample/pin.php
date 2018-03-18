@@ -3,11 +3,6 @@
         private $conn;
         private $table = "pins";
 
-        public $pin;
-        public $surName;
-        public $groupName;
-        public $acctName;
-
         public function __construct($conn){
             $this->conn = $conn;
         }

@@ -3,6 +3,7 @@
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEPexample/pin.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEPexample/questions.php';
+    include_once $root . '/Career-Services-Department-Survey-System/dev/SEPexample/response.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEPexample/takerLogin.php';
     
     session_start();
@@ -31,8 +32,7 @@
             //check if taker is posting a response to a survey; if so, return user
             //to login page (TO-DO: send user to results page instead). 
             elseif(isset($_POST['response'])){
-                header("Location: uLogin.html");
-                exit();
+                Response::sendResponse($db, $_POST['response'], 0);
             }
             //check if user has already entered a valid pin, gotten session variables; 
             //if so, return questions. Reset session variables so that only one survey 
