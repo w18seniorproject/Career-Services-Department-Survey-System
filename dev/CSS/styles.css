@@ -126,9 +126,11 @@ html{
 
 /*Survey Creation Page*/
 .new-survey-wrapper{
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 100px;
+    max-width: 820px !important;
+    padding: 10px;
 }
 .new-section{
     background-color: #fafafa;
@@ -145,6 +147,7 @@ html{
 .close{
     margin: 0;
     margin-bottom: 10px;
+    margin-left: 100%;
     font-weight: bolder;
     font-size: 30px;
     color: #a10022;
@@ -154,13 +157,18 @@ html{
     color: #a10022;
     opacity: 1;
 }
+.qClose{
+    font-size: 20px;
+}
+.sNum{
+    white-space: nowrap;
+}
 .qTable{
-    border-spacing: 20px;
+    border-spacing: 10px;
     border-collapse: separate;
-    border: transparent;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 10px;
+    padding-bottom: 5px;
 }
 .add-choice{
     color: #029934;
@@ -168,7 +176,8 @@ html{
     cursor: pointer;
     font-size: 35px;
     margin: 5px;
-    margin-bottom: 20px;
+    margin-left: 50px;
+    line-height: 20px;
 }
 .add-choice:hover{
     color: #029934;
@@ -181,11 +190,15 @@ html{
     font-weight: bolder;
     font-size: 25px;
     margin: 5px;
-    margin-bottom: 20px;
+    line-height: 20px;
 }
 .remove-choice:hover{
     color: #a10022;
     opacity: 1;
+}
+.qChoice{
+    height: 30px;
+    font-weight: normal;
 }
 
 /*Survey page*/

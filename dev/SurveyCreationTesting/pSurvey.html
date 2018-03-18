@@ -19,15 +19,12 @@
     <body>
         <div id="header"></div>
         <legend class="legend">Create Survey</legend>
-        <div class="form-centered">
-            <form method="POST" action="pSubmit.php" id="new-survey-wrapper" onsubmit="return validate()" id="new-survey-wrapper">
-                <input class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title">
-            </br>
-                <div id="section-wrapper"></div>
-            </br>
-                <input class="btn btn-primary btn-lg btn-block" type="button" value="Add Section" onclick="addSection()">
-            </form>
-        </div>
-
+        <form method="POST" action="pSubmit.php" id="new-survey-wrapper" onsubmit="return validate()" class="new-survey-wrapper">
+            <input class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title">
+        </br>
+            <div id="section-wrapper"></div>
+        </br>
+            <input class="btn btn-primary btn-lg btn-block" type="button" value="Add Section" onclick="addSection()">
+        </form>
     </body>
 </html>

@@ -15,11 +15,14 @@ function addSection(){
             addQuestion(ele);
         });
     });
-    $('.close').each(function(i, ele){
+    $('.sClose').each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on("click", function(){
-            closeSection(ele);
+            closeSection($(ele).parent().parent().parent().parent());
         });
+    });
+    $('.sNum').each(function(i, ele){
+        $(ele).html("Section "+(i+1)+":");
     });
 }
 
@@ -35,12 +38,21 @@ function addQuestion(ele){
             selectType(ele);
         });
     });
+    $('.qClose').each(function(i, ele){
+        $(ele).unbind('click');
+        $(ele).on("click", function(){
+            closeQuestion($(ele).parent().parent().parent());
+        });
+    });
 }
 
 function constructQuestionHTML(){
     numOfQuestions++;
     var toReturn =  "<div id='qWrapper" + numOfQuestions + "'>\
-                        <h3 class='qNum'></h3>\
+                        <table><tr>\
+                            <th><h3 class='qNum'></h3></th>\
+                            <th><span class='close qClose'>&#10799</span></th>\
+                        </tr></table>\
                         <input class='form-control input' placeholder='Enter Question Text' type='text' name='question" + numOfQuestions + "'>\
                         </br>\
                         <select name='type" + numOfQuestions + "' class='form-control select'>\
@@ -50,14 +62,17 @@ function constructQuestionHTML(){
                             <option value='tf'>True/False</option>\
                             <option value='s'>Scale</option>\
                         </select>\
-                    </div>\
-                    <hr>";
+                        <hr>\
+                    </div>";
     return toReturn;
 }
 
 function constructSectionHTML(){
     var toReturn =  "<div class='sWrapper'>" +
-                        "<span class='close' id='close" + numOfSections + "'>&#10799</span>" +
+                        "<table><tr>\
+                            <th><h2 class='sNum'></h2></th>\
+                            <th><span class='close sClose'>&#10799</span></th>\
+                        </tr></table>" +
                         "<input class='form-control input' placeholder='Enter a Section Title' type='text' name='sectionTitle" + numOfSections + "'>" +
                         "<hr>\
                     </div>\
@@ -71,45 +86,68 @@ function closeSection(element){
     $('.qNum').each(function(i, ele){
         $(ele).html(i+1+")");
     });
+    $('.sNum').each(function(i, ele){
+        $(ele).html("Section "+(i+1)+":");
+    });
 }
 
-function selectType(ele){
-    var type = $(ele).prop("selectedIndex");
-    var typeHTML = "";
+function closeQuestion(element){
+    $(element).parent().parent().remove();
+    $('.qNum').each(function(i, ele){
+        $(ele).html(i+1+")");
+    });
+}
+
+function selectType(element){
+    var type = $(element).prop("selectedIndex");
+    var typeHTML;
     switch(type){
         case 1:
-            typeHTML = constructMCHTML();
+            $(element).parent().find(".qTable").remove();
+            typeHTML = constructTypeHTML();
             break;
         case 2:
-            typeHTML = constructCHKHTML();
+            $(element).parent().find(".qTable").remove();
+            typeHTML = constructTypeHTML();
             break;
-        case 3:
-            typeHTML = constructTFHTML();
-            break;
-        case 4:
-            typeHTMK = constructSHTML();
+        default:
+            typeHTML = "";
     }
-    $(ele).parent().append(typeHTML);
+    $(element).parent().append(typeHTML);
+    addChoice($(element).parent().find(".qTable"));
 }
 
-function constructMCHTML(ele){
-    var toReturn = "<table class='qTable'>\
-                        <tr>\
-                            <th><input class='form-control input' placeholder='Enter Choice' type='text'></th>\
-                            <th><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
-                        </tr>\
-                    </table>";
+function constructTypeHTML(){
+    var toReturn = "<table class='qTable'></table>";
     return toReturn;
 }
 
-function constructCHKHTML(ele){
-    alert("chk");
+function addChoice(element){
+    var choiceHTML = constructChoiceHTML();
+    $(element).append(choiceHTML);
+    $('.add-choice').each(function(i, ele){
+        $(ele).unbind('click');
+        $(ele).on("click", function(){
+            addChoice($(ele).parent().parent().parent());
+        });
+    });
+    $('.remove-choice').each(function(i, ele){
+        $(ele).unbind('click');
+        $(ele).on("click", function(){
+            removeChoice(ele);
+        });
+    });
 }
 
-function constructSHTML(ele){
-    alert("s");
+function removeChoice(ele){
+    $(ele).parent().parent().remove();
 }
 
-function constructTFHTML(ele){
-    alert('tf');
+function constructChoiceHTML(){
+    var toReturn = "<tr>\
+                        <th><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
+                    </tr>";
+    return toReturn;
 }
+
