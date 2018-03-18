@@ -1,5 +1,5 @@
 <?php
-    class pin{ 
+    class Pin{ 
         private $conn;
         private $table = "pins";
 

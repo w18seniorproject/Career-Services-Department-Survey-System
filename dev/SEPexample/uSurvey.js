@@ -66,9 +66,9 @@ function showQuestions(){
         if(questions.length > 0){
             $('#questions-wrapper').html("");
             
-            window.onbeforeunload = function(){
-                return 'Are you sure you want to leave?';
-            };
+            $(window).on('beforeunload', function() {
+                return "Do you really want to close?";
+            });
             
             maxSec = 0;
             sectBound = new Array();
@@ -209,7 +209,7 @@ function sendResults(){
         $('#errorMessage').html("Please answer all questions");
         return;
     }else{
-        window.onbeforeunload = null;
+        $(window).unbind('beforeunload');        
         //TO-DO: Implement sending survey's results
         $.ajax({
             url: 'index.php',
