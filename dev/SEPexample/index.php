@@ -6,13 +6,14 @@
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEPexample/response.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEPexample/takerLogin.php';
     
+    //TO-DO: Possibly security before starting session
     session_start();
     $db = new Database();
     
     //TO-DO: Check if user is a pollster
     if(true){ 
         /* TAKER HANDLING */
-        //get request handling, redirect to either the survey (if pin was already entered but not used somehow) or taker login
+        //get request handling, redirect to either the survey (if pin was already entered but not used) or taker login
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
             if(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){      
                 header("Location: uSurvey.html");
@@ -29,15 +30,13 @@
             if(isset($_POST['pin'])){
                 TakerLogin::login($db);
             }
-            //check if taker is posting a response to a survey; if so, return user
-            //to login page (TO-DO: send user to results page instead). 
-            elseif(isset($_POST['response'])){
+            //check if taker is posting a response to a survey; if so, send
+            //results and unset session variables
+            elseif(isset($_POST['response']) && isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['groupName'])){
                 Response::sendResponse($db, $_POST['response'], 0);
             }
             //check if user has already entered a valid pin, gotten session variables; 
-            //if so, return questions. Reset session variables so that only one survey 
-            //can be entered per pin login. (We can change/discuss this, but I have
-            //a few reasons for doing it this way)
+            //if so, return questions. 
             elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){ 
                 questions::sendQuestions($db);
             }    
