@@ -112,7 +112,6 @@ html{
 .select{
     -moz-appearance: none;
     -webkit-appearance: none;
-    appearance: none;
     line-height: 5px;
 }
 .btn-secondary,
@@ -142,6 +141,51 @@ html{
     width: 100%;
     margin: 0 auto;
     margin-top: 10px;
+}
+.close{
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: bolder;
+    font-size: 30px;
+    color: #a10022;
+    opacity: 0.7;
+}
+.close:hover{
+    color: #a10022;
+    opacity: 1;
+}
+.qTable{
+    border-spacing: 20px;
+    border-collapse: separate;
+    border: transparent;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.add-choice{
+    color: #029934;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 35px;
+    margin: 5px;
+    margin-bottom: 20px;
+}
+.add-choice:hover{
+    color: #029934;
+    opacity: 1;
+}
+.remove-choice{
+    color: #a10022;
+    opacity: 0.7;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 25px;
+    margin: 5px;
+    margin-bottom: 20px;
+}
+.remove-choice:hover{
+    color: #a10022;
+    opacity: 1;
 }
 
 /*Survey page*/
