@@ -30,13 +30,26 @@
   </ul>
   </div>
   <div id="MenuButtons">
-    <button type="button" class="btn btn-primary" onclick=""
+    <button type="button" class="btn btn-primary" onclick="">Current Relation Levels</button>
+    <button type="button" class="btn btn-primary" onclick="">Answers For Each Question</button>
   </div>
   <br/>
   <div id="surveyButtons" style="display:none">
   <button type="button" class="btn btn-primary" onclick="createBarChart()">Relation Chart(Bar)</button>
   <button type="button" class="btn btn-primary" onclick="createLineChart()">Relation Chart(Line)</button>
   <button type="button" class="btn btn-primary" onclick="createMixedChart()">Relation Chart(Mixed)</button></div>
+
+  <div id="AnswerDropdown" style="display:none">
+
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="SurveyButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Survey</button>
+    <div id="surveyMenuItems" aria-labelledby="SurveyButton">
+
+    </div>
+    <br/>
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="QuestionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">Survey</button>
+    <div id="questionMenuItems" aria-labelledby="QuestionButton">
+
+  </div>
   <div id="graphContainer">
   <canvas id="myChart" width="400" height="400"></canvas>
 </div>

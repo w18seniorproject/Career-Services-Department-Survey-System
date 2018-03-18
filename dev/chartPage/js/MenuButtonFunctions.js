@@ -9,5 +9,6 @@ function relationsButton(){
 }
 
 function answersButton(){
+  var x=document.getElementById()
 
 }
