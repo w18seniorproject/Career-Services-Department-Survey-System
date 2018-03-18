@@ -28,10 +28,10 @@
                 extract($row);
 
                 $pin=array(
-                        "pin" => $pin,
-                        "surName" => $surName,
-                        "groupName" => $groupName,
-                        "acctName" => $acctName
+                    "pin" => $pin,
+                    "surName" => $surName,
+                    "groupName" => $groupName,
+                    "acctName" => $acctName
                 );
                 return json_encode($pin);	
             }	 
@@ -50,16 +50,16 @@
             $query = "SELECT * FROM " . $this->table;
 
             if(isset($pin)){
-                    $query = $query . " WHERE pin = ?";	
+                $query = $query . " WHERE pin = ?";	
 
-                    $stmt = $this->conn->prepare($query);
+                $stmt = $this->conn->prepare($query);
 
-                    $stmt->bindValue(1, $pin);
+                $stmt->bindValue(1, $pin);
 
-                    return $stmt;			
-            }
+                return $stmt;			
+        }
             else{
-                    throw new Exception('Variable not set.');
+                throw new Exception('Variable not set.');
             }
         }
     }
