@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang= en>
 	<head>
-        <title>Your Title Here</title>
+        <title>New Survey</title>
         <meta charset="utf-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -19,12 +19,14 @@
     <body>
         <div id="header"></div>
         <legend class="legend">Create Survey</legend>
-        <form method="POST" action="pSubmit.php" id="new-survey-wrapper" onsubmit="return validate()" class="new-survey-wrapper">
-            <input class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title">
+        <div id="new-survey-wrapper" class="new-survey-wrapper">
+            <input id="surTitle" class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title">
         </br>
             <div id="section-wrapper"></div>
+            <input class="btn btn-primary btn-lg btn-block shadow" type="button" value="Add Section" onclick="addSection()">
         </br>
-            <input class="btn btn-primary btn-lg btn-block" type="button" value="Add Section" onclick="addSection()">
-        </form>
+            <a onclick="submit()"><input class="btn btn-primary btn-right shadow" type="button" id="save" name="submit" value="Save"/></a>
+            <a onclick="cancel()"><input class="btn btn-secondary btn-right shadow" type="button" id="cancel" name="cancel" value="Cancel"/></a>
+        </div>
     </body>
 </html>

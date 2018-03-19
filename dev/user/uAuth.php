@@ -32,6 +32,7 @@
     }
     else{
         header("Location: uLogin.html?error=wrongPin");
+        die();
     }
       
     //creates session for use in survey after destroying any old remnants

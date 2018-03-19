@@ -77,7 +77,13 @@
 .btn-primary:hover{
     background-color: #a32244 !important;
 }
-
+.shadow{
+    box-shadow: 0px 2px 5px #cccccc;
+}
+.btn-right{
+    float: right;
+    margin-right: 10px;
+}
 .form-centered{
     width: 60%;
     margin-left: auto;
@@ -91,7 +97,6 @@
     color: #a10022;
     font-weight: bold;
 }
-
 html{
     min-height: 100% !important;
     height: 100% !important;
@@ -119,12 +124,15 @@ html{
     background-color: #6d6e71;
     color: #ffffff;
     border-radius: 0;
+    border: none;
 }
 .btn-secondary:hover{
     background-color: #7e7f82;
+    color: #ffffff;
 }
 
 /*Survey Creation Page*/
+
 .new-survey-wrapper{
     margin-left: auto;
     margin-right: auto;
