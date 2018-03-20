@@ -132,7 +132,12 @@ html{
 }
 
 /*Survey Creation Page*/
-
+.center-th{
+    text-align: center;
+}
+.ans{
+    margin-right: 10px;
+}
 .new-survey-wrapper{
     margin-left: auto;
     margin-right: auto;
@@ -184,7 +189,6 @@ html{
     cursor: pointer;
     font-size: 35px;
     margin: 5px;
-    margin-left: 50px;
     line-height: 20px;
 }
 .add-choice:hover{
@@ -207,6 +211,7 @@ html{
 .qChoice{
     height: 30px;
     font-weight: normal;
+    margin-left: 10px;
 }
 
 /*Survey page*/
