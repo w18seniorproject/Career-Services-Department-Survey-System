@@ -1,7 +1,7 @@
 
 <?php
 
-  include_once "./config/database.php";
+  include_once "./config/pollsterDB.php";
 
   $database = new Database();
 
