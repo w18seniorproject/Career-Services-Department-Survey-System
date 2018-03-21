@@ -321,8 +321,10 @@ function promptCompletion(){
 }
 
 function post(toSend){
+    var instruc = $("#surText").val();
     var form = $('<form action="pSubmit.php" method="post">\
                 <input type="hidden" name="dataArray" value="' + toSend + '"/>\
+                <input type="hidden" name="surText" value="' + instruc + '"/>\
                 </form>');
     $('body').append(form);
     $(form).submit();
