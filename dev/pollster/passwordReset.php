@@ -10,43 +10,67 @@ if(preg_match('/^[0-9A-Fa-f]$/', $token)){
 
     $queryHash = hash("sha256", $token, FALSE);
 
-//get record from db
-$sql = "SELECT acctName, expiration FROM tokens WHERE tokenHash = ?;";
+    //get record from db by matching hashed token received with hashed token that is stored in tokens table.
+    $sql = "SELECT acctName, expiration FROM tokens WHERE tokenHash = ?;";
 
-$result = $conn->prepare($sql);
-$result->execute($queryHash);
+    $result = $conn->prepare($sql);
+    $result->execute($queryHash);
 
-$numRows = $result->rowCount();
+    $numRows = $result->rowCount();
 
-if($numRows == 1){
-    $row = $result->fetch(PDO::FETCH_ASSOC);
+    if($numRows == 0){
+    ?>
+        <script> alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassweord.html'</script>
+    <?php
+    }
 
-//IF TOKEN HASN'T EXPIRED...
-$expiration = $row['expiration'];
+    if($numRows == 1){
+        $row = $result->fetch(PDO::FETCH_ASSOC);
 
-if($expiration < date("Y-m-d H:i:s")){
-?>
+        //If token hasn't expired...
+        $expiration = $row['expiration'];
 
-<script> alert("The link used to access this page has expired. Please try again."); window.location.href='forgotPassword.html'</script>
+        if($expiration < date("Y-m-d H:i:s")){
+        ?>
 
-<?php
-}
-    $acctName = $row['acctName'];
+            <script> alert("The link used to access this page has expired. Please try again."); window.location.href='forgotPassword.html'</script>
 
-//MARK TOKEN AS HAVING BEEN USED IN tokens TABLE, or REMOVE THE RECORD FROM THE TABLE. IS THERE A REASON NOT TO DELETE IT?
+        <?php
+        // I think this is right. Hopefully it just stops execution on this page, and doesn't kill the whole program.
+        die();
+        }
+        $acctName = $row['acctName'];
 
-}else{
-    echo "Error. There is no account associated with this Token... or more than one.";
-}
-    //check token against hashed token
-    if($_POST["newPassword"] === $POST["confirmPassword"]){
-
-//INSERT NEW PASSWORD INTO accounts TABLE
+        //MARK TOKEN AS HAVING BEEN USED IN tokens TABLE, or REMOVE THE RECORD FROM THE TABLE. IS THERE A REASON NOT TO DELETE IT?
 
     }else{
+        echo "Internal error. There is more than one account associated with this Token.";
+    }
+   $result->close();
+
+    if($_POST["newPassword"] === $POST["confirmPassword"]){
+
+        $pwd = $_POST["newPassword"];
+
+        $sql = "UPDATE accounts SET pass = ? WHERE acctName = ?;";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(1, $pwd);
+        $stmt->bindParam(2, $acctName);
+        $stmt->execute();
+
+        if($stmt->errno){
+            echo "Error. Password update failed. " . $stmt->error;
+        }
+        else{
+            echo "Updated {$stmt->mysql_affected_rows} row";
+        }
+
+    }else{ 
         echo "Passwords do not match.";
     }
-}else{
+}else{// token was not correctly formatted when it arrived (not hexadecimal)
     echo "Error. Link has been corrupted.";
 }
+$stmt->close();
 ?>

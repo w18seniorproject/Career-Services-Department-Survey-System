@@ -56,7 +56,6 @@ $stmt->bindParam(4, $expiration);
 $stmt->execute();
 
 //CHANGE TO CORRECT EXTERNAL LINK
-// MAKE SURE YOU CAUSE THE TOKEN TO EXPIRE
 $msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/csdss/dev/pollster/passwordReset.html?";
 
 $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
