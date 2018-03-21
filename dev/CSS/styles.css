@@ -97,7 +97,7 @@
     color: #a10022;
     font-weight: bold;
 }
-html{
+html, body{
     min-height: 100% !important;
     height: 100% !important;
 }
@@ -129,6 +129,39 @@ html{
 .btn-secondary:hover{
     background-color: #7e7f82;
     color: #ffffff;
+}
+
+/* Pollster Dashboard */
+.rightContent, .leftContent, .dContainer{
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    vertical-align: top;
+    height: 100%;
+}
+.leftContent{
+    width: 33%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: grey;
+    float: left;
+}
+.rightContent{
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 67%;
+    padding: 10px;
+}
+.dContainer{
+    margin-top: 60px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.rContainer{
+    height: 100%;
+    width: 100%;
+    overflow: auto;
 }
 
 /*Survey Creation Page*/
