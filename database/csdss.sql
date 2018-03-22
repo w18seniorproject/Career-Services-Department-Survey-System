@@ -90,6 +90,19 @@ CREATE TABLE `results` (
   `rLevel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tokens`
+--
+
+CREATE TABLE `tokens` (
+  `acctName` varchar(20) NOT NULL,
+  `tokenHash` varchar(64) NOT NULL,
+  `expiration` datetime NOT NULL,
+  `tokenUsed` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
