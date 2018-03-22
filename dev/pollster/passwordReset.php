@@ -3,24 +3,27 @@ include_once "../config/pollsterDB.php";
 
 $database = new Database();
 $conn = $database->getConnection();
-$token = $_GET['token'];
+echo $_GET['token'];
+//$token = $_SERVER['QUERY_STRING'];
 
+echo var_dump( $_SERVER['QUERY_STRING']);
 //Make sure token arrived as hexadecimal
-if(preg_match('/^[0-9A-Fa-f]$/', $token)){
-
+//if(preg_match('/^[0-9A-Fa-f]$/', $token)){
+if(1){
     $queryHash = hash("sha256", $token, FALSE);
 
+    echo "$queryHash: ". var_dump($queryHash);
     //get record from db by matching hashed token received with hashed token that is stored in tokens table.
     $sql = "SELECT acctName, expiration FROM tokens WHERE tokenHash = ?;";
 
     $result = $conn->prepare($sql);
-    $result->execute($queryHash);
+    $result->execute(array($queryHash));
 
     $numRows = $result->rowCount();
 
     if($numRows == 0){
     ?>
-        <script> alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassweord.html'</script>
+        <script> alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassword.html'</script>
     <?php
     }
 
@@ -40,8 +43,6 @@ if(preg_match('/^[0-9A-Fa-f]$/', $token)){
         die();
         }
         $acctName = $row['acctName'];
-
-        //MARK TOKEN AS HAVING BEEN USED IN tokens TABLE, or REMOVE THE RECORD FROM THE TABLE. IS THERE A REASON NOT TO DELETE IT?
 
     }else{
         echo "Internal error. There is more than one account associated with this Token.";
@@ -64,7 +65,21 @@ if(preg_match('/^[0-9A-Fa-f]$/', $token)){
         }
         else{
             echo "Updated {$stmt->mysql_affected_rows} row";
+
+            //Mark token as "used"
+            $used = true;
+
+            $sql = "UPDATE tokens SET tokenUsed = ?;";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam($used);
+            $stmt->execute();       
+
+            if($stmt->errno){
+                echo "Error. Token not updated to 'used'.";
+            }
         }
+    $stmt->close();
 
     }else{ 
         echo "Passwords do not match.";
@@ -72,5 +87,5 @@ if(preg_match('/^[0-9A-Fa-f]$/', $token)){
 }else{// token was not correctly formatted when it arrived (not hexadecimal)
     echo "Error. Link has been corrupted.";
 }
-$stmt->close();
+
 ?>

@@ -44,7 +44,7 @@ $expiration = date("Y-m-d H:i:s", strtotime("+ 30 minutes"));
 $linkUsed = false;
 
 //Save account and tokenHash info to token table
-$sql = "INSERT INTO tokens (acctName, tokenHash, linkUsed, expiration) VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO tokens (acctName, tokenHash, tokenUsed, expiration) VALUES (?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
 
@@ -65,7 +65,7 @@ $msg .= "token=". $bytes . "\n\nDo not reply to this email.";
    
     //DO SOMETHING WITH THE "FROM" PARAM, SINCE THAT ISN'T OUR EMAIL ADDRESS.
     mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
-.
+
     ?>
     <script> alert("A link has been sent to the email address associated with this account."); window.location.href='pLogin.html'</script>
     <?php
