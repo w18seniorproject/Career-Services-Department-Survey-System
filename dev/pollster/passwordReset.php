@@ -1,18 +1,29 @@
 <?php
 include_once "../config/pollsterDB.php";
+//passwordReset included to try to parse query string from its URL.
+include_once "passwordReset.html";
 
 $database = new Database();
 $conn = $database->getConnection();
-echo $_GET['token'];
-//$token = $_SERVER['QUERY_STRING'];
+//$token = $_GET['token'];
+$token = $_SERVER['QUERY_STRING'];
 
-echo var_dump( $_SERVER['QUERY_STRING']);
+//echo var_dump( $_SERVER['QUERY_STRING']);
+//$token = $_POST["$token"];
+//$token = $_SERVER["QUERY_STRING"];
+var_dump($_SERVER['QUERY_STRING']);
+print_r( $_GET );
+print_r($_SERVER['QUERY_STRING']);
 //Make sure token arrived as hexadecimal
 //if(preg_match('/^[0-9A-Fa-f]$/', $token)){
 if(1){
     $queryHash = hash("sha256", $token, FALSE);
+//TESTING
+//echo "queryHash: ". $queryHash;
 
-    echo "$queryHash: ". var_dump($queryHash);
+//TESTING
+
+    //echo "$queryHash: ". var_dump($queryHash);
     //get record from db by matching hashed token received with hashed token that is stored in tokens table.
     $sql = "SELECT acctName, expiration FROM tokens WHERE tokenHash = ?;";
 
@@ -22,9 +33,15 @@ if(1){
     $numRows = $result->rowCount();
 
     if($numRows == 0){
+        ?>
+        <script>alert(); window.location.href='forgotPassword.html'</script>
+        <?php
+        /* REMOVED FOR TESTING
     ?>
         <script> alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassword.html'</script>
-    <?php
+   
+        <?php
+    */
     }
 
     if($numRows == 1){
@@ -47,7 +64,6 @@ if(1){
     }else{
         echo "Internal error. There is more than one account associated with this Token.";
     }
-   $result->close();
 
     if($_POST["newPassword"] === $POST["confirmPassword"]){
 
