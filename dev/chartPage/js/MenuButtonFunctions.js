@@ -40,9 +40,24 @@ var js_dataJSON;
 
 function answersButtonFiller(surveyName)
 {
+  var qNumJSON;
   jQuery.ajax({
     type: "POST",
-    url: ''
+    url: 'include/questionNumCallup.php',
+    data: {functionname:'questionMenuFiller',arguments: surveyName},
+    success: function(json){
+      qNumJSON=json;
+    });
+
+    var sMI=document.getElementById("questionMenuItems");
+    sMI.innerHTML="";
+    for(i in js_dataJSON)
+    {
+
+        sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\">"+js_dataJSON[i].qNum+"</button>";
+
+    }
+
   }
   )
 
