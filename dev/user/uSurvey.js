@@ -123,16 +123,16 @@ function showQuestions(){
                 var questionBody;
                 switch(qType){
                     case "chk":
-                        questionBody = getCheckboxString(qChoices, qText, rLevelClass, rLevel);
+                        questionBody = getCheckboxString(qChoices, qText, rLevelClass, rLevel, qNum);
                         break;
                     case "mc":
-                        questionBody = getMultipleChoiceString(qChoices, qText, rLevelClass, rLevel);
+                        questionBody = getMultipleChoiceString(qChoices, qText, rLevelClass, rLevel, qNum);
                         break;
                     case "s":
-                        questionBody = getScaleString(qText, rLevelClass, rLevel);
+                        questionBody = getScaleString(qText, rLevelClass, rLevel, qNum);
                         break;
                     case "tf":
-                        questionBody = getTrueFalseString(qText, rLevelClass, rLevel);
+                        questionBody = getTrueFalseString(qText, rLevelClass, rLevel, qNum);
                         break;
                     default:
                         alert("Uh oh. Something went wrong");
@@ -140,11 +140,12 @@ function showQuestions(){
                 index = index + "I";
                 $('#questions-wrapper').append(questionBody);
             }
-            $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey " + rLevelClass + "'>");
+            $('#questions-wrapper').append("<input type='button' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey " + rLevelClass + "'>");
             $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');
             if($('#submit').is(':visible')){
                 $('#continue').css('display', 'none');
             }
+            document.getElementById("submit").onclick = function(){checkAnswers();};
             document.getElementById("continue").onclick = function(){loadNext();};
             $('[type="checkbox"]').each(function(i, ele){
                 $(ele).on("click", function(){
@@ -230,13 +231,47 @@ function checkForEmpty(){
     return true;
 }
 
+function submitSurvey(){
+    var toSend = "";
+    var qDelim = "::::";
+    var qSepA = ";;;;";
+    for(i=0; i<checkboxArray.length; i++){
+        var qText = checkboxArray[i].name;
+        var qNum = checkboxArray[i].qNum;
+        var ansString = "";
+        for(j=0; j < checkboxArray.length; j++){
+            if(checkboxArray[j].name == qText){
+                ansString += checkboxArray[j].value;
+            }
+        }
+        toSend += qText + qSepA + ansString + qDelim;
+    }
+    for(i = 0; i < radioArray.length; i++){
+        var qText = radioArray[i].name;
+        var qNum = radioArray[i].qNum;
+        var ans = radioArray[i].value;
+        toSend += qText + qSepA + ans + qDelim;
+    }
+    toSend = toSend.slice(0, -4);
+    post(toSend);
+}
+
+function post(toSend){
+    var form = $('<form action="uSubmit.php" method="post">\
+                <input type="hidden" name="results" value="' + toSend + '"/>\
+                <input type="hidden" name="rLevel" value="' + curLevel + '"/>\
+                </form>');
+    $('body').append(form);
+    $(form).submit();
+}
+
 function checkAnswers(){
     if(!checkForEmpty()){
-        return false;
+        return;
     }
     checkRadios();
     checkCheckboxes();
-    return true;
+    submitSurvey();
 }
 
 function checkCheckboxes(){
@@ -257,12 +292,12 @@ function checkCheckboxes(){
         ans = ansString.split("~$#");
         qAns.forEach(element => {
             if(!(ans.includes(element)) && questions[index]["qWeight"] == 2){
-                document.getElementById("submit").click();
+                submitSurvey();
             }
         });  
         ans.forEach(element =>{
             if(!(qAns.includes(element)) && questions[index]["qWeight"] == 2){
-                document.getElementById("submit").click();
+                submitSurvey();
             }
         });    
     }
@@ -278,7 +313,7 @@ function checkRadios(){
             index += "I";
         }
         if(ans != questions[index]["qAns"] && questions[index]["qWeight"] == 2){
-            document.getElementById("submit").click();
+            submitSurvey();
         }
     }
 }

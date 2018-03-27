@@ -7,7 +7,7 @@
 
     $surText = $_POST["surText"];
 
-    $pin = random_int(0, 9999);
+    $pin = random_int(1000, 9999);
 
     $postData = $_POST["dataArray"];
 
