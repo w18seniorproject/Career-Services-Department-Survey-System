@@ -89,8 +89,7 @@
     $result = $conn->prepare($sql);
     $result->execute(array($pin, $surTitle, $acctName, $surText));
 
-    //TODO add redirect here to AfterLanding Page
-    echo "Your pin is ".$pin;
+    header("Location: manageSurvey.html?pin=$pin");
 
     function otherAddToDB($conn, $surName, $qNum, $qType, $qText, $qAns, $qWeight, $rLevel, $rName, $acctName){
         $sql = "INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";

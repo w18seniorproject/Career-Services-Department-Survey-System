@@ -7,7 +7,7 @@ function submitComment(){
         success: function(data){
             $("#comments").html(data);
         }
-    })
+    });
 }
 
 function showResources(){

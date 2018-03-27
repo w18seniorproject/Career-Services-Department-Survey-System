@@ -305,6 +305,16 @@ html, body{
     color: #a10022;
     font-size: 14pt;
 }
+.refreshPin{
+    color: #029934;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 20px;
+}
+.refreshPin:hover{
+    opacity: 1;
+}
 
 
   
