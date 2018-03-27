@@ -292,5 +292,19 @@ html, body{
     color: #ffffff;
 }
 
+/*Resources Page*/
+#resources{
+    text-align: center;
+    margin: 20px;
+}
+#resources > h3{
+    text-align: center;
+}
+#resources > a{
+    text-align: center;
+    color: #a10022;
+    font-size: 14pt;
+}
+
 
   
