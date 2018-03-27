@@ -19,8 +19,9 @@
 
            $conn = $database->getConnection();
 
+           $arguments = $_POST['arguments'];
 
-           $sqlquery = "SELECT qNum FROM question WHERE surName=$_POST['arguments']; ";
+           $sqlquery = "SELECT qNum FROM question WHERE surName = $arguments ; ";
            $surQuestions=array();
 
 
@@ -40,8 +41,9 @@
 
            $conn = $database->getConnection();
 
+           $arguments = $_POST['arguments'];
 
-           $sqlquery = "SELECT surResults FROM results WHERE surName=$_POST['arguments']; ";
+           $sqlquery = "SELECT surResults FROM results WHERE surName=$arguments; ";
            $surQuestions=array();
 
 

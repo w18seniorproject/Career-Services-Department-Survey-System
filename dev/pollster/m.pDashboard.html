@@ -9,34 +9,20 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="../scripts/utils.js"></script>
-        <script type="text/javascript" src="pDashboard.js"></script>
         <script>
             $(function(){
                 $("#header").load("../header.html"); 
             });
-            $(function(){
-                if($(window).width() < 760){
-                    window.location = "m.pDashboard.html";
-                }
-            })
         </script>
     </head>
     <body>
         <div id="header"></div>
-        
-        <div class="dContainer">
-            <div class='leftContent'>
-                <legend class="legend">Left Content</legend>
-            </div>
-            <div class='rightContent'>
-                <div class='rContainer' id="rContainer">
-                    <legend class="legend">Right Content</legend>
-                    <a href="pSurvey.html">Create A Survey</a>
-                    <input type="button" onclick="showCreateSurvey()" value="Create Survey (No Redirect)" class="btn btn-primary">
-                </div>
-            </div>
-        </div>
 
+        <div id="container">
+            <legend class="legend">Mobile</legend>
+            
+            <a href="pSurvey.html">Create A Survey</a>
+        </div>
 
     </body>
 </html>

@@ -53,4 +53,8 @@
     $result = $conn->prepare($sql);
     $result->execute(array($hashedPass, $email, $username));
 
-    echo "Success";
+    session_start();
+    session_destroy();
+    session_start();
+    $_SESSION["acctName"] = $username;
+    header("Location: pDashboard.html?view=first");

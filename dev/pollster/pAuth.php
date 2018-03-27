@@ -26,7 +26,11 @@ if($result->rowCount() == 1){
         die("Username and/or password do not match.");
     }
     else{
-        echo "Success";
+        session_start();
+        session_destroy();
+        session_start();
+        $_SESSION["acctName"] = $username;
+        header("Location: pDashboard.html");
     }
 
 }

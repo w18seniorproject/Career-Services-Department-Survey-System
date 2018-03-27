@@ -14,7 +14,8 @@
     $sections = explode("\$~\$", $postData);
 
     $surTitle = $sections[0];
-    $acctName = "testUser"; //TODO get Session variable here instead
+    session_start();
+    $acctName = $_SESSION['acctName'];
     array_splice($sections, 0, 0);
     $secNum = 0;
 
@@ -39,9 +40,9 @@
                         $ans = $cText;
                         $weight = 2;
                     }
-                    $cTexts .= $cText.",";
+                    $cTexts .= $cText."~$#";
                 }
-                $cTexts = substr($cTexts, 0, -1);
+                $cTexts = substr($cTexts, 0, -3);
                 choiceAddToDB($conn, $surTitle, $qNum, $type, $qText, $cTexts, $ans, $weight, $secNum, $secTitle, $acctName);
             }
             else if($choices[0][0] == "c"){
@@ -54,12 +55,12 @@
                     $cText = substr($part, 0, -4);
                     $selected = substr($part, -1);
                     if($selected == 't'){
-                        $ans .= $cText.",";
+                        $ans .= $cText."~$#";
                         $weight = 2;
                     }
-                    $cTexts .= $cText.",";
+                    $cTexts .= $cText."~$#";
                 }
-                $cTexts = substr($cTexts, 0, -1);
+                $cTexts = substr($cTexts, 0, -3);
                 choiceAddToDB($conn, $surTitle, $qNum, $type, $qText, $cTexts, $ans, $weight, $secNum, $secTitle, $acctName);
             }
             else if($choices[0][0] == "t"){
@@ -87,6 +88,8 @@
     $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`) VALUES (?, ?, ?, ?);";
     $result = $conn->prepare($sql);
     $result->execute(array($pin, $surTitle, $acctName, $surText));
+
+    //TODO add redirect here to AfterLanding Page
     echo "Your pin is ".$pin;
 
     function otherAddToDB($conn, $surName, $qNum, $qType, $qText, $qAns, $qWeight, $rLevel, $rName, $acctName){

@@ -145,6 +145,7 @@ html, body{
     overflow-x: hidden;
     background: grey;
     float: left;
+    padding: 10px;
 }
 .rightContent{
     overflow-x: hidden;

@@ -12,7 +12,7 @@
     $pin = $_POST["pin"];
     
     //creates and executes query to get surveyname, groupname, and account from pins table
-    $sql = "SELECT surName, acctName, surText FROM pins WHERE pin= ?;";
+    $sql = "SELECT surName, acctName, surText, groupName FROM pins WHERE pin= ?;";
     $result = $conn->prepare($sql);
     $result->execute(array($pin));
 
@@ -24,6 +24,7 @@
         $surveyname = $row['surName'];
         $account = $row['acctName'];
         $surText = $row['surText'];
+        $groupName = $row['groupName'];
     }
     else if($numOfRows > 1){
         header("Location: uLogin.html?error=notUnique");
@@ -42,5 +43,6 @@
     $_SESSION["surName"] = $surveyname;
     $_SESSION["acctName"] = $account;
     $_SESSION["surText"] = $surText;
+    $_SESSION["groupName"] = $groupName;
     
     header("Location: uSurvey.php");

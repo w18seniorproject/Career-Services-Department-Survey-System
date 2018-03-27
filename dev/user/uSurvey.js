@@ -8,7 +8,11 @@ function showLanding(){
     // if From refresh
     if (performance.navigation.type == 1) {
         showQuestions();
-    } 
+    }
+    // if From back button
+    else if (performance.navigation.type == 2) {
+        window.location = "uLogin.html";
+    }
     // if First load
     else {
         $(document).ready(function(){
@@ -22,7 +26,6 @@ function showLanding(){
             });
         });
     }
-    
 }
 
 function getQuestionString(qNum, qText, rLevelClass){
@@ -30,42 +33,50 @@ function getQuestionString(qNum, qText, rLevelClass){
     return toReturn;
 }
 
-function getCheckboxString(qChoices, qNum, rLevelClass, rLevel){
+function getCheckboxString(qChoices, qText, rLevelClass, rLevel, qNum){
     var toReturn = "";
-    var choiceArr = qChoices.split(",");
+    var choiceArr = qChoices.split("~$#");
     choiceArr.forEach(element =>{
         toReturn += '<label class="question ' + rLevelClass + '">' + 
                     '<input type="checkbox" ' + 
-                    'level="' + rLevel + 
-                    '" name="' + qNum + 
+                    'qNum="' + qNum +
+                    '" level="' + rLevel + 
+                    '" name="' + qText + 
                     '" value="' + element + '">' + 
                     element + '</label>';
     });
     return toReturn;
 }
 
-function getMultipleChoiceString(qChoices, qNum, rLevelClass, rLevel){
+function getMultipleChoiceString(qChoices, qText, rLevelClass, rLevel, qNum){
     var toReturn = "";
-    var choiceArr = qChoices.split(",");
+    var choiceArr = qChoices.split("~$#");
     choiceArr.forEach(element =>{
-        toReturn += '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="' + element + '">' + element + '</label>';
+        toReturn += '<label class="question ' + 
+                    rLevelClass + 
+                    '"><input type="radio" level="' + 
+                    rLevel + 
+                    '" name="' + qText + 
+                    '" qNum="' + qNum +
+                    '" value="' + element + '">' + 
+                    element + '</label>';
     });
     return toReturn;
 }
 
-function getScaleString(qNum, rLevelClass, rLevel){
-    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="sta">Strongly Agree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="a">Agree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="sla">Slightly Agree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="sld">Slightly Disagree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="d">Disagree</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="std">Strongly Disagree</label>';
+function getScaleString(qText, rLevelClass, rLevel, qNum){
+    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="sta">Strongly Agree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="a">Agree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="sla">Slightly Agree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="sld">Slightly Disagree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="d">Disagree</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="std">Strongly Disagree</label>';
     return toReturn;
 }
 
-function getTrueFalseString(qNum, rLevelClass, rLevel){
-    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="t">True</label>' +
-                    '<label class="question ' + rLevelClass + '"><input type="radio" level="' + rLevel + '" name="' + qNum + '" value="f">False</label>';
+function getTrueFalseString(qText, rLevelClass, rLevel, qNum){
+    var toReturn =  '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="t">True</label>' +
+                    '<label class="question ' + rLevelClass + '"><input type="radio" qNum="' + qNum + '" level="' + rLevel + '" name="' + qText + '" value="f">False</label>';
     return toReturn;
 }
 
@@ -104,23 +115,24 @@ function showQuestions(){
                     case 6:
                         rLevelClass = "i";
                 }
-                $('#questions-wrapper').append(getQuestionString(questions[index]["qNum"], questions[index]["qText"], rLevelClass));
+                var qText = questions[index]["qText"];
                 var qNum = questions[index]["qNum"];
+                $('#questions-wrapper').append(getQuestionString(qNum, qText, rLevelClass));
                 var qType= questions[index]["qType"];
                 var qChoices = questions[index]["qChoices"];
                 var questionBody;
                 switch(qType){
                     case "chk":
-                        questionBody = getCheckboxString(qChoices, qNum, rLevelClass, rLevel);
+                        questionBody = getCheckboxString(qChoices, qText, rLevelClass, rLevel);
                         break;
                     case "mc":
-                        questionBody = getMultipleChoiceString(qChoices, qNum, rLevelClass, rLevel);
+                        questionBody = getMultipleChoiceString(qChoices, qText, rLevelClass, rLevel);
                         break;
                     case "s":
-                        questionBody = getScaleString(qNum, rLevelClass, rLevel);
+                        questionBody = getScaleString(qText, rLevelClass, rLevel);
                         break;
                     case "tf":
-                        questionBody = getTrueFalseString(qNum, rLevelClass, rLevel);
+                        questionBody = getTrueFalseString(qText, rLevelClass, rLevel);
                         break;
                     default:
                         alert("Uh oh. Something went wrong");
@@ -130,6 +142,9 @@ function showQuestions(){
             }
             $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey " + rLevelClass + "'>");
             $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');
+            if($('#submit').is(':visible')){
+                $('#continue').css('display', 'none');
+            }
             document.getElementById("continue").onclick = function(){loadNext();};
             $('[type="checkbox"]').each(function(i, ele){
                 $(ele).on("click", function(){
@@ -227,18 +242,19 @@ function checkAnswers(){
 function checkCheckboxes(){
     for(i=0; i<checkboxArray.length; i++){
         var index = "";
-        var qNum = checkboxArray[i].name;
+        var qText = checkboxArray[i].name;
+        var qNum = checkboxArray[i].qNum;
         var ansString = "";
         for(j=0; j < checkboxArray.length; j++){
-            if(checkboxArray[j].name == qNum){
+            if(checkboxArray[j].name == qText){
                 ansString += checkboxArray[j].value;
             }
         }
         for(j=0; j < qNum; j++){
             index += "I";
         }
-        qAns = questions[index]["qAns"].split(",");
-        ans = ansString.split(",");
+        qAns = questions[index]["qAns"].split("~$#");
+        ans = ansString.split("~$#");
         qAns.forEach(element => {
             if(!(ans.includes(element)) && questions[index]["qWeight"] == 2){
                 document.getElementById("submit").click();
@@ -255,7 +271,8 @@ function checkCheckboxes(){
 function checkRadios(){
     for(i = 0; i < radioArray.length; i++){
         var index = "";
-        var qNum = radioArray[i].name;
+        var qText = radioArray[i].name;
+        var qNum = radioArray[i].qNum;
         var ans = radioArray[i].value;
         for(j=0; j<qNum; j++){
             index += "I";
@@ -272,7 +289,8 @@ function updateCheckboxes(sender){
     var entry = {
         value: $(sender).attr("value"),
         name: $(sender).attr("name"),
-        rLevel: $(sender).attr("level")
+        rLevel: $(sender).attr("level"),
+        qNum: $(sender).attr("qNum")
     };
     for(i = 0; i < checkboxArray.length; i++){
         if(checkboxArray[i].value == entry.value && checkboxArray[i].name == entry.name){
@@ -281,7 +299,7 @@ function updateCheckboxes(sender){
         }
         else if(checkboxArray[i].name == entry.name){
             sameName = true;
-            checkboxArray[i].value = checkboxArray[i].value + "," + entry.value;
+            checkboxArray[i].value = checkboxArray[i].value + "~$#" + entry.value;
         }
     }
     if(!exists && !sameName){
@@ -293,7 +311,8 @@ function updateRadioButtons(sender){
     var entry = {
         value: $(sender).attr("value"),
         name: $(sender).attr("name"),
-        rLevel: $(sender).attr("level")
+        rLevel: $(sender).attr("level"),
+        qNum: $(sender).attr("qNum")
     };
     for(i = 0; i < radioArray.length; i++){
         if(radioArray[i].name == entry.name){
