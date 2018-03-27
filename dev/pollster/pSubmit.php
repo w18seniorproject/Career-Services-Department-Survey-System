@@ -7,8 +7,6 @@
 
     $surText = $_POST["surText"];
 
-    echo $surText;
-
     $pin = random_int(0, 9999);
 
     $postData = $_POST["dataArray"];
@@ -53,7 +51,7 @@
                 $cTexts = "";
                 $weight = 1;
                 foreach($choice as $part){
-                    $cText = substr($part, 0, -5);
+                    $cText = substr($part, 0, -4);
                     $selected = substr($part, -1);
                     if($selected == 't'){
                         $ans .= $cText.",";
@@ -89,7 +87,7 @@
     $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`) VALUES (?, ?, ?, ?);";
     $result = $conn->prepare($sql);
     $result->execute(array($pin, $surTitle, $acctName, $surText));
-    echo $pin;
+    echo "Your pin is ".$pin;
 
     function otherAddToDB($conn, $surName, $qNum, $qType, $qText, $qAns, $qWeight, $rLevel, $rName, $acctName){
         $sql = "INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
