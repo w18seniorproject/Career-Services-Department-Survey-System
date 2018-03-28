@@ -18,11 +18,11 @@
     $acctName = $_SESSION['acctName'];
     array_splice($sections, 0, 0);
     $secNum = 0;
+    $qNum = 0;
 
     foreach($sections as $section){
         $questions = explode("~\$~", $section);
         $secTitle = array_shift($questions);
-        $qNum = 0;
         foreach($questions as $question){
             $qNum++;
             $choices = explode("#~#", $question);
@@ -84,6 +84,8 @@
         }
         $secNum++;
     }
+
+    $_SESSION['rLevel'] = $secNum;
 
     $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`) VALUES (?, ?, ?, ?);";
     $result = $conn->prepare($sql);
