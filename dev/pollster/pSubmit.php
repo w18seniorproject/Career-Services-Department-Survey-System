@@ -16,6 +16,8 @@
     $surTitle = $sections[0];
     session_start();
     $acctName = $_SESSION['acctName'];
+    $_SESSION['surName'] = $surTitle;
+    $_SESSION['surText'] = $surText;
     array_splice($sections, 0, 0);
     $secNum = 0;
     $qNum = 0;

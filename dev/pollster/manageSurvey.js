@@ -8,10 +8,10 @@ function showPinsAndGroups(){
                         <th class='center-th'>Add/Remove</th>\
                     </tr>\
                     <tr>\
-                        <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' placeholder='Enter Group Name' value='General' type='text'></th>\
-                        <th class='center-th pinHolder'>" + pin + "</th>\
-                        <th class='center-th'><span class='refreshPin'>⟳</span></th>\
-                        <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
+                        <th class='center-th'>General(Unchangeable)</th>\
+                        <th class='center-th'>" + pin + "</th>\
+                        <th class='center-th'><span class='refreshPin-disabled'>⟳</span></th>\
+                        <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice-disabled'>&#10799</span></th>\
                     </tr>\
                 </table>";
     $("#pinsandgroups").append(html);
@@ -98,7 +98,7 @@ function showResources(){
         url: "manageSurvey.php",
         cache: false,
         success: function(data){
-            for(var i = 1; i <= data; i++){
+            for(var i = 1; i < data; i++){
                 $("#resources").append(constructResourceHTML(i));
             }
         }
@@ -107,10 +107,51 @@ function showResources(){
 
 function constructResourceHTML(level){
     var toReturn =  "<h3>Section " + level + ":</h3>\
-                    <textarea class='form-control' placeholder='End of Survey Resources/Links'></textarea>";
+                    <textarea class='form-control resource' placeholder='End of Survey Resources/Links'></textarea>";
     return toReturn;
 }
 
+function checkInputs(){
+    $("textarea").each(function(i,ele){
+        if($(ele).val() == ""){
+            return false;
+        }
+    });
+    $(".qChoice").each(function(i,ele){
+        if($(ele).val() == ""){
+            return false;
+        }
+    });
+    return true;
+}
+
 function save(){
-    
+    if(checkInputs()){
+        var resourceArray = [];
+        $(".resource").each(function(i,ele){
+            resourceArray.push($(ele).val());
+        });
+        var pinArray = [];
+        $(".pinHolder").each(function(i,ele){
+            pinArray.push($(ele).html());
+        });
+        var groupArray = [];
+        $(".qChoice").each(function(i,ele){
+            groupArray.push($(ele).val());
+        });
+        post(resourceArray, pinArray, groupArray);
+    }
+}
+
+function post(resourceArray, pinArray, groupArray){
+    var resources = JSON.stringify(resourceArray);
+    var pins = JSON.stringify(pinArray);
+    var groups = JSON.stringify(groupArray);
+    var form =  $("<form action='manageSurvey.php' method='POST'>\
+                    <input type='hidden' name='resources' value='" + resources + "'>\
+                    <input type='hidden' name='pins' value='" + pins + "'>\
+                    <input type='hidden' name='groups' value='" + groups + "'>\
+                </form>");
+    $("body").append(form);
+    $(form).submit();
 }

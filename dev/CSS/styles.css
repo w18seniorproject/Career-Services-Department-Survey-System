@@ -315,6 +315,20 @@ html, body{
 .refreshPin:hover{
     opacity: 1;
 }
+.refreshPin-disabled{
+    color: #6d6e71;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 20px;
+}
+.remove-choice-disabled{
+    color: #6d6e71;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 25px;
+    margin: 5px;
+    line-height: 20px;
+}
 
 
   
