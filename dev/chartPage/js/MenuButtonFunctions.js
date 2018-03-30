@@ -12,7 +12,7 @@ window.onload = function(){
       url: 'include/dev/backend/getQuestions.php',
       dataType: 'json',
       success: function(json){
-        js_questionJSON=json;
+        js_questionJSON=JSON.parse(json);
         if(js_questionJSON.hasOwnProperty('message'))
         {
           alert('No Questions Currently Exists In Database');
@@ -34,7 +34,7 @@ window.onload = function(){
       url: 'include/dev/backend/getResults.php',
       dataType: 'json',
       success: function(json){
-        js_resultJSON=json;
+        js_resultJSON=JSON.parse(json);
         if(js_resultJSON.hasOwnProperty('message'))
         {
           alert('No Results Currently Exists In Database');
@@ -102,7 +102,7 @@ function answersButtonFiller(surname)
     url: 'include/dev/backend/getQuestions.php',
     dataType: 'json',
     success: function(json){
-      js_questionJSON=json;
+      js_questionJSON=JSON.parse(json);
       if(js_questionJSON.hasOwnProperty('message'))
       {
         alert('No Questions Currently Exists In Database');
@@ -122,7 +122,7 @@ function answersButtonFiller(surname)
 
       return item.surName === surname;
     });
-    Objects.keys(filtered).forEach(function(item)
+    filtered.forEach(function(item)
     {
 
         sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value="+item.qNum+" on>"+item.qNum+"</button>";
@@ -140,7 +140,7 @@ function pieChartMaker(qNum, SurName)
     url: 'include/dev/backend/getResults.php',
     dataType: 'json',
     success: function(json){
-      js_resultJSON=json;
+      js_resultJSON=JSON.parse(json);
       if(js_resultJSON.hasOwnProperty('message'))
       {
         alert('No Results Currently Exists In Database');
