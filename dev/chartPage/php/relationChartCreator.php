@@ -9,7 +9,6 @@
 
 
   $sqlquery = "SELECT groupname, ROUND(AVG(relationlevel),0) AS average_relationship FROM results GROUP BY groupname ORDER BY groupname; ";
-  $stg;
   $groupNameArray=array();
   $relationLevelArray=array();
 

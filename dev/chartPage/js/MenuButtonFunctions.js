@@ -2,6 +2,8 @@
 window.onload = function(){
 
 
+  var js_questionJSON;
+  var js_resultJSON;
   var topRelMenuButton=document.getElementById("curRelLevelButton");
   var topAnsMenuButton=document.getElementById('answersMenuButton');
     $.ajax({
@@ -49,7 +51,7 @@ window.onload = function(){
       }
     });
   topRelMenuButton.onclick=relationsButton();
-  topAnsMenuButton.onclick=surveyButtonFiller(js_questionJSON,js_resultJSON);
+  topAnsMenuButton.onclick=surveyButtonFiller(js_questionJSON);
 
 
 
@@ -65,24 +67,22 @@ function relationsButton(){
   }
 }
 
-function surveyButtonFiller(){
-var js_dataJSON;
-  $.ajax({
-
-    type: "POST",
-    url: 'include/dev/chartPage/php/surveyMenuFiller.php',
-    dataType: 'json',
-    success: function(json){
-      js_dataJSON=json;
-    },
-  });
+function surveyButtonFiller(questionJSON){
   var sMI=document.getElementById("surveyMenuItems");
   sMI.innerHTML="";
-  for(var i=0; i<js_dataJSON.length; i++)
+  //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
+  var groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+var groupedBySurveyName=groupBy(questionJSON, 'surName');
+  Object.keys(groupedBySurveyName).forEach(function(category)
   {
-      sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\">"+js_dataJSON[i].SurName+"(user="+js_dataJSON[i].AcctName")</button>";
+      sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\" onclick=answersButtonFiller(${category})>${category}</button>";
 
-  }
+  });
   var x=document.getElementById("AnswerDropdown");
   if(x.style.display=="none"){
     x.style.display="block";
@@ -93,27 +93,67 @@ var js_dataJSON;
 
 }
 
-function answersButtonFiller(surveyName)
+function answersButtonFiller(surname)
 {
-  var qNumJSON;
-  jQuery.ajax({
+  var js_questionJSON;
+  $.ajax({
+
     type: "POST",
-    url: 'include/questionNumCallup.php',
-    data: {functionname:'questionMenuFiller',arguments: surveyName},
+    url: 'include/dev/backend/getQuestions.php',
+    dataType: 'json',
     success: function(json){
-      qNumJSON=json;
-    });
+      js_questionJSON=json;
+      if(js_questionJSON.hasOwnProperty('message'))
+      {
+        alert('No Questions Currently Exists In Database');
+        return false;
+      }
+    },
+    error: function(){
+      alert('Error occurred while retrieving data.');
+      return false;
+    }
+  });
 
     var sMI=document.getElementById("questionMenuItems");
+
     sMI.innerHTML="";
-    for(i in js_dataJSON)
+    var filtered = js_questionJSON.filter(function(item){
+
+      return item.surName === surname;
+    });
+    Objects.keys(filtered).forEach(function(item)
     {
 
-        sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\">"+js_dataJSON[i].qNum+"</button>";
+        sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value="+item.qNum+" on>"+item.qNum+"</button>";
+    });
 
+
+}
+
+function pieChartMaker(qNum, SurName)
+{
+  var js_resultJSON;
+  $.ajax({
+
+    type: "POST",
+    url: 'include/dev/backend/getResults.php',
+    dataType: 'json',
+    success: function(json){
+      js_resultJSON=json;
+      if(js_resultJSON.hasOwnProperty('message'))
+      {
+        alert('No Results Currently Exists In Database');
+        return false;
+      }
+    },
+    error: function(){
+      alert('Error occurred while retrieving data.');
+      return false;
     }
+  });
+  var qNumInt= parseInt(qNum);
 
-  }
-  )
+
 
 }
