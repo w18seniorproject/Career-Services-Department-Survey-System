@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 16, 2018 at 03:06 PM
+-- Generation Time: Mar 30, 2018 at 11:02 AM
 -- Server version: 5.7.21-0ubuntu0.16.04.1
--- PHP Version: 7.0.25-0ubuntu0.16.04.1
+-- PHP Version: 7.0.28-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -46,6 +46,19 @@ CREATE TABLE `bans` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `recNum` int(11) NOT NULL,
+  `acctName` varchar(20) NOT NULL,
+  `surName` varchar(256) NOT NULL,
+  `comment` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pins`
 --
 
@@ -79,6 +92,19 @@ CREATE TABLE `questions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `resources`
+--
+
+CREATE TABLE `resources` (
+  `acctName` varchar(20) NOT NULL,
+  `surName` varchar(256) NOT NULL,
+  `rLevel` int(11) NOT NULL,
+  `resources` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `results`
 --
 
@@ -98,10 +124,10 @@ CREATE TABLE `results` (
 
 CREATE TABLE `tokens` (
   `acctName` varchar(20) NOT NULL,
-  `tokenHash` varchar(64) NOT NULL,
-  `expiration` datetime NOT NULL,
-  `tokenUsed` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `tokenHash` varbinary(32) NOT NULL,
+  `expiration` time NOT NULL,
+  `linkUsed` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Password reset link functionality';
 
 --
 -- Indexes for dumped tables
@@ -120,6 +146,12 @@ ALTER TABLE `bans`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`recNum`);
+
+--
 -- Indexes for table `pins`
 --
 ALTER TABLE `pins`
@@ -132,11 +164,31 @@ ALTER TABLE `questions`
   ADD PRIMARY KEY (`surName`,`qNum`,`acctName`);
 
 --
+-- Indexes for table `resources`
+--
+ALTER TABLE `resources`
+  ADD PRIMARY KEY (`acctName`,`surName`,`rLevel`);
+
+--
 -- Indexes for table `results`
 --
 ALTER TABLE `results`
   ADD PRIMARY KEY (`recNum`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `results`
+--
+ALTER TABLE `results`
+  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
