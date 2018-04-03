@@ -6,14 +6,14 @@ include_once "passwordReset.html";
 $database = new Database();
 $conn = $database->getConnection();
 //$token = $_GET['token'];
-$token = $_SERVER['QUERY_STRING'];
-
+//$token = $_SERVER['QUERY_STRING'];
 //echo var_dump( $_SERVER['QUERY_STRING']);
-//$token = $_POST["$token"];
+$token = $_POST["token"];
 //$token = $_SERVER["QUERY_STRING"];
-var_dump($_SERVER['QUERY_STRING']);
-print_r( $_GET );
-print_r($_SERVER['QUERY_STRING']);
+//var_dump($_SERVER['QUERY_STRING']);
+//print_r( $_GET );
+//print_r($_SERVER['QUERY_STRING']);
+
 //Make sure token arrived as hexadecimal
 //if(preg_match('/^[0-9A-Fa-f]$/', $token)){
 if(1){
@@ -65,7 +65,7 @@ if(1){
         echo "Internal error. There is more than one account associated with this Token.";
     }
 
-    if($_POST["newPassword"] === $POST["confirmPassword"]){
+    if($_POST["newPassword"] === $_POST["confirmPassword"]){
 
         $pwd = $_POST["newPassword"];
 
