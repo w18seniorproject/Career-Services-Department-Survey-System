@@ -1,10 +1,13 @@
 <?php
+
+error_reporting(E_ALL);
+
 include_once "../config/pollsterDB.php";
-//passwordReset included to try to parse query string from its URL.
 include_once "passwordReset.html";
 
 $database = new Database();
 $conn = $database->getConnection();
+
 //$token = $_GET['token'];
 //$token = $_SERVER['QUERY_STRING'];
 //echo var_dump( $_SERVER['QUERY_STRING']);
@@ -16,7 +19,7 @@ $token = $_POST["token"];
 
 //Make sure token arrived as hexadecimal
 //if(preg_match('/^[0-9A-Fa-f]$/', $token)){
-if(1){
+if(1){//CHANGED FOR TESTING
     $queryHash = hash("sha256", $token, FALSE);
 //TESTING
 //echo "queryHash: ". $queryHash;
