@@ -5,18 +5,17 @@ var js_groupArrayJSON;
 $.ajax({
 
   type: "POST",
-  url: 'include/relationChartCreator.php',
+  url: 'php/relationChartCreator.php',
   dataType: 'json',
   success: function(json){
-    js_relationArrayJSON=json.rLA;
-    js_groupArrayJSON=json.gNA;
+    var completedJSON=JSON.parse(json);
+    js_relationArrayJSON=completedJSON.rLA;
+    js_groupArrayJSON=completedJSON.gNA;
   }
 
 });
-var js_relationArray=jQuery.parseJSON(js_relationArrayJSON);
 
-var js_groupArray=jQuery.parseJSON(js_groupArrayJSON);
-var temp=document.getElementById("myChart");
+var temp=document.getElementById("myCanvas");
 var ctx=temp.getContext("2d");
 var resultChart=null;
 function createMixedChart(){
@@ -30,14 +29,14 @@ function createMixedChart(){
     datasets: [{
 
       label: 'Bar_Set',
-      data: js_relationArray
+      data: js_relationArrayJSON
     }, {
     label:'Line_Set',
-    data: js_relationArray,
+    data: js_relationArrayJSON,
 
     type: 'line'
   }],
-  labels:js_groupArray
+  labels:js_groupArrayJSON
 },
 options: {
     scales: {
@@ -58,8 +57,8 @@ function createLineChart(){
  }
  resultChart= new Chart(ctx, {
  type: 'line',
- data: js_relationArray,
- labels:js_groupArray,
+ data: js_relationArrayJSON,
+ labels:js_groupArrayJSON,
 options: {
    scales: {
        yAxes: [{
@@ -79,8 +78,8 @@ function createBarChart(){
  }
  resultChart= new Chart(ctx, {
  type: 'bar',
- data: js_relationArray,
- labels:js_groupArray,
+ data: js_relationArrayJSON,
+ labels:js_groupArrayJSON,
 options: {
    scales: {
        yAxes: [{

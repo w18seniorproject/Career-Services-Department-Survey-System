@@ -1,7 +1,7 @@
 //var js_relationArray=<?php echo json_encode($relationLevelArray);  ?>;
 //var js_groupArray=<?php echo json_encode($groupNameArray); ?>;
 function createTestChart(){
-var ctx=document.getElementById("myChart");
+var ctx=document.getElementById("myCanvas");
 var resultChart= new Chart(ctx, {
   type: 'bar',
   data: {
