@@ -125,11 +125,25 @@ function checkInputs(){
     return true;
 }
 
+function resourceFormat(text){
+    var rArray = text.split("\n");
+    if(rArray.length == 0){
+        return "";
+    }
+    var str = "<h3>Here are some further resources you can check out:</h3><ul>"
+    for(var i = 0; i < rArray.length; i++){
+        str += "<li><a href=\"" + rArray[i] + "\" class=\"hyperlink\">" + rArray[i] + "</a></li>";
+    }
+    str += "</ul>";
+    console.log(str);
+    return str;
+}
+
 function save(){
     if(checkInputs()){
         var resourceArray = [];
         $(".resource").each(function(i,ele){
-            resourceArray.push($(ele).val());
+            resourceArray.push(resourceFormat($(ele).val()));
         });
         var pinArray = [];
         $(".pinHolder").each(function(i,ele){

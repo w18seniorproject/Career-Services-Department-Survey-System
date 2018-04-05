@@ -27,9 +27,9 @@
         for($i=0; $i < $length; $i++){
             $sql = "INSERT INTO `resources` (`acctName`, `surName`, `rLevel`, `resources`) VALUES (?, ?, ?, ?);";
             $results = $conn->prepare($sql);
-            $results->execute(array($acctName, $surName, $i, $resources[$i]));
+            $results->execute(array($acctName, $surName, $i+1, $resources[$i]));
         }
-        header("Location: pDashboard.html");
+        header("Location: pDashboard.html?debug=$resourceJSON");
         die("Success");
     }
     

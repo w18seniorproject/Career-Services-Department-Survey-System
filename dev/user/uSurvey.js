@@ -145,7 +145,7 @@ function showQuestions(){
             if($('#submit').is(':visible')){
                 $('#continue').css('display', 'none');
             }
-            document.getElementById("submit").onclick = function(){checkAnswers();};
+            document.getElementById("submit").onclick = function(){checkAnswers(true);};
             document.getElementById("continue").onclick = function(){loadNext();};
             $('[type="checkbox"]').each(function(i, ele){
                 $(ele).on("click", function(){
@@ -162,7 +162,7 @@ function showQuestions(){
 }
 
 function loadNext(){
-    if(checkAnswers()){
+    if(checkAnswers(false)){
         $('.question').each(function(i, ele){
             ele.className += "i";
         });
@@ -265,13 +265,18 @@ function post(toSend){
     $(form).submit();
 }
 
-function checkAnswers(){
+function checkAnswers(submitbool){
     if(!checkForEmpty()){
         return;
     }
     checkRadios();
     checkCheckboxes();
-    submitSurvey();
+    if(submitbool){
+        submitSurvey();
+    }
+    else{
+        return true;
+    }
 }
 
 function checkCheckboxes(){
