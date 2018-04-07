@@ -11,25 +11,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     if(isset($_POST['token'])){
         $token = $_POST['token'];
-        echo $token;
-        exit();
     }else{
         http_response_code(400);
+        echo "Token not received in passwordReset.php.";
         exit();
     }
 
     //Make sure token arrived as hexadecimal
-    //if(preg_match('/^[0-9A-Fa-f]$/', $token)){
-    if(1){//CHANGED FOR TESTING
+    if(preg_match('/^[0-9A-Fa-f]+$/', $token)){
+
         $queryHash = hash("sha256", $token, FALSE);
-    //TESTING
-    //echo "queryHash: ". $queryHash;
 
-    //TESTING
-
-        //echo "$queryHash: ". var_dump($queryHash);
         //get record from db by matching hashed token received with hashed token that is stored in tokens table.
-        $sql = "SELECT acctName, expiration FROM tokens WHERE tokenHash = ?;";
+        $sql = "SELECT acctName, expiration, tokenUsed FROM tokens WHERE tokenHash = ?;";
 
         $result = $conn->prepare($sql);
         $result->execute(array($queryHash));
@@ -38,75 +32,96 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         if($numRows == 0){
             ?>
-            <script>alert(); window.location.href='forgotPassword.html'</script>
+            <script> 
+            alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassword.html'
+            </script>
             <?php
-            /* REMOVED FOR TESTING
-        ?>
-            <script> alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassword.html'</script>
-
-            <?php
-        */
         }
 
         if($numRows == 1){
             $row = $result->fetch(PDO::FETCH_ASSOC);
 
             //If token hasn't expired...
-            $expiration = $row['expiration'];
-
-            if($expiration < date("Y-m-d H:i:s")){
+            $expiration = strtotime($row['expiration']);
+            if($expiration < strtotime(date("Y-m-d H:i:s"))){
             ?>
-
-                <script> alert("The link used to access this page has expired. Please try again."); window.location.href='forgotPassword.html'</script>
-
+            <script> alert("The link used to access this page has expired. Please try again."); window.location.href='forgotPassword.html'</script>
             <?php
-            // I think this is right. Hopefully it just stops execution on this page, and doesn't kill the whole program.
+
             die();
             }
-            $acctName = $row['acctName'];
+            $used = $row['tokenUsed'];
 
-        }else{
-            echo "Internal error. There is more than one account associated with this Token.";
-        }
+            //Check to see if the token was used previously
+            if($used){
+            ?>
+            <script> alert("The link accessing this page has already been used. Please try again."); window.location.href='forgotPassword.html'</script>
+            <?php
 
-        if($_POST["newPassword"] === $_POST["confirmPassword"]){
-
-            $pwd = $_POST["newPassword"];
-
-            $sql = "UPDATE accounts SET pass = ? WHERE acctName = ?;";
-
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(1, $pwd);
-            $stmt->bindParam(2, $acctName);
-            $stmt->execute();
-
-            if($stmt->errno){
-                echo "Error. Password update failed. " . $stmt->error;
+            die();
             }
-            else{
-                echo "Updated {$stmt->mysql_affected_rows} row";
 
+            $acctName = $row['acctName'];        
+
+        }else{ //If more than one row is returned from token table query
+            echo "Internal error. There is more than one account associated with this Token.";
+        }     
+            //Make sure newly entered passwords match
+            if($_POST["newPassword"] === $_POST["confirmPassword"]){
+
+                $pwd = $_POST["newPassword"];
+                $hashedPass = password_hash($pwd, PASSWORD_BCRYPT);
+
+                $sql = "UPDATE accounts SET pass = ? WHERE acctName = ?;";
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(1, $hashedPass);
+                $stmt->bindParam(2, $acctName);
+                $stmt->execute();
+
+                if(!$stmt){
+                echo "Error. Password update failed. ";
+                exit();
+
+                           }
+            else{
+
+                echo "<h2>The password associated with account name \"$acctName\" has been updated.</h2>";
+                
                 //Mark token as "used"
                 $used = true;
 
                 $sql = "UPDATE tokens SET tokenUsed = ?;";
 
                 $stmt = $conn->prepare($sql);
-                $stmt->bindParam($used);
+                $stmt->bindParam(1, $used);
                 $stmt->execute();       
 
-                if($stmt->errno){
+                if(!$stmt){
                     echo "Error. Token not updated to 'used'.";
                 }
             }
-        $stmt->close();
+        $stmt = null;
 
+        
         }else{ 
             echo "Passwords do not match.";
         }
     }else{// token was not correctly formatted when it arrived (not hexadecimal)
         echo "Error. Link has been corrupted.";
     }
+
+    //Tokens table maintenance. Might be better placed in a stored procedure.
+/*$sql = "DELETE FROM tokens WHERE tokenUsed = ?;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(1,true);
+    $stmt->execute();
+
+    if(!$stmt){
+        echo "Error. tokens maintenance failed.";
+    }
+    $stmt = null;*/
+
 }else{
     http_response_code(400);
     exit();

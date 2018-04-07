@@ -59,9 +59,6 @@ $stmt->execute();
 $msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/csdss/dev/pollster/passwordReset.html?";
 
 $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
-    //(start by sending unhashed username, just to make sure it works). When link is clicked, open 
-    //"update password" page. Send the same query string along with it, so that the correct account is opened.
-    // On the "update password" page, display the username and provide two password boxes (do this on front end and back end).
    
     //DO SOMETHING WITH THE "FROM" PARAM, SINCE THAT ISN'T OUR EMAIL ADDRESS.
     mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
