@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 30, 2018 at 11:02 AM
+-- Generation Time: Apr 07, 2018 at 02:20 PM
 -- Server version: 5.7.21-0ubuntu0.16.04.1
 -- PHP Version: 7.0.28-0ubuntu0.16.04.1
 
@@ -113,7 +113,8 @@ CREATE TABLE `results` (
   `surName` varchar(30) DEFAULT NULL,
   `groupName` varchar(20) DEFAULT NULL,
   `surResults` text,
-  `rLevel` int(11) DEFAULT NULL
+  `rLevel` int(11) DEFAULT NULL,
+  `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -188,7 +189,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

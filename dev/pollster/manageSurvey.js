@@ -100,14 +100,107 @@ function showResources(){
         success: function(data){
             for(var i = 1; i < data; i++){
                 $("#resources").append(constructResourceHTML(i));
+                var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + (i-1) + "']";
+                new MdHtmlForm($(selector));
+                $(".btn-bold").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        embolden(ele);
+                    });
+                });
+                $(".btn-italic").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        italicize(ele);
+                    });
+                });
+                $(".btn-link").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        showLink(ele);
+                    });
+                });
+                $(".btn-bullets").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        bullet(ele);
+                    });
+                });
             }
         }
     });
 }
 
+function replaceSelectedText(ele, text, start, end) {
+    var original = $(ele).val();
+    var replaced = original.slice(0, start) + text + original.slice(end);
+    $(ele).val(replaced);
+}
+
+function embolden(ele){
+    var textarea = $(ele).parent().parent().find(".resource");
+    var selected = $(textarea).getSelection();
+    var original = selected.text;
+    var start = selected.start;
+    var end = selected.end;
+    var emboldened = "**" + original + "**";
+    replaceSelectedText(textarea, emboldened, start, end);
+    $(textarea).focus();
+    $(textarea).trigger("keyup");
+}
+
+function italicize(ele){
+    var textarea = $(ele).parent().parent().find(".resource");
+    var selected = $(textarea).getSelection();
+    var original = selected.text;
+    var start = selected.start;
+    var end = selected.end;
+    var italicized = "*" + original + "*";
+    replaceSelectedText(textarea, italicized, start, end);
+    $(textarea).focus();
+}
+
+function showLink(ele){
+    var textarea = $(ele).parent().parent().find(".resource");
+    var selected = $(textarea).getSelection();
+    var url = window.prompt("Please enter the url for the link: ");
+    if(url != null){
+        var name = window.prompt("Please enter the text you want the link to show: ");
+        if(name != null){
+            var linkText = "[" + name + "](" + url + ")";
+            var start = selected.start;
+            var end = selected.end;
+            replaceSelectedText(textarea, linkText, start, end);
+            $(textarea).focus();
+        }
+    }
+}
+
+function bullet(ele){
+    var textarea = $(ele).parent().parent().find(".resource");
+    var selected = $(textarea).getSelection();
+    var start = selected.start;
+    var end = selected.end;
+    var replaced = "*  bullet\n*  bullet\n*  bullet\n*  bullet";
+    replaceSelectedText(textarea, replaced, start, end);
+    $(textarea).focus();
+}
+
 function constructResourceHTML(level){
-    var toReturn =  "<h3>Section " + level + ":</h3>\
-                    <textarea class='form-control resource' placeholder='End of Survey Resources/Links'></textarea>";
+    var toReturn =  "<div>\
+                        <h3>Section " + level + ":</h3>\
+                        <div class='button-bar'>\
+                            <span class='edit-btn btn-bold'><b>&#x1d400</b></span>\
+                            <span class='edit-btn btn-italic'><i>𝐴</i></span>\
+                            <span class='edit-btn btn-link'><b>&#x1f517</b></span>\
+                            <span class='edit-btn btn-bullets'>&#x2022</span>\
+                        </div>\
+                    <br/>\
+                        <textarea class='form-control resource mdhtmlform-md' data-mdhtmlform-group='" + (level-1) + "' placeholder='End of Survey Resources/Links'></textarea>\
+                    <br/>\
+                        <div class='preview mdhtmlform-html' data-mdhtmlform-group='" + (level-1) + "'>\
+                        </div>\
+                    </div>"
     return toReturn;
 }
 
@@ -126,24 +219,16 @@ function checkInputs(){
 }
 
 function resourceFormat(text){
-    var rArray = text.split("\n");
-    if(rArray.length == 0){
-        return "";
-    }
-    var str = "<h3>Here are some further resources you can check out:</h3><ul>"
-    for(var i = 0; i < rArray.length; i++){
-        str += "<li><a href=\"" + rArray[i] + "\" class=\"hyperlink\">" + rArray[i] + "</a></li>";
-    }
-    str += "</ul>";
-    console.log(str);
+    var str = "<h3>Here are some further resources you can check out:</h3>" + text;
+    alert(str);
     return str;
 }
 
 function save(){
     if(checkInputs()){
         var resourceArray = [];
-        $(".resource").each(function(i,ele){
-            resourceArray.push(resourceFormat($(ele).val()));
+        $(".preview").each(function(i,ele){
+            resourceArray.push(resourceFormat($(ele).html()));
         });
         var pinArray = [];
         $(".pinHolder").each(function(i,ele){
