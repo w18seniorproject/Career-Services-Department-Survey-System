@@ -67,7 +67,7 @@ function constructSectionHTML(){
                                 <th><h2 class='sNum'></h2></th>\
                                 <th><span class='close sClose'>&#10799</span></th>\
                             </tr></table>" +
-                            "<input class='form-control input' placeholder='Enter a Section Title' type='text'>" +
+                            "<input class='form-control input' placeholder='Enter a Section Title' type='text' maxlength='30'>" +
                         "</div>\
                         </br>\
                         <hr>\
@@ -113,9 +113,11 @@ function constructTypeHTML(){
 function addChoice(element, type){
     var choiceHTML;
     if(type == 1){
+        $(element).addClass("choiceQ");
         choiceHTML = constructRadioHTML(element);
     }
     else if(type ==2){
+        $(element).addClass("choiceQ");
         choiceHTML = constructCheckboxHTML();
     }
     else if(type ==3){
@@ -230,9 +232,51 @@ function cancel(){
     }
 }
 
+function checkSections(){
+    var sections = document.getElementsByClassName("sWrapper");
+    if(sections.length < 1){
+        return false;
+    }
+    return true;
+}
+
+function checkQuestions(){
+    var value = true;
+    $(".sWrapper").each(function(i, sWrapper){
+        var questions = $(sWrapper).children().toArray();
+        if(questions.length < 3){
+            value = false;
+        }
+    });
+    return value;
+}
+
+function checkChoices(){
+    var value = true;
+    $(".choiceQ").each(function(i, choiceQ){
+        var choices = $(choiceQ).children().toArray();
+        if(choices.length < 2){
+            value = false;
+        }
+    });
+    return value;
+}
+
 function submit(){
     var title = $("#surTitle").val();
     var exit = false;
+    if(!checkSections()){
+        alert("Please create at least one Section");
+        return;
+    }
+    if(!checkQuestions()){
+        alert("Please create at least one Question per Section");
+        return;
+    }
+    if(!checkChoices()){
+        alert("Please have at least two choices for every choice-based question");
+        return;
+    }
     if(!title){
         promptCompletion();
         return;
