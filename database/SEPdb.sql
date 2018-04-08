@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2018 at 02:47 AM
+-- Generation Time: Apr 08, 2018 at 07:40 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -34,6 +34,13 @@ CREATE TABLE `accounts` (
   `acctName` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`pass`, `email`, `acctName`) VALUES
+('$2y$10$RF8ywtMu4OgBSh0Jv8YhwOP3Xv/NcxxlRGu2YdoqHWQjCcHuQjGDS', 'test@test.com', 'TestAcct');
+
 -- --------------------------------------------------------
 
 --
@@ -59,6 +66,13 @@ CREATE TABLE `pins` (
   `surText` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `pins`
+--
+
+INSERT INTO `pins` (`pin`, `surName`, `groupName`, `acctName`, `surText`) VALUES
+(6888, 'TestSur', NULL, 'TestAcct', 'This is a test of survey creation.');
+
 -- --------------------------------------------------------
 
 --
@@ -78,6 +92,16 @@ CREATE TABLE `questions` (
   `acctName` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `questions`
+--
+
+INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qChoices`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES
+('TestSur', 1, 'mc', 'What is the answer to life, the universe, and everything?', '24~$#32~$#42~$#63', '42', 2, 1, 'Section 1', 'TestAcct'),
+('TestSur', 2, 'tf', 'Has it always been wankershim?', NULL, 't', 2, 1, 'Section 1', 'TestAcct'),
+('TestSur', 3, 'tf', 'Were there 5 lights?', NULL, 'f', 2, 2, 'Section 2', 'TestAcct'),
+('TestSur', 4, 'chk', 'Check all that apply:', 'Good~$#Bad~$#Ugly', '', 1, 3, 'Section 3', 'TestAcct');
+
 -- --------------------------------------------------------
 
 --
@@ -85,13 +109,33 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `results` (
-  `recNum` int(11) NOT NULL,
+  `acctName` varchar(20) NOT NULL,
   `surName` varchar(30) NOT NULL,
   `groupName` varchar(20) NOT NULL,
+  `recNum` int(11) NOT NULL,
   `surResults` text,
-  `rLevel` int(11) DEFAULT NULL,
-  `acctName` varchar(20) NOT NULL
+  `rLevel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `results`
+--
+
+INSERT INTO `results` (`acctName`, `surName`, `groupName`, `recNum`, `surResults`, `rLevel`) VALUES
+('TestAcct', 'TestSur', 'None', 18, ' Q1:|42| Q2:|t| Q3:|f| Q4:|Good||Bad||Ugly|', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `secreqs`
+--
+
+CREATE TABLE `secreqs` (
+  `acctName` varchar(20) CHARACTER SET latin1 NOT NULL,
+  `surName` varchar(30) CHARACTER SET latin1 NOT NULL,
+  `rLevel` int(11) NOT NULL,
+  `minScore` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Indexes for dumped tables
@@ -128,6 +172,12 @@ ALTER TABLE `results`
   ADD PRIMARY KEY (`recNum`,`surName`,`groupName`,`acctName`);
 
 --
+-- Indexes for table `secreqs`
+--
+ALTER TABLE `secreqs`
+  ADD PRIMARY KEY (`acctName`,`surName`,`rLevel`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -135,7 +185,7 @@ ALTER TABLE `results`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
