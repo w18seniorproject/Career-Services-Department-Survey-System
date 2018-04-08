@@ -26,11 +26,11 @@
                 PollsterSignup::signup($db);
                 exit();
             }
-            elseif(isset($_POST['surText']) && isset($_POST['dataArray'])){
+            elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray'])){
                 Survey::createSurvey($db);
                 exit();
             }
-            elseif(isset($_POST['resources'])){
+            elseif(isset($_SESSION['userName']) && isset($_POST['resources'])){
                 Survey::SetGroupsAndResources($db);         
                 exit("Success");
             }
