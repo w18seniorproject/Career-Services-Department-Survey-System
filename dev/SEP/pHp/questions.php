@@ -7,14 +7,13 @@
             $this->conn = $conn;
         }
         
-        public static function sendQuestions($db){ 
+        public static function getQuestions($db){ 
             $quest = new Questions($db->getConnection('taker'));
-            $_SESSION['questions'] = $quest->getQuestions($_SESSION['surName'], $_SESSION['acctName']);
-            echo $_SESSION['questions'];
-            exit();
+            $questions = $quest->queryDB($_SESSION['surName'], $_SESSION['acctName']);
+            return $questions;
         }
         
-        private function getQuestions($surName, $acctName){
+        private function queryDB($surName, $acctName){
             $stmt = $this->buildQuery($surName, $acctName);
 
             $stmt->execute();

@@ -31,8 +31,7 @@
             $_SESSION["acctName"] = $account;
             $_SESSION["groupName"] = $groupName;
 
-            header("Location: uSurvey.html");
-            exit();
+            header("Location: user/uSurvey.html");
         }
     }
 

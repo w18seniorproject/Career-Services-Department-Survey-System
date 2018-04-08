@@ -12,12 +12,14 @@
             $stmt = $resp->buildQuery($surResults, $rLevel);
             $stmt->execute();
             session_unset();
-            header("Location: uLogin.html");
-            exit();
+            header("Location: user/uLogin.html");
         }
         
         private function buildQuery($surResults, $rLevel){
-            if(isset($_SESSION["surName"]) && isset($_SESSION["groupName"]) && isset($_SESSION["acctName"])){
+            if(isset($_SESSION["surName"]) && isset($_SESSION["acctName"])){
+                if(!isset($_SESSION["groupName"])){
+                    $_SESSION["groupName"] = "None";
+                }
                 $query = "INSERT INTO " . $this->table . " (surName, groupName, surResults, rLevel, acctName) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($query);
 

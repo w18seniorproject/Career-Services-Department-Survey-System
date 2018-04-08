@@ -1,0 +1,13 @@
+<script type="text/javascript" src="pSurvey.js"></script>
+<legend class="legend">Create Survey</legend>
+<div id="new-survey-wrapper" class="new-survey-wrapper">
+    <input id="surTitle" class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title">
+    <br>
+    <textarea id='surText' class='form-control' placeholder='Enter Survey Instructions for the User'></textarea> 
+    <br>
+    <div id="section-wrapper"></div>
+    <input class="btn btn-primary btn-lg btn-block shadow" type="button" value="Add Section" onclick="addSection()">
+    <br>
+    <a onclick="submit()"><input class="btn btn-primary btn-right shadow" type="button" id="save" name="submit" value="Save"/></a>
+    <a onclick="cancel()"><input class="btn btn-secondary btn-right shadow" type="button" id="cancel" name="cancel" value="Cancel"/></a>
+</div>

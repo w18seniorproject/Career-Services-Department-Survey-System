@@ -2,7 +2,8 @@ $(document).ready(setupPage);
 
 var curSec;
 var maxSec;
-var sectBound;
+var secBound;
+var secReqs;
 
 function setupPage(){
     $("#header").load("../header.html");
@@ -12,13 +13,13 @@ function setupPage(){
 }
 
 function getQuest(quest){
-    var toReturn = '<h3 class="quest n' + quest.qNum + ' s'+ quest.rLevel + '">' + quest.qNum +') ' + quest.qText + '</h3>';
+    var toReturn = '<h3 class="quest n' + quest.qNum + ' s'+ quest.rLevel + ' ' + quest.qType + '">' + quest.qNum +') ' + quest.qText + '</h3>';
     return toReturn;
 }
 
 function getCBAns(quest){
     var toReturn = "";
-    var choiceArr = quest.qChoices.split(",");
+    var choiceArr = quest.qChoices.split("~$#");
     choiceArr.forEach(element =>{
         toReturn += '<label class="quest s' + quest.rLevel + '">' + 
                     '<input class="ans n' + quest.qNum + ' s' + quest.rLevel + 
@@ -32,7 +33,7 @@ function getCBAns(quest){
 
 function getMCAns(quest){
     var toReturn = "";
-    var choiceArr = quest.qChoices.split(",");
+    var choiceArr = quest.qChoices.split("~$#");
     choiceArr.forEach(element =>{
         toReturn += '<label class="quest s' + quest.rLevel + '">' + 
                     '<input class="ans n' + quest.qNum + ' s' + quest.rLevel +
@@ -61,8 +62,11 @@ function getTFAns(quest){
 }
 
 function showQuestions(){
-    $.post("index.php", function(data){
-        var questions = JSON.parse(data);
+    $.post("../index.php", { aType: 'TAKE' }, function(data){
+        var survey = JSON.parse(data);
+        var questions = JSON.parse(survey[0]);
+        secReqs = JSON.parse(survey[1]);
+        
         if(questions.length > 0){
             $('#questions-wrapper').html("");
             
@@ -71,7 +75,7 @@ function showQuestions(){
             });
             
             maxSec = 0;
-            sectBound = new Array();
+            secBound = new Array();
 
             for(var i = 0; i < questions.length; i++){
                $('#questions-wrapper').append(getQuest(questions[i]));
@@ -96,7 +100,7 @@ function showQuestions(){
                     maxSec = questions[i].rLevel;
 
                 }
-                sectBound[maxSec] = questions[i].qNum;
+                secBound[maxSec] = questions[i].qNum;
             }
 
             $("#maxSection").val(maxSec);
@@ -138,6 +142,10 @@ function loadNextSec(){
         curSec = curSec + 1;
         $("#curSection").val(curSec);
     }
+    var section = document.querySelectorAll('.quest.s' + curSec);
+    section.forEach( (e) => {
+        
+    });
     
     var questions = document.querySelectorAll('.quest');
     questions.forEach( (e) => {
@@ -187,9 +195,9 @@ function checkAns(){
     if(curSec === 1)
         firstQ = 1;
     else
-        firstQ = sectBound[curSec - 1] + 1;
+        firstQ = secBound[curSec - 1] + 1;
     
-    lastQ = sectBound[curSec];
+    lastQ = secBound[curSec];
     
     for(var curQ = firstQ; curQ <= lastQ; curQ++){
         answers = document.querySelectorAll('.ans.n' + curQ);
@@ -203,10 +211,11 @@ function checkAns(){
     }  
     return true;
 }
+
 function getResults(){
     var answers;
     var results = "";
-    var lastQ = sectBound[maxSec];
+    var lastQ = secBound[maxSec];
     
     for(var curQ = 1; curQ <= lastQ; curQ++){
         results = results + " Q" + curQ + ":";
@@ -228,14 +237,12 @@ function sendResults(){
         var results = getResults();
         $(window).unbind('beforeunload');
         $.ajax({
-            url: 'index.php',
+            url: '../index.php',
             type: 'post',
-            data: {
-                response: results
-            },
+            data: {response : results, aType: 'TAKE'},
             success: function (data) {
                 //TO-DO: implement success function
-                location.replace("index.php");
+                location.replace("../index.php");            
             }
         });
     }
