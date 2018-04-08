@@ -11,7 +11,12 @@
         <script type="text/javascript" src="../scripts/utils.js"></script>
         <script>
             $(function(){
-                $("#header").load("../header.html"); 
+                $("#header").load("../headerLoggedIn.html"); 
+            });
+            $(function(){
+                if($(window).width() > 760){
+                    window.location = "pDashboard.html";
+                }
             });
         </script>
     </head>
@@ -23,6 +28,16 @@
             
             <a href="pSurvey.html">Create A Survey</a>
         </div>
+        <script type="text/javascript">
+            $(window).resize(
+                function(){
+                    var width = $(window).width();
+                    if(width >= 760){
+                        window.location = "pDashboard.html";
+                    }
+                }
+            ).resize();
+        </script>
 
     </body>
 </html>
