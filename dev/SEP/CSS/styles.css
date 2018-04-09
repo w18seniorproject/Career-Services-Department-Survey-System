@@ -294,7 +294,6 @@ html, body{
 
 /*Resources Page*/
 #resources{
-    text-align: center;
     margin: 20px;
 }
 #resources > h3{
@@ -329,6 +328,24 @@ html, body{
     margin: 5px;
     line-height: 20px;
 }
-
-
-  
+.preview{
+    background-color: #fafafa;
+    border: #cccccc;
+    border-style: solid;
+    border-width: 1px;
+}
+.edit-btn{
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+    font-size: 12pt;
+    cursor: pointer;
+    background-color: #fafafa;
+    border: #cccccc;
+    border-style: solid;
+    border-width: 1px;
+}
+.edit-btn:hover{
+    background-color: #cccccc;
+}

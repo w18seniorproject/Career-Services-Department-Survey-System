@@ -95,8 +95,10 @@ function constructGroupPinHTML(){
 
 function showResources(){
     $.ajax({
-        url: "manageSurvey.php",
+        url: "../index.php",
         cache: false,
+        type: "POST",
+        data: ({goal: "showResources", aType: "POLL"}),
         success: function(data){
             for(var i = 1; i < data; i++){
                 $("#resources").append(constructResourceHTML(i));
@@ -127,6 +129,9 @@ function showResources(){
                     });
                 });
             }
+        },
+        error: function(jqxr, status, exception){
+            alert("Exception",  exception);
         }
     });
 }
@@ -245,11 +250,12 @@ function post(resourceArray, pinArray, groupArray){
     var resources = JSON.stringify(resourceArray);
     var pins = JSON.stringify(pinArray);
     var groups = JSON.stringify(groupArray);
-    var form =  $("<form action='manageSurvey.php' method='POST'>\
+    var form =  $("<form action='../index.php' method='POST'>\
                     <input type='hidden' name='resources' value='" + resources + "'>\
                     <input type='hidden' name='pins' value='" + pins + "'>\
                     <input type='hidden' name='groups' value='" + groups + "'>\
-                </form>");
+                    <input type='hidden' value='POLL' name='aType'>\
+                    </form>");
     $("body").append(form);
     $(form).submit();
 }

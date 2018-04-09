@@ -13,6 +13,7 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/secReqs.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/survey.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/tLogin.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
 
         $db = new Database();
 
@@ -30,9 +31,13 @@
                 Survey::createSurvey($db);
                 exit();
             }
-            elseif(isset($_SESSION['userName']) && isset($_POST['resources'])){
-                Survey::SetGroupsAndResources($db);         
-                exit("Success");
+            elseif(isset($_POST['resources']) && isset($_POST['pins']) && isset($_POST['groups'])){
+                ManageSurvey::SetSurveyData($db);
+                exit();
+            }
+            elseif(isset($_POST['goal'])){
+                ManageSurvey::GetSectionNum();
+                exit();
             }
             //otherwise throw error code
             else{
