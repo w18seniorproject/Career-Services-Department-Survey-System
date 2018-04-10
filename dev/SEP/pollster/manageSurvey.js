@@ -1,5 +1,4 @@
-function showPinsAndGroups(){
-    var pin = getUrlParameter("pin");
+function showPinsAndGroups(pin){
     var html =  "<table class='qTable' id='pinTable'>\
                     <tr>\
                         <th class='center-th'>Group Name</th>\

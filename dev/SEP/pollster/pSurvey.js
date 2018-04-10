@@ -322,11 +322,20 @@ function promptCompletion(){
 
 function post(toSend){
     var instruc = $("#surText").val();
-    var form = $('<form action="../index.php" method="post">\
-                <input type="hidden" name="dataArray" value="' + toSend + '"/>\
-                <input type="hidden" name="surText" value="' + instruc + '"/>\
-                <input type="hidden" value="POLL" name="aType">\
-                </form>');
-    $('body').append(form);
-    $(form).submit();
+    $.ajax({
+        url: "../index.php",
+        type: "POST",
+        data: ({dataArray: toSend, surText: instruc, aType: "POLL"}),
+        success: function(response){
+            if(window.location.href.includes("pSurvey.html")){
+                window.location = "manageSurvey.html?pin=" + response;
+            }
+            else{
+                showManageSurvey(response);
+            }
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at post() ajax call in pSurvey.js");
+        }
+    });
 }

@@ -12,7 +12,6 @@
             $sections = explode("\$~\$", $postData);
 
             $surTitle = $sections[0];
-            session_start();
             $acctName = $_SESSION['userName'];
             $_SESSION['surName'] = $surTitle;
             $_SESSION['surText'] = $surText;
@@ -91,7 +90,7 @@
             $result = $conn->prepare($sql);
             $result->execute(array($pin, $surTitle, $acctName, $surText));
 
-            header("Location: ./pollster/manageSurvey.html?pin=$pin");
+            echo $pin;
         }
         
         public static function sendSurvey($db){ 
@@ -100,36 +99,7 @@
             $survey = json_encode(array($questions, $secReqs));
             echo $survey;
         }
-        
-        public static function SetGroupsAndResources($db){ 
-            $conn = $db->getConnection('poll');
-
-            $surName = $_SESSION['surName'];
-            $surText = $_SESSION['surText'];
-            $acctName = $_SESSION['userName'];
-            $resourceJSON = $_POST['resources'];
-            $pinJSON = $_POST['pins'];
-            $groupJSON = $_POST['groups'];
-            $resources = json_decode($resourceJSON, true);
-            $pins = json_decode($pinJSON, true);
-            $groups = json_decode($groupJSON, true);
-
-            $length = count($pins);
-            for($i = 0; $i < $length; $i++){
-                $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `groupName`) VALUES (?, ?, ?, ?, ?);";
-                $results = $conn->prepare($sql);
-                $results->execute(array($pins[$i], $surName, $acctName, $surText, $groups[$i]));
-            }
-
-            $length = count($resources);
-            for($i=0; $i < $length; $i++){
-                $sql = "INSERT INTO `resources` (`acctName`, `surName`, `rLevel`, `resources`) VALUES (?, ?, ?, ?);";
-                $results = $conn->prepare($sql);
-                $results->execute(array($acctName, $surName, $i+1, $resources[$i]));
-            }
-            header("Location: ./pollster/pDashboard.html?debug=$resourceJSON");
-        }
-        
+               
         private static function otherAddToDB($conn, $surName, $qNum, $qType, $qText, $qAns, $qWeight, $rLevel, $rName, $acctName){
             $sql = "INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
