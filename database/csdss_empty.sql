@@ -34,13 +34,6 @@ CREATE TABLE `accounts` (
   `acctName` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `accounts`
---
-
-INSERT INTO `accounts` (`pass`, `email`, `acctName`) VALUES
-('$2y$10$RF8ywtMu4OgBSh0Jv8YhwOP3Xv/NcxxlRGu2YdoqHWQjCcHuQjGDS', 'test@test.com', 'TestAcct');
-
 -- --------------------------------------------------------
 
 --
@@ -66,13 +59,6 @@ CREATE TABLE `pins` (
   `surText` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `pins`
---
-
-INSERT INTO `pins` (`pin`, `surName`, `groupName`, `acctName`, `surText`) VALUES
-(6888, 'TestSur', NULL, 'TestAcct', 'This is a test of survey creation.');
-
 -- --------------------------------------------------------
 
 --
@@ -92,16 +78,6 @@ CREATE TABLE `questions` (
   `acctName` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `questions`
---
-
-INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qChoices`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES
-('TestSur', 1, 'mc', 'What is the answer to life, the universe, and everything?', '24~$#32~$#42~$#63', '42', 2, 1, 'Section 1', 'TestAcct'),
-('TestSur', 2, 'tf', 'Has it always been wankershim?', NULL, 't', 2, 1, 'Section 1', 'TestAcct'),
-('TestSur', 3, 'tf', 'Were there 5 lights?', NULL, 'f', 2, 2, 'Section 2', 'TestAcct'),
-('TestSur', 4, 'chk', 'Check all that apply:', 'Good~$#Bad~$#Ugly', '', 1, 3, 'Section 3', 'TestAcct');
-
 -- --------------------------------------------------------
 
 --
@@ -117,14 +93,24 @@ CREATE TABLE `results` (
   `rLevel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `results`
---
-
-INSERT INTO `results` (`acctName`, `surName`, `groupName`, `recNum`, `surResults`, `rLevel`) VALUES
-('TestAcct', 'TestSur', 'None', 18, ' Q1:|42| Q2:|t| Q3:|f| Q4:|Good||Bad||Ugly|', 0);
-
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `resources`
+--
+
+CREATE TABLE `resources` (
+  `acctName` varchar(20) NOT NULL,
+  `surName` varchar(256) NOT NULL,
+  `rLevel` int(11) NOT NULL,
+  `resources` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `resources`
+--
+ALTER TABLE `resources`
+  ADD PRIMARY KEY (`acctName`,`surName`,`rLevel`);
 
 --
 -- Table structure for table `secreqs`
