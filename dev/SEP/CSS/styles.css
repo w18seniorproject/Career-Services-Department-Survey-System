@@ -143,9 +143,12 @@ html, body{
     width: 33%;
     overflow-y: auto;
     overflow-x: hidden;
-    background: grey;
     float: left;
     padding: 10px;
+    background-color: #ffffff;
+    border-right-color: #fafafa;
+    border-right: solid;
+    border-right-width: 1px;
 }
 .rightContent{
     overflow-x: hidden;
@@ -163,6 +166,20 @@ html, body{
     height: 100%;
     width: 100%;
     overflow: auto;
+}
+.surveyList{
+    width: 100%;
+    list-style-type: none;
+    cursor: pointer;
+}
+.surveyList>li{
+    width: 100%;
+    border-bottom: solid;
+    border-bottom-color: #6d6e71;
+    border-bottom-width: 1px;
+}
+.surveyList>li:hover{
+    background-color: #cccccc;
 }
 
 /*Survey Creation Page*/

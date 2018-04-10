@@ -98,8 +98,8 @@ function showResources(){
         cache: false,
         type: "POST",
         data: ({goal: "showResources", aType: "POLL"}),
-        success: function(data){
-            for(var i = 1; i < data; i++){
+        success: function(response){
+            for(var i = 1; i < response; i++){
                 $("#resources").append(constructResourceHTML(i));
                 var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + (i-1) + "']";
                 new MdHtmlForm($(selector));
@@ -130,7 +130,7 @@ function showResources(){
             }
         },
         error: function(jqxr, status, exception){
-            alert("Exception",  exception);
+            alert("Failing at showResources() ajax call in manageSurvey.js");
         }
     });
 }

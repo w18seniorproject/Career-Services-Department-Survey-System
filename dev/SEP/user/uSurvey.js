@@ -243,6 +243,9 @@ function sendResults(){
             success: function (data) {
                 //TO-DO: implement success function
                 location.replace("../index.php");            
+            },
+            error: function (jqxr, status, exception){
+                alert("Failing at sendResults() ajax call in uSurvey.js");
             }
         });
     }

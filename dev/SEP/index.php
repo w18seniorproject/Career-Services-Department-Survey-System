@@ -14,6 +14,7 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/survey.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/tLogin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pDashboard.php';
 
         $db = new Database();
 
@@ -25,6 +26,10 @@
             }
             elseif(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
                 PollsterSignup::signup($db);
+                exit();
+            }
+            elseif(isset($_POST["pdd"])){
+                PollsterDashboard::GetSurveys($db);
                 exit();
             }
             elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray'])){
@@ -87,7 +92,7 @@
         }
     }
     //otherwise throw error code
-    else{   
+    else{
         http_response_code(400);
         exit();
     }

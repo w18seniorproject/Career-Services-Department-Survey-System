@@ -26,11 +26,13 @@
         
         <div class="dContainer">
             <div class='leftContent'>
-                <legend class="legend">Left Content</legend>
+                <div id="lContainer"></div>
+                <script type="text/javascript">
+                    showSurveys();
+                </script>
             </div>
             <div class='rightContent'>
                 <div class='rContainer' id="rContainer">
-                    <legend class="legend">Right Content</legend>
                     <a href="pSurvey.html">Create A Survey</a>
                     <input type="button" onclick="showCreateSurvey()" value="Create Survey (No Redirect)" class="btn btn-primary">
                 </div>
