@@ -233,6 +233,18 @@ function cancel(){
 function submit(){
     var title = $("#surTitle").val();
     var exit = false;
+    if(!checkSections()){
+        alert("Please create at least one Section");
+        return;
+    }
+    if(!checkQuestions()){
+        alert("Please create at least one Question per Section");
+        return;
+    }
+    if(!checkChoices()){
+        alert("Please have at least two choices for every choice-based question");
+        return;
+    }
     if(!title){
         promptCompletion();
         return;
