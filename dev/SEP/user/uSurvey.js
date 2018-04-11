@@ -4,6 +4,7 @@ var curSec;
 var maxSec;
 var secBound;
 var secReqs;
+var qWeights;
 
 function setupPage(){
     $("#header").load("../header.html");
@@ -21,12 +22,13 @@ function getCBAns(quest){
     var toReturn = "";
     var choiceArr = quest.qChoices.split("~$#");
     choiceArr.forEach(element =>{
+        element = element.split("|`");
         toReturn += '<label class="quest s' + quest.rLevel + '">' + 
-                    '<input class="ans n' + quest.qNum + ' s' + quest.rLevel + 
+                    '<input class="ans CB n' + quest.qNum + ' s' + quest.rLevel + 
                     '" type="checkbox" ' +
                     '" name="' + quest.qNum + 
                     '" value="' + element + '">' + 
-                    element + '</label>';
+                    element[0] + '</label>';
     });
     return toReturn;
 }
@@ -35,29 +37,37 @@ function getMCAns(quest){
     var toReturn = "";
     var choiceArr = quest.qChoices.split("~$#");
     choiceArr.forEach(element =>{
+        element = element.split("|`");
         toReturn += '<label class="quest s' + quest.rLevel + '">' + 
-                    '<input class="ans n' + quest.qNum + ' s' + quest.rLevel +
+                    '<input class="ans MC n' + quest.qNum + ' s' + quest.rLevel +
                     '" type="radio" ' +
                     '" name="' + quest.qNum + 
                     '" value="' + element + '">' + 
-                    element + '</label>';
+                    element[0] + '</label>';
     });
     return toReturn;
 }
 
 function getSCAns(quest){
-    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sta">Strongly Agree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' + quest.qNum + '" value="a">Agree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sla">Slightly Agree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sld">Slightly Disagree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="d">Disagree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="std">Strongly Disagree</label>';
+    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sta">Strongly Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' + quest.qNum + '" value="a">Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sla">Slightly Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sld">Slightly Disagree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="d">Disagree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="std">Strongly Disagree</label>';
     return toReturn;
 }
 
 function getTFAns(quest){
-    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="t">True</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="f">False</label>';
+    var tVal = 0;
+    var fVal = 0;
+    if(quest.qAns === 't')
+        tVal = 1;
+    else if(quest.qAns === 'f')
+        fVal = 1;
+       
+    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans TF n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="t '+ tVal + '">True</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans TF n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="f '+ fVal + '">False</label>';
     return toReturn;
 }
 
@@ -76,7 +86,8 @@ function showQuestions(){
             
             maxSec = 0;
             secBound = new Array();
-
+            qWeights = new Array();
+            
             for(var i = 0; i < questions.length; i++){
                $('#questions-wrapper').append(getQuest(questions[i]));
                 switch(questions[i].qType){
@@ -98,29 +109,16 @@ function showQuestions(){
                 if(questions[i].rLevel > maxSec)
                 {    
                     maxSec = questions[i].rLevel;
-
                 }
+                qWeights[i] = questions[i].qWeight;
                 secBound[maxSec] = questions[i].qNum;
             }
 
-            $("#maxSection").val(maxSec);
-
-            $('#questions-wrapper').append("<input type='submit' id='submit' value='Submit Survey' class='question btn btn-primary btn-survey'>");
             $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');   
             $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
 
             $('#continue').click(loadNextSec);
             $('#back').click(loadLastSec);
-            $('#submit').click(sendResults);
-
-            if(maxSec == 1){
-                $('#continue').css('display', 'none');
-                $('#submit').css('display', 'block');
-            }
-            else{
-                $('#continue').css('display', 'block');
-                $('#submit').css('display', 'none');
-            }
 
             $('#back').css('display', 'none');
 
@@ -133,19 +131,26 @@ function showQuestions(){
 
 function loadNextSec(){
     $('#errorMessage').html("");
-    if(checkAns() !== true && curSec !== 0){
+    if(curSec !== 0 && checkAns() !== true){
         $('#errorMessage').html("Please answer all questions");
         return;
     }
+    
+    if(curSec !== 0 && (curSec === maxSec || checkScore() !== true)){
+        var questions = document.querySelectorAll('.quest');
+        questions.forEach( (e) => {
+                e.style.display = 'none';
+        });
         
-    if(curSec < maxSec){
-        curSec = curSec + 1;
-        $("#curSection").val(curSec);
+        $('#back').css('display', 'none');
+        $('#continue').css('display', 'none');
+        
+        sendResults();
+        //TO-DO: Display resources from secReqs table.
+        return;
     }
-    var section = document.querySelectorAll('.quest.s' + curSec);
-    section.forEach( (e) => {
-        
-    });
+    
+    curSec = curSec + 1;
     
     var questions = document.querySelectorAll('.quest');
     questions.forEach( (e) => {
@@ -157,18 +162,12 @@ function loadNextSec(){
     
     if(curSec !== 1)
         $('#back').css('display', 'block');
-    
-    if(curSec === maxSec){
-        $('#continue').css('display', 'none');
-        $('#submit').css('display', 'block');
-    }
 }
 
 function loadLastSec(){
     $('#errorMessage').html("");
     if(curSec > 1){
         curSec = curSec - 1;
-        $("#curSection").val(curSec);
     }
     
     var questions = document.querySelectorAll('.quest');
@@ -180,12 +179,7 @@ function loadLastSec(){
     });
     
     if(curSec === 1)
-        $('#back').css('display', 'none');
-    
-    if($('#submit').is(':visible')){
-        $('#continue').css('display', 'block');
-        $('#submit').css('display', 'none');
-    }    
+        $('#back').css('display', 'none');   
 }
 
 function checkAns(){
@@ -202,14 +196,40 @@ function checkAns(){
     for(var curQ = firstQ; curQ <= lastQ; curQ++){
         answers = document.querySelectorAll('.ans.n' + curQ);
         var completed = false;
-        answers.forEach( (ans) => {
-            if(ans.checked)
-                completed = true; 
-        });
+        for(var i = 0; i < answers.length; i++){
+            if(answers[i].checked || answers[i].classList.contains('CB')){
+                completed = true;
+            }
+        }
         if(completed !== true)
             return false;
     }  
     return true;
+}
+
+function checkScore(){
+    var answers, lastQ;
+    var score = 0;
+    
+    lastQ = secBound[curSec];
+    
+    for(var curQ = 1; curQ <= lastQ; curQ++){
+        answers = document.querySelectorAll('.ans.n' + curQ);
+        for(var i = 0; i < answers.length; i++){
+            if(answers[i].checked){
+                if(answers[i].classList.contains('MC') || answers[i].classList.contains('CB')){
+                    score += parseInt(answers[i].value.split(',')[1]) * qWeights[curQ - 1];
+                }
+                else if(answers[i].classList.contains('TF')){
+                    score += parseInt(answers[i].value.split(' ')[1]) * qWeights[curQ - 1];
+                }
+            }
+        }    
+    }
+    if(score >= secReqs[curSec - 1].minScore)
+        return true;
+    else
+        return false;
 }
 
 function getResults(){
@@ -230,23 +250,17 @@ function getResults(){
 }
 
 function sendResults(){
-    if(checkAns() !== true && curSec !== 0){
-        $('#errorMessage').html("Please answer all questions");
-        return;
-    }else{
-        var results = getResults();
-        $(window).unbind('beforeunload');
-        $.ajax({
-            url: '../index.php',
-            type: 'post',
-            data: {response : results, aType: 'TAKE'},
-            success: function (data) {
-                //TO-DO: implement success function
-                location.replace("../index.php");            
-            },
-            error: function (jqxr, status, exception){
-                alert("Failing at sendResults() ajax call in uSurvey.js");
-            }
-        });
-    }
+    var results = getResults();
+    $(window).unbind('beforeunload');
+    $.ajax({
+        url: '../index.php',
+        type: 'post',
+        data: {response : results, aType: 'TAKE'},
+        success: function (data) {
+            //TO-DO: implement success function           
+        },
+        error: function (jqxr, status, exception){
+            alert("Failing at sendResults() ajax call in uSurvey.js");
+        }
+    });
 }
