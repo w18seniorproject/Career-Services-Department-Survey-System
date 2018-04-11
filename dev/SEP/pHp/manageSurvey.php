@@ -26,7 +26,7 @@
                 $results = $conn->prepare($sql);
                 $results->execute(array($acctName, $surName, $i+1, $resources[$i]));
             }
-            header("Location: ../pollster/pDashboard.html?debug=$resourceJSON");
+            header("Location: pDashboard.html?debug=$resourceJSON");
             die("Success");
         }
 

@@ -6,7 +6,7 @@
             
             $acctName = $_SESSION['userName'];
 
-            $sql = "SELECT surName, pin, surText, live FROM pins WHERE acctName= ?;";
+            $sql = "SELECT surName, pin, surText, live FROM pins WHERE acctName= ? ORDER BY surName;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName));
 
@@ -28,6 +28,14 @@
             else{
                 echo "NONE";
             }
+        }
+
+        public static function GetSurveyQuestions($db){
+            $conn = $db->getConnection('poll');
+            
+            $acctName = $_SESSION['userName'];
+
+
         }
 
 

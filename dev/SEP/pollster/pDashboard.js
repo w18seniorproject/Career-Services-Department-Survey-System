@@ -43,10 +43,12 @@ function showSurveys(){
 }
 
 function displayResults(ele){
+    //TODO grab database stuff and display results
     alert("results");
 }
 
 function displayEditSurvey(ele){
+    //TODO show editsurvey page and prefill from db
     alert("edit Survey");
 }
 
@@ -65,7 +67,7 @@ function constructSurveyListHTML(surveyJSON){
             liveIndicatorClass = "not-live";
             liveIndicator = "not live";
         }
-        html +="<li>\
+        html +="<li surName='" + survey.surName + "' live='" + survey.live + "' surText='" + survey.surText + "' pin='" + survey.pin + "'>\
                     <div class='survey-left'>\
                         <h4>" + survey.surName + "</h4>\
                     </div>\
