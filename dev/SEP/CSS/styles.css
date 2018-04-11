@@ -140,21 +140,60 @@ html, body{
     height: 100%;
 }
 .leftContent{
-    width: 33%;
+    width: 25%;
     overflow-y: auto;
     overflow-x: hidden;
     float: left;
-    padding: 10px;
     background-color: #ffffff;
     border-right-color: #fafafa;
     border-right: solid;
     border-right-width: 1px;
 }
+.leftContent:-webkit-scrollbar, leftContent:-moz-scrollbar{
+    display: none;
+}
 .rightContent{
     overflow-x: hidden;
     overflow-y: auto;
-    width: 67%;
+    width: 75%;
     padding: 10px;
+}
+.survey-right, .survey-left{
+    display: inline-block;
+    *display: inline;
+    height: 50px;
+    zoom: 1;
+    vertical-align: center;
+}
+.survey-left{
+    display: table-cell;
+    width: 50%;
+}
+.survey-middle{
+    display: table-cell;
+    width: 20%;
+}
+.survey-right{
+    display: table-cell;
+    width: 30%;
+}
+.live{
+    color: #006ea1;
+}
+.not-live{
+    color: #7e7f82;
+}
+.manage{
+    margin-right: 5px;
+    background-color: #029934;
+}
+.edit{
+    background-color: #ceb900;
+}
+.manage, .edit, .manage:hover, .edit:hover{
+    margin-right: 5px;
+    color: #ffffff;
+    padding: 5px;
 }
 .dContainer{
     margin-top: 60px;
@@ -168,18 +207,24 @@ html, body{
     overflow: auto;
 }
 .surveyList{
+    padding: 0;
     width: 100%;
     list-style-type: none;
     cursor: pointer;
 }
 .surveyList>li{
+    display: table;
+    line-height: 60px;
+    padding: 0;
+    padding-left: 10px;
     width: 100%;
-    border-bottom: solid;
-    border-bottom-color: #6d6e71;
-    border-bottom-width: 1px;
+    height: 50px;
+    border-bottom-color: #ececec;
+    border-bottom-style: solid;
+    border-bottom-width: 2px; 
 }
 .surveyList>li:hover{
-    background-color: #cccccc;
+    box-shadow: 0px 2px 5px 5px #cccccc;
 }
 
 /*Survey Creation Page*/

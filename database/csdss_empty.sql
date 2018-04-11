@@ -56,7 +56,8 @@ CREATE TABLE `pins` (
   `surName` varchar(30) DEFAULT NULL,
   `groupName` varchar(20) DEFAULT NULL,
   `acctName` varchar(20) NOT NULL,
-  `surText` varchar(256) DEFAULT NULL
+  `surText` varchar(256) DEFAULT NULL,
+  `live` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

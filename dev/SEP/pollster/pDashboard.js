@@ -22,6 +22,18 @@ function showSurveys(){
             }
             else{
                 $("#lContainer").html(constructSurveyListHTML(response));
+                $(".manage").each(function(i, ele){
+                    $(ele).unbind("click");
+                    $(ele).on("click", function(){displayManageSurvey(ele)});
+                });
+                $(".edit").each(function(i, ele){
+                    $(ele).unbind("click");
+                    $(ele).on("click", function(){displayEditSurvey(ele)});
+                });
+                $(".survey-left").each(function(i, ele){
+                    $(ele).unbind("click");
+                    $(ele).on("click", function(){displayResults(ele)});
+                })
             }
         },
         error: function(xhr, status, error){
@@ -30,12 +42,41 @@ function showSurveys(){
     })
 }
 
+function displayResults(ele){
+    alert("results");
+}
+
+function displayEditSurvey(ele){
+    alert("edit Survey");
+}
+
+function displayManageSurvey(ele){
+    alert("Manage Survey");
+}
+
 function constructSurveyListHTML(surveyJSON){
     var html = "<ul class='surveyList'>";
     var surArr = JSON.parse(surveyJSON);
     for(var i = 0; i < surArr.length; i++){
         var survey = surArr[i];
-        html += "<li><h3>" + survey.surName + "</h3></li>";
+        var liveIndicatorClass = "live";
+        var liveIndicator = "live";
+        if(survey.live == "0"){
+            liveIndicatorClass = "not-live";
+            liveIndicator = "not live";
+        }
+        html +="<li>\
+                    <div class='survey-left'>\
+                        <h4>" + survey.surName + "</h4>\
+                    </div>\
+                    <div class='survey-middle'>\
+                        <span class='" + liveIndicatorClass + "'>" + liveIndicator + "</span>\
+                    </div>\
+                    <div class='survey-right'>\
+                        <a class='manage shadow'>Manage</a>\
+                        <a class='edit shadow'>Edit</a>\
+                    </div>\
+                </li>";
     }
     html += "</ul>";
     return html;
