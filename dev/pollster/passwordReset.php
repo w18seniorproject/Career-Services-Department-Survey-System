@@ -31,11 +31,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $numRows = $result->rowCount();
 
         if($numRows == 0){
-            ?>
-            <script> 
-            alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again."); window.location.href='forgotPassword.html'
-            </script>
-            <?php
+            header("Location: passwordReset.html?error=tokenRemoved");
+            die();
         }
 
         if($numRows == 1){
@@ -43,27 +40,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             //If token hasn't expired...
             $expiration = strtotime($row['expiration']);
+            
             if($expiration < strtotime(date("Y-m-d H:i:s"))){
-            ?>
-            <script> alert("The link used to access this page has expired. Please try again."); window.location.href='forgotPassword.html'</script>
-            <?php
 
+            header("Location: passwordReset.html?error=tokenExpired");
             die();
             }
-            $used = $row['tokenUsed'];
 
+            $used = $row['tokenUsed'];
             //Check to see if the token was used previously
             if($used){
-            ?>
-            <script> alert("The link accessing this page has already been used. Please try again."); window.location.href='forgotPassword.html'</script>
-            <?php
 
+            header("Location: passwordReset.html?error=tokenUsed");
             die();
             }
 
             $acctName = $row['acctName'];        
 
-        }else{ //If more than one row is returned from token table query
+        }else{ //If more than one row is returned from token table query. Should never happen.
             echo "Internal error. There is more than one account associated with this Token.";
         }     
             //Make sure newly entered passwords match
@@ -99,6 +93,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                 if(!$stmt){
                     echo "Error. Token not updated to 'used'.";
+                }else{
+
+                header("Location: passwordReset.html?response=success");
                 }
             }
         $stmt = null;

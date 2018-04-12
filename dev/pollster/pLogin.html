@@ -19,7 +19,7 @@
         <div id="header"></div>
         
         <div class="form-centered">
-            <legend class="legend">Pollster Login</legend>
+            <legend class="legend">Survey Administrator Login</legend>
             <form action="pAuth.php" method="post">
 
                 <input class="form-control input-lg" placeholder="Username" type="text" name="username">
@@ -29,11 +29,11 @@
                 <input class="btn btn-primary btn-lg btn-block"  type="submit" value="Submit"></input>
 
             </form>
-        </br>
-        
+        </br>    
 			<p id="errorMessage" class="errorMessage"></p>
             <script type="text/javascript">
             
+                var response = getUrlParameter("response");
 				var string = getUrlParameter("error");
                 var message = "";
                 
@@ -42,11 +42,14 @@
 				}
 				else if(string == "notUnique"){
 					message = "devteam messed up. Usernames/Passwords aren't unique";
+                }              
+				document.getElementById("errorMessage").innerText = message;             
+
+                if(response == "emailSent"){
+                alert("A link has been sent to the email address associated with this account.");
                 }
-                
-				document.getElementById("errorMessage").innerText = message;
             </script>
-            
+
 			<p style="text-align: center">
 
 			<i> 
