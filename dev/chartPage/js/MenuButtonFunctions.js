@@ -92,11 +92,12 @@ options: {
 });
 }
 
+var js_questionJSON;
+var js_resultJSON;
 window.onload = function(){
 
 
-  var js_questionJSON;
-  var js_resultJSON;
+
   var topRelMenuButton=document.getElementById("curRelLevelButton");
   var topAnsMenuButton=document.getElementById('answersMenuButton');
     $.ajax({
@@ -188,25 +189,6 @@ var groupedBySurveyName=groupBy(questionJSON, 'surName');
 
 function answersButtonFiller(surname)
 {
-  var js_questionJSON;
-  $.ajax({
-
-    type: "POST",
-    url: 'include/dev/backend/getQuestions.php',
-    dataType: 'json',
-    success: function(json){
-      js_questionJSON=JSON.parse(json);
-      if(js_questionJSON.hasOwnProperty('message'))
-      {
-        alert('No Questions Currently Exists In Database');
-        return false;
-      }
-    },
-    error: function(){
-      alert('Error occurred while retrieving data.');
-      return false;
-    }
-  });
 
     var sMI=document.getElementById("questionMenuItems");
 
@@ -226,44 +208,6 @@ function answersButtonFiller(surname)
 
 function pieChartMaker(qNum, SurName)
 {
-  var js_resultJSON;
-  $.ajax({
-
-    type: "POST",
-    url: 'include/dev/backend/getResults.php',
-    dataType: 'json',
-    success: function(json){
-      js_resultJSON=JSON.parse(json);
-      if(js_resultJSON.hasOwnProperty('message'))
-      {
-        alert('No Results Currently Exists In Database');
-        return false;
-      }
-    },
-    error: function(){
-      alert('Error occurred while retrieving data.');
-      return false;
-    }
-  });
-  var js_questionJSON;
-  $.ajax({
-
-    type: "POST",
-    url: 'include/dev/backend/getQuestions.php',
-    dataType: 'json',
-    success: function(json){
-      js_questionJSON=JSON.parse(json);
-      if(js_questionJSON.hasOwnProperty('message'))
-      {
-        alert('No Questions Currently Exists In Database');
-        return false;
-      }
-    },
-    error: function(){
-      alert('Error occurred while retrieving data.');
-      return false;
-    }
-  });
   var qNumInt= parseInt(qNum);
   var filteredResults = js_resultJSON.filter(function(item){
 
@@ -283,14 +227,14 @@ function pieChartMaker(qNum, SurName)
   filteredResults.forEach(function (item)
     {
       var itemResponses=item.surResults;
-      var seperatedResponses=itemResponses.split(',');
+      var seperatedResponses=itemResponses.split("`|");
       var qNumIntMinus=qNumInt-1;
       resultData.push(seperatedResponses[qNumIntMinus]);
     }
   );
   resultData.sort();
   var counts={};
-  var possibleResponses=filteredQuestion[0].qChoices.split(',');
+  var possibleResponses=filteredQuestion[0].qChoices.split("`|");
   for (var i = 0; i < possibleResponses.length; i++) {
    var resp=person.possibleResponses[i];
    counts[resp]=0;
