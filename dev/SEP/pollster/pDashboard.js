@@ -23,16 +23,19 @@ function showSurveys(){
             else{
                 $("#lContainer").html(constructSurveyListHTML(response));
                 $(".manage").each(function(i, ele){
-                    $(ele).unbind("click");
                     $(ele).on("click", function(){displayManageSurvey(ele)});
                 });
                 $(".edit").each(function(i, ele){
-                    $(ele).unbind("click");
                     $(ele).on("click", function(){displayEditSurvey(ele)});
                 });
                 $(".survey-left").each(function(i, ele){
-                    $(ele).unbind("click");
                     $(ele).on("click", function(){displayResults(ele)});
+                });
+                $(".survey-middle").each(function(i, ele){
+                    $(ele).on("click", function(){displayResults(ele)});
+                });
+                $(".surveyListItem").each(function(i, ele){
+                    $(ele).on("click", function(){showSelectedItem(ele)});
                 })
             }
         },
@@ -42,18 +45,21 @@ function showSurveys(){
     })
 }
 
+function showSelectedItem(ele){
+    $(".surveyListItem-selected").removeClass("surveyListItem-selected");
+    $(ele).addClass("surveyListItem-selected");
+}
+
 function displayResults(ele){
     //TODO grab database stuff and display results
-    alert("results");
 }
 
 function displayEditSurvey(ele){
     //TODO show editsurvey page and prefill from db
-    alert("edit Survey");
 }
 
 function displayManageSurvey(ele){
-    alert("Manage Survey");
+    showManageSurvey($(ele).parent().parent().attr("pin"));
 }
 
 function constructSurveyListHTML(surveyJSON){
@@ -67,9 +73,9 @@ function constructSurveyListHTML(surveyJSON){
             liveIndicatorClass = "not-live";
             liveIndicator = "not live";
         }
-        html +="<li surName='" + survey.surName + "' live='" + survey.live + "' surText='" + survey.surText + "' pin='" + survey.pin + "'>\
+        html +="<li class='surveyListItem' surName='" + survey.surName + "' live='" + survey.live + "' surText='" + survey.surText + "' pin='" + survey.pin + "'>\
                     <div class='survey-left'>\
-                        <h4>" + survey.surName + "</h4>\
+                        " + survey.surName+ "\
                     </div>\
                     <div class='survey-middle'>\
                         <span class='" + liveIndicatorClass + "'>" + liveIndicator + "</span>\
@@ -82,4 +88,22 @@ function constructSurveyListHTML(surveyJSON){
     }
     html += "</ul>";
     return html;
+}
+
+function makeItLookNice(){
+    if($(window).width() < 760){
+        $(".leftContent").css("visibility: hidden;");
+        $(".rightContent").css("width: 100%");
+    }
+    else{
+        $(".leftContent").css("visibility: visible;");
+        if($(window).width()*0.3 < 400){
+            $(".leftContent").width(400);
+            $(".rightContent").width($(window).width() - 401);
+        }
+        else{
+            $(".leftContent").width($(window).width()*0.3);
+            $(".rightContent").width($(window).width()*0.7 - 1);
+        }
+    }
 }

@@ -68,48 +68,6 @@
 }
 
 /*Common to any page that needs them*/
-.switch{
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-.switch input{
-    display: none;
-}
-.slider{
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #cccccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-slider::before{
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: #ffffff;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-input:checked + .slider{
-    background-color: #2196f3;
-}
-input:focus + .slider{
-    box-shadow: 0 0 1px #2196f3;
-}
-input:checked + .slider:before{
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-}
 .btn-primary,
 .btn-primary:focus{
     background-color: #a10022 !important;
@@ -182,7 +140,6 @@ html, body{
     height: 100%;
 }
 .leftContent{
-    width: 30%;
     overflow-y: auto;
     overflow-x: hidden;
     float: left;
@@ -195,10 +152,9 @@ html, body{
     display: none;
 }
 .rightContent{
+    float: right;
     overflow-x: hidden;
-    overflow-y: auto;
-    width: 70%;
-    padding: 10px;
+    overflow-y: scroll;
 }
 .survey-right, .survey-left{
     display: inline-block;
@@ -210,6 +166,9 @@ html, body{
 .survey-left{
     display: table-cell;
     width: 50%;
+    text-overflow: ellipsis;
+    font-family: Arial;
+    font-size: 18px;
 }
 .survey-middle{
     display: table-cell;
@@ -247,6 +206,7 @@ html, body{
     height: 100%;
     width: 100%;
     overflow: auto;
+    padding: 10px;
 }
 .surveyList{
     padding: 0;
@@ -263,10 +223,14 @@ html, body{
     height: 50px;
     border-bottom-color: #ececec;
     border-bottom-style: solid;
-    border-bottom-width: 2px; 
+    border-bottom-width: 2px;
 }
 .surveyList>li:hover{
     box-shadow: 0px 2px 5px 5px #cccccc;
+}
+.surveyListItem-selected{
+    box-shadow: 0px 2px 5px 5px #cccccc;
+    background-color: #fff1f1
 }
 
 /*Survey Creation Page*/
