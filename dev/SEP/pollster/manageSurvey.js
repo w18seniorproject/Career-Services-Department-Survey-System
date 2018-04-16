@@ -135,6 +135,21 @@ function showResources(){
     });
 }
 
+function showResourcesFilled(surveyName){
+    $.ajax({
+        url: "../index.php",
+        cache: false,
+        type: "POST",
+        data: ({goal: "showResources", surName: surveyName, aType: "POLL"}),
+        success: function(response){
+            alert(JSON.parse(response));
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at showResources() ajax call in manageSurvey.js");
+        }
+    });
+}
+
 function replaceSelectedText(ele, text, start, end) {
     var original = $(ele).val();
     var replaced = original.slice(0, start) + text + original.slice(end);

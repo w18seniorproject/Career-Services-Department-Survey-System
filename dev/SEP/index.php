@@ -40,8 +40,12 @@
                 ManageSurvey::SetSurveyData($db);
                 exit();
             }
+            elseif(isset($POST['goal']) && isset($_POST['surName'])){
+                ManageSurvey::GetResources();
+                exit();
+            }
             elseif(isset($_POST['goal'])){
-                ManageSurvey::GetSectionNum();
+                ManageSurvey::GetSectionNum($db);
                 exit();
             }
             //otherwise throw error code

@@ -230,6 +230,36 @@ function cancel(){
     }
 }
 
+function checkSections(){
+    var sections = document.getElementsByClassName("sWrapper");
+    if(sections.length < 1){
+        return false;
+    }
+    return true;
+}
+
+function checkQuestions(){
+    var value = true;
+    $(".sWrapper").each(function(i, sWrapper){
+        var questions = $(sWrapper).children().toArray();
+        if(questions.length < 3){
+            value = false;
+        }
+    });
+    return value;
+}
+
+function checkChoices(){
+    var value = true;
+    $(".choiceQ").each(function(i, choiceQ){
+        var choices = $(choiceQ).children().toArray();
+        if(choices.length < 2){
+            value = false;
+        }
+    });
+    return value;
+}
+
 function submit(){
     var title = $("#surTitle").val();
     var exit = false;

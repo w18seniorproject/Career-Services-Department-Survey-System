@@ -97,23 +97,6 @@ CREATE TABLE `results` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `resources`
---
-
-CREATE TABLE `resources` (
-  `acctName` varchar(20) NOT NULL,
-  `surName` varchar(256) NOT NULL,
-  `rLevel` int(11) NOT NULL,
-  `resources` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Indexes for table `resources`
---
-ALTER TABLE `resources`
-  ADD PRIMARY KEY (`acctName`,`surName`,`rLevel`);
-
---
 -- Table structure for table `secreqs`
 --
 
@@ -121,7 +104,8 @@ CREATE TABLE `secreqs` (
   `acctName` varchar(20) CHARACTER SET latin1 NOT NULL,
   `surName` varchar(30) CHARACTER SET latin1 NOT NULL,
   `rLevel` int(11) NOT NULL,
-  `minScore` int(11) NOT NULL
+  `minScore` int(11) NOT NULL,
+  `resources` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------

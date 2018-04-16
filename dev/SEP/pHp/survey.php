@@ -86,9 +86,9 @@
 
             $_SESSION['rLevel'] = $secNum;
 
-            $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`) VALUES (?, ?, ?, ?);";
+            $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`) VALUES (?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
-            $result->execute(array($pin, $surTitle, $acctName, $surText));
+            $result->execute(array($pin, $surTitle, $acctName, $surText, 0));
 
             echo $pin;
         }

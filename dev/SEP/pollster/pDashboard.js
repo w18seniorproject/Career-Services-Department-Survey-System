@@ -3,11 +3,11 @@ function showCreateSurvey(){
     $("#rContainer").load("embed.pSurvey.html");
 }
 
-function showManageSurvey(pin){
+function showManageSurvey(pin, surName){
     $("#rContainer").html("");
     $("#rContainer").load("embed.manageSurvey.html", function(){
         showPinsAndGroups(pin);
-        showResources();
+        showResourcesFilled(surName);
     });
 }
 
@@ -59,7 +59,7 @@ function displayEditSurvey(ele){
 }
 
 function displayManageSurvey(ele){
-    showManageSurvey($(ele).parent().parent().attr("pin"));
+    showManageSurvey($(ele).parent().parent().attr("pin"), $(ele).parent().parent().attr("surName"));
 }
 
 function constructSurveyListHTML(surveyJSON){
