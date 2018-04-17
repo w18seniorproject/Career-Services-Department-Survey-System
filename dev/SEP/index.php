@@ -85,11 +85,6 @@
             header("Location: user/uSurvey.html");
             exit();
         }
-        elseif(isset($_SESSION['rLevel'])){
-            $rLevel = $_SESSION['rLevel'];
-            echo $rLevel;
-            exit();
-        }
         else{
             header("Location: user/uLogin.html");
             exit();
