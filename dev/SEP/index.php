@@ -40,15 +40,19 @@
                 ManageSurvey::SetSurveyData($db);
                 exit();
             }
-            elseif(isset($POST['goal']) && isset($_POST['surName'])){
-                ManageSurvey::GetResources();
+            elseif(isset($_POST['manageSurveyEditResources']) && isset($_POST['surName'])){
+                ManageSurvey::GetResources($db);
                 exit();
             }
-            elseif(isset($_POST['goal'])){
+            elseif(isset($_POST['manageSurveyEditPins']) && isset($_POST['surName'])){
+                ManageSurvey::GetPins($db);
+                exit();
+            }
+            elseif(isset($_POST['manageSurveyInitial'])){
                 ManageSurvey::GetSectionNum($db);
                 exit();
             }
-            //otherwise throw error code
+            //otherwise throw error code Bad Request
             else{
                 http_response_code(400);
                 exit();
@@ -90,7 +94,7 @@
             exit();
         }
     }
-    //otherwise throw error code
+    //otherwise throw error code Bad Request
     else{
         http_response_code(400);
         exit();

@@ -1,18 +1,5 @@
 function showPinsAndGroups(pin){
-    var html =  "<table class='qTable' id='pinTable'>\
-                    <tr>\
-                        <th class='center-th'>Group Name</th>\
-                        <th class='center-th'>PIN</th>\
-                        <th class='center-th'>Generate New</th>\
-                        <th class='center-th'>Add/Remove</th>\
-                    </tr>\
-                    <tr>\
-                        <th class='center-th'>General(Unchangeable)</th>\
-                        <th class='center-th'>" + pin + "</th>\
-                        <th class='center-th'><span class='refreshPin-disabled'>⟳</span></th>\
-                        <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice-disabled'>&#10799</span></th>\
-                    </tr>\
-                </table>";
+    var html =  constructInitialPinGroupHTML(pin, "General");
     $("#pinsandgroups").append(html);
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
@@ -31,6 +18,62 @@ function showPinsAndGroups(pin){
         $(ele).on("click", function(){
             removeGroup(ele);
         });
+    });
+}
+
+function constructInitialGroupPinHTML(pin, groupName){
+    var html =  "<table class='qTable' id='pinTable'>\
+                    <tr>\
+                        <th class='center-th'>Group Name</th>\
+                        <th class='center-th'>PIN</th>\
+                        <th class='center-th'>Generate New</th>\
+                        <th class='center-th'>Add/Remove</th>\
+                    </tr>\
+                    <tr>\
+                        <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' value='" + groupName + "' placeholder='Enter Group Name' type='text'></th>\
+                        <th class='center-th pinHolder'>" + pin + "</th>\
+                        <th class='center-th'><span class='refreshPin'>⟳</span></th>\
+                        <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice-disabled'>&#10799</span></th>\
+                    </tr>\
+                </table>";
+    return html;
+}
+
+function showPinsAndGroupsFilled(surveyName, surveyText){
+    $.ajax({
+        url: "../index.php",
+        cache: false,
+        type: "POST",
+        data: ({manageSurveyEditPins: "showResources", surText: surveyText, surName: surveyName, aType: "POLL"}),
+        success: function(response){
+            var pinGroupArray = JSON.parse(response);
+            var html = constructInitialGroupPinHTML(pinGroupArray[0].pin, pinGroupArray[0].groupName);
+            $("#pinsandgroups").append(html);
+            for(var i = 1; i < pinGroupArray.length; i++){
+                $('qTable').html(constructGroupPinHTML(pin, groupName));
+            }
+            $(".refreshPin").each(function(i, ele){
+                $(ele).unbind('click');
+                $(ele).on('click', function(){
+                    refreshPin(ele);
+                });
+            });
+            $(".add-choice").each(function(i, ele){
+                $(ele).unbind('click');
+                $(ele).on("click", function(){
+                    addGroup(ele);
+                });
+            });
+            $(".remove-choice").each(function(i, ele){
+                $(ele).unbind('click');
+                $(ele).on("click", function(){
+                    removeGroup(ele);
+                });
+            });
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at showPinsAndGroupsFilled() ajax call in manageSurvey.js: " + exception);
+        }
     });
 }
 
@@ -57,7 +100,7 @@ function refreshPin(ele){
 }
 
 function addGroup(ele){
-    $(ele).parent().parent().parent().append(constructGroupPinHTML());
+    $(ele).parent().parent().parent().append(constructGroupPinHTML(Math.floor(Math.random()*(9999-1000+1)+1000), ""));
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on('click', function(){
@@ -82,10 +125,10 @@ function removeGroup(ele){
     $(ele).parent().parent().remove();
 }
 
-function constructGroupPinHTML(){
+function constructGroupPinHTML(pin, groupName){
     var toReturn =  "<tr>\
-                        <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' placeholder='Enter Group Name' type='text'></th>\
-                        <th class='center-th pinHolder'>" + Math.floor(Math.random()*(9999-1000+1)+1000) + "</th>\
+                        <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' value='" + groupName + "'placeholder='Enter Group Name' type='text'></th>\
+                        <th class='center-th pinHolder'>" + pin + "</th>\
                         <th class='center-th'><span class='refreshPin'>⟳</span></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
@@ -97,7 +140,7 @@ function showResources(){
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({goal: "showResources", aType: "POLL"}),
+        data: ({manageSurveyInitial: "showResources", aType: "POLL"}),
         success: function(response){
             for(var i = 1; i < response; i++){
                 $("#resources").append(constructResourceHTML(i));
@@ -140,12 +183,12 @@ function showResourcesFilled(surveyName){
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({goal: "showResources", surName: surveyName, aType: "POLL"}),
+        data: ({manageSurveyEditResources: "showResources", surName: surveyName, aType: "POLL"}),
         success: function(response){
-            alert(JSON.parse(response));
+            alert(response); //TODO do something here
         },
         error: function(jqxr, status, exception){
-            alert("Failing at showResources() ajax call in manageSurvey.js");
+            alert("Failing at showResourcesFilled() ajax call in manageSurvey.js: " + exception);
         }
     });
 }
@@ -264,11 +307,11 @@ function post(resourceArray, pinArray, groupArray){
     var resources = JSON.stringify(resourceArray);
     var pins = JSON.stringify(pinArray);
     var groups = JSON.stringify(groupArray);
-    var form =  $("<form action='../index.php' method='POST'>\
-                    <input type='hidden' name='resources' value='" + resources + "'>\
-                    <input type='hidden' name='pins' value='" + pins + "'>\
-                    <input type='hidden' name='groups' value='" + groups + "'>\
-                    <input type='hidden' value='POLL' name='aType'>\
+    var form =  $( "<form action='../index.php' method='POST'>\
+                        <input type='hidden' name='resources' value='" + resources + "'>\
+                        <input type='hidden' name='pins' value='" + pins + "'>\
+                        <input type='hidden' name='groups' value='" + groups + "'>\
+                        <input type='hidden' value='POLL' name='aType'>\
                     </form>");
     $("body").append(form);
     $(form).submit();
