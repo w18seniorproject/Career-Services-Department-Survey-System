@@ -178,11 +178,6 @@ function showResources(){
     });
 }
 
-function parseResource(resourceText){
-    var doc = new DOMParser().parseFromString(resourceText.substring(59), 'text/html');
-    return doc.body.textContent || "";
-}
-
 function showResourcesFilled(surveyName){
     $.ajax({
         url: "../index.php",
@@ -192,10 +187,9 @@ function showResourcesFilled(surveyName){
         success: function(response){
             var resourceArray = JSON.parse(response);
             for(var i = 0; i < resourceArray.length; i++){
-                $("#resources").append(constructResourceHTML(i+1, parseResource(resourceArray[i].resources)));
+                $("#resources").append(constructResourceHTML(i+1, resourceArray[i].resourceMarkup));
                 var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + i + "']";
                 new MdHtmlForm($(selector));
-                alert("here");
                 $(".btn-bold").each(function(i, ele){
                     $(ele).unbind('click');
                     $(ele).on("click", function(){
@@ -336,18 +330,29 @@ function save(){
         $(".qChoice").each(function(i,ele){
             groupArray.push($(ele).val());
         });
-        post(resourceArray, pinArray, groupArray);
+        var resourceMarkupArray = [];
+        $("textarea").each(function(i, ele){
+            resourceMarkupArray.push($(ele).val());
+        });
+        var live = 0;
+        if($("#liveornot").is("checked")){
+            var live = 1;
+        }
+        post(resourceArray, pinArray, groupArray, resourceMarkupArray, live);
     }
 }
 
-function post(resourceArray, pinArray, groupArray){
+function post(resourceArray, pinArray, groupArray, resourceMarkupArray, live){
     var resources = JSON.stringify(resourceArray);
     var pins = JSON.stringify(pinArray);
     var groups = JSON.stringify(groupArray);
+    var resourceMarkup = JSON.stringify(resourceMarkupArray);
     var form =  $( "<form action='../index.php' method='POST'>\
                         <input type='hidden' name='resources' value='" + resources + "'>\
                         <input type='hidden' name='pins' value='" + pins + "'>\
                         <input type='hidden' name='groups' value='" + groups + "'>\
+                        <input type='hidden' name='resourceMarkup' value='" + resourceMarkup + "'>\
+                        <input type='hidden' name='liveornot' value='" + live + "'>\
                         <input type='hidden' value='POLL' name='aType'>\
                     </form>");
     $("body").append(form);

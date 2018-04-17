@@ -73,9 +73,13 @@ function constructSurveyListHTML(surveyJSON){
             liveIndicatorClass = "not-live";
             liveIndicator = "not live";
         }
+        var surveyName = survey.surName;
+        if(surveyName.length > 20){
+            surveyName = surveyName.substring(0, 17) + "...";
+        }
         html +="<li class='surveyListItem' surName='" + survey.surName + "' live='" + survey.live + "' surText='" + survey.surText + "' pin='" + survey.pin + "'>\
-                    <div class='survey-left'>\
-                        " + survey.surName+ "\
+                    <div class='survey-left' title='" + survey.surName + "'>\
+                        " + surveyName+ "\
                     </div>\
                     <div class='survey-middle'>\
                         <span class='" + liveIndicatorClass + "'>" + liveIndicator + "</span>\

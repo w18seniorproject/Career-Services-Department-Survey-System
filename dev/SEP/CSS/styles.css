@@ -68,6 +68,38 @@
 }
 
 /*Common to any page that needs them*/
+.onoffswitch {
+    position: relative; width: 66px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    height: 30px; padding: 0; line-height: 30px;
+    border: 2px solid #FFFFFF; border-radius: 30px;
+    background-color: #7e7f82;
+    transition: background-color 0.3s ease-in;
+}
+.onoffswitch-label:before {
+    content: "";
+    display: block; height: 30px; width: 30px; margin: 0px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 34px;
+    border: 2px solid #7e7f82; border-radius: 30px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label {
+    background-color: #029934;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+   border-color: #029934;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label:before {
+    right: 0px; 
+}
 .btn-primary,
 .btn-primary:focus{
     background-color: #a10022 !important;

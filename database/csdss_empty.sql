@@ -105,7 +105,8 @@ CREATE TABLE `secreqs` (
   `surName` varchar(30) CHARACTER SET latin1 NOT NULL,
   `rLevel` int(11) NOT NULL,
   `minScore` int(11) NOT NULL,
-  `resources` text
+  `resources` text,
+  `resourceMarkup` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
