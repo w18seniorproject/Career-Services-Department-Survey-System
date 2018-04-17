@@ -12,16 +12,19 @@
 
             if($result->rowCount() > 0){
                 $surveyArr = array();
+                $prevSurName = "";
                 while($row = $result->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
-
-                    $survey = array(
-                        "surName" => $surName,
-                        "pin" => $pin,
-                        "surText" => $surText,
-                        "live" => $live
-                    );
-                    $surveyArr[] = $survey;
+                    if($surName != $prevSurName){
+                        $survey = array(
+                            "surName" => $surName,
+                            "pin" => $pin,
+                            "surText" => $surText,
+                            "live" => $live
+                        );
+                        $surveyArr[] = $survey;
+                        $prevSurName = $surName;
+                    }
                 }
                 echo json_encode($surveyArr);
             }

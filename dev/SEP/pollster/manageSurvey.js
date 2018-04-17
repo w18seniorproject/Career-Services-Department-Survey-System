@@ -1,5 +1,5 @@
 function showPinsAndGroups(pin){
-    var html =  constructInitialPinGroupHTML(pin, "General");
+    var html =  constructInitialGroupPinHTML(pin, "General");
     $("#pinsandgroups").append(html);
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
@@ -44,13 +44,13 @@ function showPinsAndGroupsFilled(surveyName, surveyText){
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({manageSurveyEditPins: "showResources", surText: surveyText, surName: surveyName, aType: "POLL"}),
+        data: ({manageSurveyEditPins: "filler", surText: surveyText, surName: surveyName, aType: "POLL"}),
         success: function(response){
             var pinGroupArray = JSON.parse(response);
             var html = constructInitialGroupPinHTML(pinGroupArray[0].pin, pinGroupArray[0].groupName);
             $("#pinsandgroups").append(html);
             for(var i = 1; i < pinGroupArray.length; i++){
-                $('qTable').html(constructGroupPinHTML(pin, groupName));
+                $('.qTable').append(constructGroupPinHTML(pinGroupArray[i].pin, pinGroupArray[i].groupName));
             }
             $(".refreshPin").each(function(i, ele){
                 $(ele).unbind('click');
@@ -127,7 +127,7 @@ function removeGroup(ele){
 
 function constructGroupPinHTML(pin, groupName){
     var toReturn =  "<tr>\
-                        <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' value='" + groupName + "'placeholder='Enter Group Name' type='text'></th>\
+                        <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' value='" + groupName + "' placeholder='Enter Group Name' type='text'></th>\
                         <th class='center-th pinHolder'>" + pin + "</th>\
                         <th class='center-th'><span class='refreshPin'>⟳</span></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
@@ -143,7 +143,7 @@ function showResources(){
         data: ({manageSurveyInitial: "showResources", aType: "POLL"}),
         success: function(response){
             for(var i = 1; i < response; i++){
-                $("#resources").append(constructResourceHTML(i));
+                $("#resources").append(constructResourceHTML(i, ""));
                 var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + (i-1) + "']";
                 new MdHtmlForm($(selector));
                 $(".btn-bold").each(function(i, ele){
@@ -178,6 +178,11 @@ function showResources(){
     });
 }
 
+function parseResource(resourceText){
+    var doc = new DOMParser().parseFromString(resourceText.substring(59), 'text/html');
+    return doc.body.textContent || "";
+}
+
 function showResourcesFilled(surveyName){
     $.ajax({
         url: "../index.php",
@@ -185,7 +190,40 @@ function showResourcesFilled(surveyName){
         type: "POST",
         data: ({manageSurveyEditResources: "showResources", surName: surveyName, aType: "POLL"}),
         success: function(response){
-            alert(response); //TODO do something here
+            var resourceArray = JSON.parse(response);
+            for(var i = 0; i < resourceArray.length; i++){
+                $("#resources").append(constructResourceHTML(i+1, parseResource(resourceArray[i].resources)));
+                var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + i + "']";
+                new MdHtmlForm($(selector));
+                alert("here");
+                $(".btn-bold").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        embolden(ele);
+                    });
+                });
+                $(".btn-italic").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        italicize(ele);
+                    });
+                });
+                $(".btn-link").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        showLink(ele);
+                    });
+                });
+                $(".btn-bullets").each(function(i, ele){
+                    $(ele).unbind('click');
+                    $(ele).on("click", function(){
+                        bullet(ele);
+                    });
+                });
+                $("textarea").each(function(i, ele){
+                    $(ele).focus();
+                });
+            }
         },
         error: function(jqxr, status, exception){
             alert("Failing at showResourcesFilled() ajax call in manageSurvey.js: " + exception);
@@ -208,7 +246,6 @@ function embolden(ele){
     var emboldened = "**" + original + "**";
     replaceSelectedText(textarea, emboldened, start, end);
     $(textarea).focus();
-    $(textarea).trigger("keyup");
 }
 
 function italicize(ele){
@@ -248,7 +285,7 @@ function bullet(ele){
     $(textarea).focus();
 }
 
-function constructResourceHTML(level){
+function constructResourceHTML(level, resourceText){
     var toReturn =  "<div>\
                         <h3>Section " + level + ":</h3>\
                         <div class='button-bar'>\
@@ -258,7 +295,7 @@ function constructResourceHTML(level){
                             <span class='edit-btn btn-bullets'>&#x2022</span>\
                         </div>\
                     <br/>\
-                        <textarea class='form-control resource mdhtmlform-md' data-mdhtmlform-group='" + (level-1) + "' placeholder='End of Survey Resources/Links'></textarea>\
+                        <textarea class='form-control resource mdhtmlform-md' data-mdhtmlform-group='" + (level-1) + "' placeholder='End of Survey Resources/Links'>" + resourceText + "</textarea>\
                     <br/>\
                         <div class='preview mdhtmlform-html' data-mdhtmlform-group='" + (level-1) + "'>\
                         </div>\

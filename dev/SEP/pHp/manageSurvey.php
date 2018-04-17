@@ -19,12 +19,12 @@
             
             $length = count($pins);
             for($i = 0; $i < $length; $i++){
-                $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `groupName`) VALUES (?, ?, ?, ?, ?);";
+                $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `groupName`, `live`) VALUES (?, ?, ?, ?, ?, ?);";
                 $results = $conn->prepare($sql);
-                $results->execute(array($pins[$i], $surName, $acctName, $surText, $groups[$i]));
+                $results->execute(array($pins[$i], $surName, $acctName, $surText, $groups[$i], 0));
             }
             
-            $sql = "DELETE FROM `resources` WHERE `acctName`=? AND `surName`=?;";
+            $sql = "DELETE FROM `secreqs` WHERE `acctName`=? AND `surName`=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName));
 
@@ -35,7 +35,7 @@
                 $results = $conn->prepare($sql);
                 $results->execute(array($acctName, $surName, $i+1, $resources[$i], 0));
             }
-            header("Location: pDashboard.html?debug=$resourceJSON");
+            header("Location: pollster/pDashboard.html?debug=$resourceJSON");
             die("Success");
         }
 
