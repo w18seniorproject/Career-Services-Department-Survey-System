@@ -1,6 +1,6 @@
 /*Header*/
 .navbar-default {
-    position: absolute;
+    position: fixed;
     top: 0;
     background-color: #a10022;
     border-color: #a10022;
@@ -162,6 +162,9 @@ html, body{
     background-color: #7e7f82;
     color: #ffffff;
 }
+.greyed-out{
+    color: #6d6e71;
+}
 
 /* Pollster Dashboard */
 .rightContent, .leftContent, .dContainer{
@@ -187,6 +190,7 @@ html, body{
     float: right;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-bottom: 50px;
 }
 .survey-right, .survey-left{
     display: inline-block;
@@ -238,7 +242,8 @@ html, body{
     height: 100%;
     width: 100%;
     overflow: auto;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .surveyList{
     padding: 0;

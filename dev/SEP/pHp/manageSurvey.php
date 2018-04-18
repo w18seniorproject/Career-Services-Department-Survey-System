@@ -69,7 +69,7 @@
             $_SESSION['surName'] = $surName;
             $acctName = $_SESSION['userName'];
 
-            $sql = "SELECT `pin`, `groupName` FROM `pins` WHERE `acctName`=? AND `surName`=?;";
+            $sql = "SELECT `pin`, `groupName`, `live` FROM `pins` WHERE `acctName`=? AND `surName`=?;";
             $results = $conn->prepare($sql);
             $results->execute(array($acctName, $surName));
             $pins = array();
@@ -79,6 +79,31 @@
             }
 
             echo json_encode($pins);
+        }
+
+        public static function DeleteSurvey($db){
+            $conn = $db->getConnection('poll');
+
+            $surName = $_SESSION['surName'];
+            $acctName = $_SESSION['userName'];
+
+            $sql = "DELETE FROM `pins` WHERE `acctName`=? AND `surName`=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName));
+
+            $sql = "DELETE FROM `questions` WHERE `acctName`=? AND `surName`=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName));
+
+            $sql = "DELETE FROM `secreqs` WHERE `acctName`=? AND `surName`=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName));
+
+            $sql = "DELETE FROM `results` WHERE `acctName`=? AND `surName`=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName));
+            
+            exit();
         }
 
         public static function GetSectionNum(){

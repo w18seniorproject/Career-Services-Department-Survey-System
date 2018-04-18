@@ -9,6 +9,7 @@ function showManageSurvey(surName, surText){
         showPinsAndGroupsFilled(surName, surText);
         showResourcesFilled(surName);
     });
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 function showSurveys(){
@@ -18,7 +19,10 @@ function showSurveys(){
         data: ({pdd: "true", aType: "POLL"}),
         success: function(response){
             if(response == "NONE"){
-                $("#lContainer").html("<h3 class='greyed-out'>No Surveys</h3>");
+                $("#lContainer").html(  "<div style='padding-top: 48%; text-align: center;'>\
+                                            <h3 class='greyed-out'>No Surveys</h3>\
+                                            <input type='button' onclick='showCreateSurvey()' value='Create New Survey' class='btn btn-secondary shadow'>\
+                                        </div>");
             }
             else{
                 $("#lContainer").html(constructSurveyListHTML(response));

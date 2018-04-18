@@ -21,6 +21,25 @@ function showPinsAndGroups(pin){
     });
 }
 
+function deleteSurvey(){
+    var shouldDelete = confirm("Are you sure you want to Delete this survey?\nThis action cannot be undone");
+    if(shouldDelete){
+        $.ajax({
+            url: "../index.php",
+            cache: false,
+            type: "POST",
+            data: ({deleteSurvey: "yes", aType: "POLL"}),
+            success: function(response){
+                alert("Survey Deleted");
+                location.reload();
+            },
+            error: function(jqxr, status, exception){
+                alert("Failing at deleteSurvey() ajax call in manageSurvey.js: " + exception);
+            }
+        })
+    }
+}
+
 function constructInitialGroupPinHTML(pin, groupName){
     var html =  "<table class='qTable' id='pinTable'>\
                     <tr>\
@@ -70,6 +89,9 @@ function showPinsAndGroupsFilled(surveyName, surveyText){
                     removeGroup(ele);
                 });
             });
+            if(pinGroupArray[0].live == 1){
+                $(".onoffswitch-label").trigger("click");
+            }
         },
         error: function(jqxr, status, exception){
             alert("Failing at showPinsAndGroupsFilled() ajax call in manageSurvey.js: " + exception);
@@ -214,9 +236,6 @@ function showResourcesFilled(surveyName){
                         bullet(ele);
                     });
                 });
-                $("textarea").each(function(i, ele){
-                    $(ele).focus();
-                });
             }
         },
         error: function(jqxr, status, exception){
@@ -335,7 +354,7 @@ function save(){
             resourceMarkupArray.push($(ele).val());
         });
         var live = 0;
-        if($("#liveornot").is("checked")){
+        if($("#myonoffswitch").is(":checked")){
             var live = 1;
         }
         post(resourceArray, pinArray, groupArray, resourceMarkupArray, live);

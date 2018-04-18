@@ -369,12 +369,7 @@ function post(toSend){
         type: "POST",
         data: ({dataArray: toSend, surText: instruc, aType: "POLL"}),
         success: function(response){
-            if(window.location.href.includes("pSurvey.html")){
-                window.location = "manageSurvey.html?pin=" + response;
-            }
-            else{
-                showManageSurvey(response);
-            }
+            window.location = "manageSurvey.html?pin=" + response;
         },
         error: function(jqxr, status, exception){
             alert("Failing at post() ajax call in pSurvey.js");

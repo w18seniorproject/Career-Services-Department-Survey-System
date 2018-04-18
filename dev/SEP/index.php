@@ -52,6 +52,10 @@
                 ManageSurvey::GetSectionNum($db);
                 exit();
             }
+            elseif(isset($_POST['deleteSurvey'])){
+                ManageSurvey::DeleteSurvey($db);
+                exit();
+            }
             //otherwise throw error code Bad Request
             else{
                 http_response_code(400);
