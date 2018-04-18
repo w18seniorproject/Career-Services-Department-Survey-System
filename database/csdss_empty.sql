@@ -123,6 +123,18 @@ CREATE TABLE `tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Event to remove expired records from tokens table
+--
+DELIMITER $$
+
+CREATE EVENT csdss.deleteExpiredTokens ON SCHEDULE EVERY 1 DAY 
+DO BEGIN
+DELETE FROM tokens WHERE expiration < NOW();
+END $$
+
+DELIMITER ;
+
+--
 -- Indexes for dumped tables
 --
 
