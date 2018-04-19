@@ -454,3 +454,27 @@ html, body{
 .edit-btn:hover{
     background-color: #cccccc;
 }
+/*Accounts Page*/
+.overlay{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.overlay:hover{
+    opacity: 0.5;
+}
+.profilepic{
+    position: absolute;
+    z-index: 0;
+    width: 200px;
+    height: 200px;
+}
+.ppContainer{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}

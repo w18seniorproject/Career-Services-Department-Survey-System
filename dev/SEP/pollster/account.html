@@ -22,7 +22,8 @@
         <form class='form-centered'>
             <legend class='legend'>My Account</legend>
             <div class='ppContainer'>
-                <a onclick='changepic()'><img src='../index.php' class='profilepic'></a>
+                <div><img class='overlay' onclick='changepic()' src='../graphics/ppOverlay.jpg'></div>
+                <div><img src='../index.php?profpic=yes' class='profilepic'></div>
             </div>
         </br> 
             <input type='email' name='email' placeholder='Email' id='email' class='form-control input'>

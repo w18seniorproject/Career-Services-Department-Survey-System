@@ -1,10 +1,13 @@
 <?php
     //TO-DO: Possible security before starting session
     session_start();
+
+    $root = $_SERVER['DOCUMENT_ROOT'];
+    include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
+    include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
+    $db = new Database();
         
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType'])){
-        $root = $_SERVER['DOCUMENT_ROOT'];
-        include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pLogin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pSignup.php';
@@ -15,8 +18,6 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/tLogin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pDashboard.php';
-
-        $db = new Database();
 
         if($_POST['aType'] === 'POLL'){
             /* POLLSTER HANDLING */
@@ -89,7 +90,11 @@
         } 
     }
     else if($_SERVER['REQUEST_METHOD'] === 'GET'){
-        if(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){      
+        if(isset($_GET['profpic'])){
+            PollsterAccount::GetProfilePic($db);
+            exit();
+        }
+        elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){      
             header("Location: user/uSurvey.html");
             exit();
         }
