@@ -108,17 +108,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo "Error. Link has been corrupted.";
     }
 
-    //Tokens table maintenance. Might be better placed in a stored procedure.
-/*$sql = "DELETE FROM tokens WHERE tokenUsed = ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(1,true);
-    $stmt->execute();
-
-    if(!$stmt){
-        echo "Error. tokens maintenance failed.";
-    }
-    $stmt = null;*/
-
 }else{
     http_response_code(400);
     exit();

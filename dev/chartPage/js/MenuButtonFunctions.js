@@ -103,7 +103,7 @@ window.onload = function(){
     $.ajax({
 
       type: "POST",
-      url: 'include/dev/backend/getQuestions.php',
+      url: 'include/dev/backend/getQuestions2.php',
       dataType: 'json',
       success: function(json){
         js_questionJSON=JSON.parse(json);
