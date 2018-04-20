@@ -31,7 +31,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `accounts` (
   `pass` text,
   `email` varchar(30) NOT NULL,
-  `acctName` varchar(20) DEFAULT NULL
+  `acctName` varchar(20) DEFAULT NULL,
+  `profpic` longblob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -97,10 +98,10 @@ CREATE TABLE `results` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `secreqs`
+-- Table structure for table `secReqs`
 --
 
-CREATE TABLE `secreqs` (
+CREATE TABLE `secReqs` (
   `acctName` varchar(20) CHARACTER SET latin1 NOT NULL,
   `surName` varchar(30) CHARACTER SET latin1 NOT NULL,
   `rLevel` int(11) NOT NULL,
@@ -169,9 +170,9 @@ ALTER TABLE `results`
   ADD PRIMARY KEY (`recNum`,`surName`,`groupName`,`acctName`);
 
 --
--- Indexes for table `secreqs`
+-- Indexes for table `secReqs`
 --
-ALTER TABLE `secreqs`
+ALTER TABLE `secReqs`
   ADD PRIMARY KEY (`acctName`,`surName`,`rLevel`);
 
 --

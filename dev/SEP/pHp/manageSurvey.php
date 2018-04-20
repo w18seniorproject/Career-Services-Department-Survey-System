@@ -27,14 +27,14 @@
                 $results->execute(array($pins[$i], $surName, $acctName, $surText, $groups[$i], $liveornot));
             }
             
-            $sql = "DELETE FROM `secreqs` WHERE `acctName`=? AND `surName`=?;";
+            $sql = "DELETE FROM `secReqs` WHERE `acctName`=? AND `surName`=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName));
 
             //TODO Fix minScore stuff. Just temporary filler for now
             $length = count($resources);
             for($i=0; $i < $length; $i++){
-                $sql = "INSERT INTO `secreqs` (`acctName`, `surName`, `rLevel`, `resources`, `minScore`, `resourceMarkup`) VALUES (?, ?, ?, ?, ?, ?);";
+                $sql = "INSERT INTO `secReqs` (`acctName`, `surName`, `rLevel`, `resources`, `minScore`, `resourceMarkup`) VALUES (?, ?, ?, ?, ?, ?);";
                 $results = $conn->prepare($sql);
                 $results->execute(array($acctName, $surName, $i+1, $resources[$i], 0, $resourceMarkup[$i]));
             }
@@ -48,7 +48,7 @@
             $surName = $_POST['surName'];
             $acctName = $_SESSION['userName'];
 
-            $sql = "SELECT `resourceMarkup` FROM secreqs WHERE `acctName`=? AND `surName`=?;";
+            $sql = "SELECT `resourceMarkup` FROM secReqs WHERE `acctName`=? AND `surName`=?;";
             $results = $conn->prepare($sql);
             $results->execute(array($acctName, $surName));
             $resources = array();
@@ -95,7 +95,7 @@
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName));
 
-            $sql = "DELETE FROM `secreqs` WHERE `acctName`=? AND `surName`=?;";
+            $sql = "DELETE FROM `secReqs` WHERE `acctName`=? AND `surName`=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName));
 

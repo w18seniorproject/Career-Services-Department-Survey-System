@@ -73,6 +73,7 @@ function getTFAns(quest){
 
 function showQuestions(){
     $.post("../index.php", { aType: 'TAKE' }, function(data){
+        alert(data);
         var survey = JSON.parse(data);
         var questions = JSON.parse(survey[0]);
         secReqs = JSON.parse(survey[1]);
