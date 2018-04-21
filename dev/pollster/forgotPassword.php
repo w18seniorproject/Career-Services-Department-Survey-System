@@ -58,7 +58,7 @@ $msg = "Please click on the link to retrieve your username or reset your passwor
 
 $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
    
-    //DO SOMETHING WITH THE "FROM" PARAM, SINCE THAT ISN'T OUR EMAIL ADDRESS.
+    //"FROM" PARAM ISN'T A VALID EMAIL ADDRESS.
    mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
 
    header("Location: pLogin.html?response=emailSent");
