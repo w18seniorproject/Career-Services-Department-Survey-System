@@ -14,6 +14,17 @@
           <li class="navbar-item"><a href="../pollster/account.html"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
           <li class="navbar-item"><a href="../pollster/pSurvey.html"><span class="glyphicon glyphicon-plus"></span> New Survey</a></li>
           <li class="navbar-item"><a href="../pollster/pDashboard.html"><span class="glyphicon glyphicon-th-list"></span> Dashboard</a></li>
+          <li class="navbar-item">
+            <div class="dropdown">
+              <button onclick="showMenu()" class="dropbtn">
+                <span class="glyphicon glyphicon-menu-down"></span>Help</button>
+              <div id="helpDropdown" class="dropdown-content">
+                <a href="#about">About</a>
+                <a href="#userGuide">User Guide</a>
+                <a href="#contact">Contact</a>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -30,4 +41,21 @@
           }
       }
     ).resize();
+  </script>
+  <script>
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function showMenu() {
+      document.getElementById("helpDropdown").classList.toggle("show");
+    }
+  
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+      if (!e.target.matches('.dropbtn')) {
+        var helpDropdown = document.getElementById("helpDropdown");
+        if (helpDropdown.classList.contains('show')) {
+          helpDropdown.classList.remove('show');
+        }
+      }
+    }
   </script>
