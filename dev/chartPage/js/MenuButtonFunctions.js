@@ -144,13 +144,14 @@ window.onload = function(){
         return false;
       }
     });
-  topRelMenuButton.onclick=relationsButton();
-  topAnsMenuButton.onclick=surveyButtonFiller(js_questionJSON);
 
 
 
 }
 
+$('#curRelLevelButton').click(function(){
+  relationsButton()
+});
 function relationsButton(){
 
   var x=document.getElementById("surveyButtons");
@@ -161,7 +162,12 @@ function relationsButton(){
   }
 }
 
-function surveyButtonFiller(questionJSON){
+$('#answersMenuButton').click(function(){
+
+  surveyButtonFiller();
+});
+
+function surveyButtonFiller(){
   var sMI=document.getElementById("surveyMenuItems");
   sMI.innerHTML="";
   //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
@@ -171,10 +177,10 @@ function surveyButtonFiller(questionJSON){
     return rv;
   }, {});
 };
-var groupedBySurveyName=groupBy(questionJSON, 'surName');
+var groupedBySurveyName=groupBy(js_questionJSON, 'surName');
   Object.keys(groupedBySurveyName).forEach(function(category)
   {
-      sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\" onclick=answersButtonFiller(${category})>${category}</button>";
+      sMI.innerHTML+="<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>${category}</button>";
 
   });
   var x=document.getElementById("AnswerDropdown");
@@ -187,6 +193,10 @@ var groupedBySurveyName=groupBy(questionJSON, 'surName');
 
 }
 
+$('.surButton').click(function(){
+
+  answersButtonFiller(this.innerHTML);
+});
 function answersButtonFiller(surname)
 {
 
@@ -197,15 +207,20 @@ function answersButtonFiller(surname)
 
       return item.surName === surname;
     });
+    var question=1;
     filtered.forEach(function(item)
     {
 
-        sMI.innerHTML+="<button class=\"dropdown-item\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value="+item.qNum+" on>"+item.qNum+"</button>";
+        sMI.innerHTML+="<button class=\"dropdown-item question-button\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value="+surname+" on>"+item.qNum+"</button>";
     });
 
 
 }
 
+$('.question-button').click(function(){
+
+  pieChartMaker(this.innerHTML, $(this).val());
+});
 function pieChartMaker(qNum, SurName)
 {
   var qNumInt= parseInt(qNum);
@@ -229,7 +244,12 @@ function pieChartMaker(qNum, SurName)
       var itemResponses=item.surResults;
       var seperatedResponses=itemResponses.split("`|");
       var qNumIntMinus=qNumInt-1;
-      resultData.push(seperatedResponses[qNumIntMinus]);
+      var responses=seperatedResponses[qNumIntMinus];
+      var brokenUp = seperatedResponses.split("`~")
+      for(var i=0; i<brokenUp.length; i++)
+      {
+        resultData.push(brokenUp[i]);
+      }
     }
   );
   resultData.sort();
@@ -241,6 +261,7 @@ function pieChartMaker(qNum, SurName)
   };
   for (var i = 0; i < resultData.length; i++) {
     var resp = resultData[i];
+
   counts[resp] = counts[resp] ? counts[resp] + 1 : 1;
   };
 
@@ -254,5 +275,23 @@ function pieChartMaker(qNum, SurName)
     labels: possibleResponses
   });
 
+
+}
+
+function exportResponsesToCSV()
+{
+  js_resultJSON;
+  let csvContent = "data:text/csv;charset=utf-8,";
+  var listedResults=[];
+  
+  for (var i=0; i<js_resultJSON.length; i++)
+  {
+    var answers = js_resultJSON[i].surResults.split("`|");
+    var row=[js_resultJSON[i].recNum, js_resultJSON[i].groupName, js_resultJSON[i].rLevel];
+
+    row.push.apply(answers);
+    listedResults.push(row);
+  }
+  var encodedUri = encodeURI
 
 }
