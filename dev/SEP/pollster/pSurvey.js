@@ -22,8 +22,11 @@ function addSection(){
 function addQuestion(ele){
     var questionHTML = constructQuestionHTML();
     $(ele).parent().find('.sWrapper').append(questionHTML);
-    $('.qNum').each(function(i, ele){
+    $('.qLabel').each(function(i, ele){
         $(ele).html(i+1+")");
+    });
+    $('.qNum').each(function(i, ele){
+        $(ele).val(i + 1);
     });
     $('.select').each(function(i,ele){
         $(ele).unbind('change');
@@ -43,10 +46,12 @@ function constructQuestionHTML(){
     var toReturn =  "<div class='qWrapper'>\
                         <hr>\
                         <table><tr>\
-                            <th><h3 class='qNum'></h3></th>\
+                            <th><h3 class='qLabel'></h3></th>\
                             <th><span class='close qClose'>&#10799</span></th>\
                         </tr></table>\
                         <input class='form-control input' placeholder='Enter Question Text' type='text'>\
+                        <input class='form-control qWeight' placeholder='Enter Weight' type='number'>\
+                        <input class='form-control qNum' type='hidden'>\
                         </br>\
                         <select class='form-control select'>\
                             <option disabled='disabled' selected='selected'>Select a Question Type</option>\
@@ -68,6 +73,7 @@ function constructSectionHTML(){
                                 <th><span class='close sClose'>&#10799</span></th>\
                             </tr></table>" +
                             "<input class='form-control input' placeholder='Enter a Section Title' type='text'>" +
+                            "<input class='form-control minScore' placeholder='Enter Minimum Section Score' type='number'>" +
                         "</div>\
                         </br>\
                         <hr>\
@@ -80,8 +86,12 @@ function closeSection(element){
     var result = confirm("Are you sure you want to delete this Section?");
     if(result){
         $(element).parent().parent().remove();
-        $('.qNum').each(function(i, ele){
+        $('.qLabel').each(function(i, ele){
             $(ele).html(i+1+")");
+        });
+        $('.qNum').each(function(i, ele){
+            $(ele).val(i + 1);
+            console.log(i);
         });
         $('.sNum').each(function(i, ele){
             $(ele).html("Section "+(i+1)+":");
@@ -91,7 +101,7 @@ function closeSection(element){
 
 function closeQuestion(element){
     $(element).parent().parent().remove();
-    $('.qNum').each(function(i, ele){
+    $('.qLabel').each(function(i, ele){
         $(ele).html(i+1+")");
     });
 }
@@ -112,13 +122,13 @@ function constructTypeHTML(){
 
 function addChoice(element, type){
     var choiceHTML;
-    if(type == 1){
+    if(type === 1){
         choiceHTML = constructRadioHTML(element);
     }
-    else if(type ==2){
+    else if(type === 2){
         choiceHTML = constructCheckboxHTML();
     }
-    else if(type ==3){
+    else if(type === 3){
         choiceHTML = constructTrueFalseHTML(element);
     }
     else{
@@ -140,7 +150,7 @@ function addChoice(element, type){
     $("[type=radio]").each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on('click', function(){
-            if($(ele).attr('on') == 'true'){
+            if($(ele).attr('on') === 'true'){
                 $(ele).attr('on', 'false');
                 $(ele).prop('checked', false);
             }
@@ -166,6 +176,7 @@ function constructRadioHTML(tableAncestor){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' on='false' type='radio' name='r" + identifier + "'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -175,6 +186,7 @@ function constructCheckboxHTML(){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' type='checkbox'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -279,73 +291,90 @@ function submit(){
         promptCompletion();
         return;
     }
-    var data = title;
+    var survey = {
+        "title": title,
+        "sections":[]
+    };
     $(".sWrapper").each(function(i,sWrapper){
         var secName = $(sWrapper).find(".input").val();
-        data += "$~$" + secName;
-        if(!secName){
+        var minScore = $(sWrapper).find(".minScore").val();
+        if(!secName || !minScore){
             promptCompletion();
             exit = true;
             return;
         }
+        survey.sections.push({
+            "secNum": i + 1,
+            "secName": secName,
+            "minScore": minScore,
+            "questions": []
+        });
         $(sWrapper).find(".qWrapper").each(function(j, qWrapper){
+            var qNum = $(qWrapper).find(".qNum").val();
             var qText = $(qWrapper).find(".input").val();
-            if(!qText){
-                promptCompletion();
-                exit = true;
-                return;
-            }
             var qType = $(qWrapper).find(".select").val();
-            data += "~$~" + qText + "#~#" + qType;
-            if(!qType){
+            var qWeight = $(qWrapper).find(".qWeight").val();
+            var qChoices = "";
+            if(!qText || !qType || !qWeight){
                 promptCompletion();
                 exit = true;
                 return;
             }
-            if(qType == "mc" || qType == "chk"){
-                $(qWrapper).find(".qTable").find("tr").each(function(ii,tr){
+            survey.sections[i].questions[j] = {
+                "num": qNum,
+                "text": qText,
+                "type": qType,
+                "weight": qWeight
+            };
+            if(qType === "mc" || qType === "chk"){
+                $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
                     if(exit){
                         return;
                     }
                     var choiceText = $(tr).find('.qCell').find(".qChoice").val();
-                    if(!choiceText){
+                    var qPoints = $(tr).find('.qCell').find(".qPoints").val();
+                    if(!choiceText || !qPoints){
                         promptCompletion();
                         exit = true;
                         return;
                     }
-                    if($(tr).find("th").find(".ans").prop("checked")){
-                        var choiceChecked = "t";
+                    if($(tr).find("th").find(".ans").prop("checked") && qType !== "chk"){
+                        survey.sections[i].questions[j].qAns = k;
                     }
-                    else{
-                        var choiceChecked = "f";
-                    }
-                    data += "~#~" + choiceText + "+~+" + choiceChecked;
+                    qChoices += (choiceText + "|`" + qPoints + "~$#");
                 });
+                
+                if(!survey.sections[i].questions[j].qAns)
+                    survey.sections[i].questions[j].qAns = null;
+                
+                qChoices = qChoices.substring(0, qChoices.length - 2);
+                survey.sections[i].questions[j].answers = qChoices;
+                
                 if(exit){
                     return;
                 }
             }
-            else if(qType == "tf"){
+            else if(qType === "tf"){
                 var val = 'none';
-                $(qWrapper).find(".qTable").find("tr").find("th").each(function(ii,th){
+                $(qWrapper).find(".qTable").find("tr").find("th").each(function(k,th){
                     var choiceChecked = $(th).find("input").attr("on");
-                    if(choiceChecked == "true"){
+                    if(choiceChecked === "true"){
                         val = $(th).find("input").attr('value');
                     }
                 });
-                data += "," + val;
+                survey.sections[i].questions[j].qAns = val;
             }
             else{
                 var val = 'none';
-                $(qWrapper).find(".qTable").find("tr").each(function(ii,tr){
-                    var choiceChecked = $(tr).find("th").each(function(jj, th){
+                $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
+                    $(tr).find("th").each(function(l, th){
                         var choiceChecked = $(th).find("input").attr("on");
-                        if(choiceChecked == "true"){
+                        if(choiceChecked === "true"){
                             val = $(th).find("input").attr('value');
                         }
                     });
                 });
-                data += "," + val;
+                survey.sections[i].questions[j].qAns = val;
             }
         });
         if(exit){
@@ -355,7 +384,7 @@ function submit(){
     if(exit){
         return;
     }
-    post(data);
+    post(survey);
 }
 
 function promptCompletion(){
