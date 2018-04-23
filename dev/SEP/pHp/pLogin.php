@@ -37,22 +37,7 @@
             else{
                 header("Location: ./pollster/pLogin.html?error=wrongAuth");
                 die("Username and/or password do not match."); 
-            }
-            //Check event_scheduler. If off, turn it on. Create MySQL event that removes expired tokens once daily.
-            $sql = "SELECT @@event_scheduler;";
-            $stmt->prepare($sql);
-            $stmt->execute();
-            $getStatus = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if($getStatus == "OFF"){
-
-            $sql = "SET GLOBAL event_scheduler = ON;";
-            $stmt->prepare($sql);
-            $stmt->execute();
-            }
-
-            $sql = "CREATE EVENT IF NOT EXISTS csdss.deleteExpiredTokens ON SCHEDULE EVERY 1 DAY COMMENT 'Removes expired tokens.' DO BEGIN DELETE FROM csdss.tokens WHERE expiration < NOW() END;";
-            $stmt->prepare($sql);
-            $stmt->execute();
+            }     
         }
     }
+?>

@@ -17,11 +17,9 @@ $known_value = $_POST["known_value"];
 else{
     $sql = "SELECT acctName, email FROM accounts WHERE acctName = ?;";
 }
-
 //$result is a PDO object, which holds returned records after execute()
 $result = $conn->prepare($sql);
 $result->execute(array($known_value));
-
 $numRows = $result->rowCount();
 
 // Confirms that one and only one account is associated (1 record returned from query) with the username or email address.
@@ -59,22 +57,17 @@ $stmt->execute();
 $msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/csdss/dev/pollster/passwordReset.html?";
 
 $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
-    //(start by sending unhashed username, just to make sure it works). When link is clicked, open 
-    //"update password" page. Send the same query string along with it, so that the correct account is opened.
-    // On the "update password" page, display the username and provide two password boxes (do this on front end and back end).
    
-    //DO SOMETHING WITH THE "FROM" PARAM, SINCE THAT ISN'T OUR EMAIL ADDRESS.
-    mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
+    //"FROM" PARAM ISN'T A VALID EMAIL ADDRESS.
+   mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
 
-    ?>
-    <script> alert("A link has been sent to the email address associated with this account."); window.location.href='pLogin.html'</script>
-    <?php
-
+   header("Location: pLogin.html?response=emailSent");
+    die();
     }// end if(rows==1)
     else{
-?>
-    <script> alert("There is no account associated with this user name or email address."); window.location.href='forgotPassword.html'</script>
-<?php
+
+    header("Location: forgotPassword.html?response=noAccount");
+    die();
     }
 ?>
 
