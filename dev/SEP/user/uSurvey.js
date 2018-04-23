@@ -73,7 +73,6 @@ function getTFAns(quest){
 
 function showQuestions(){
     $.post("../index.php", { aType: 'TAKE' }, function(data){
-        alert(data);
         var survey = JSON.parse(data);
         var questions = JSON.parse(survey[0]);
         secReqs = JSON.parse(survey[1]);
@@ -258,7 +257,16 @@ function sendResults(){
         type: 'post',
         data: {response : results, aType: 'TAKE'},
         success: function (data) {
-            //TO-DO: implement success function           
+            $("#survey-wrapper").html(" <form class='form-centered'>\
+                                            <legend class='legend'>Thank You</legend>" +
+                                            secReqs[curSec-1].resources +
+                                            "</br>\
+                                            <div id='comments'>\
+                                                <textarea id='commentbox' placeholder='Comments, Questions, etc. (optional)' class='form-control'></textarea>\
+                                            </br>\
+                                                <input type='button' value='Submit Comment' onclick='submitComment()' class='btn btn-primary btn-lg btn-block shadow'>\
+                                            </div>\
+                                        </form>");
         },
         error: function (jqxr, status, exception){
             alert("Failing at sendResults() ajax call in uSurvey.js");

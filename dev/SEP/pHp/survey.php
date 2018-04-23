@@ -24,7 +24,7 @@
                 $secNum = $section['secNum'];
             }
 
-            $_SESSION['rLevel'] = $secNum;
+            $_SESSION['rLevel'] = $secNum + 1;
 
             $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`, `groupName`) VALUES (?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);

@@ -24,7 +24,7 @@
             $dir = "pollster/profilePics/";
             $data = base64_decode($_POST['profPic']);
 
-            file_put_contents($dir . $fileName);
+            file_put_contents($dir . $fileName, $data);
 
             $toInsert = "profilePics/" . $fileName;
 
@@ -32,7 +32,10 @@
             $result = $conn->prepare($sql);
             $result->execute(array($toInsert, $acctName));
 
+            Header("Location: $toInsert");
+
             echo $toInsert;
+
         }
     }
 ?>

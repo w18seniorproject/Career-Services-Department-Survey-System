@@ -10,15 +10,15 @@ function getPP(){
         data: ({profpic: "yes"}),
         success: function(response){
             var ppLocation = response;
-            $("#ppHolder").html("<img src='" + ppLocation + "' class='profilepic'>");
+            $("#ppHolder").html("<img id='profPic' src='" + ppLocation + "' class='profilepic'>");
         },
         error: function(jqxr, status, exception){
             alert("Failing at getPP() ajax call in account.js: " + exception);
         }
     });
     $("#ppUpload").change(function(){
-        var profPic = $("#ppUpload").prop('files')[0];
-        var base64ImageContent = profPic.replace(image.replace(/^data:image\/(png|jpg);base64,/, ""));
+        var profPic = document.getElementById("profPic");
+        var base64ImageContent = getBase64Image(profPic);
         var toSend = new FormData();
         toSend.append('profPic', base64ImageContent);
         toSend.append('aType', "POLL");
@@ -31,7 +31,8 @@ function getPP(){
             url: "../index.php",
             success: function(response){
                 var ppLocation = response;
-                $("#ppHolder").html("<img src='" + ppLocation + "' class='profilepic'>");    
+                alert("response: " + response);
+                $("#ppHolder").html("<img id='profPic' src='" + ppLocation + "' class='profilepic'>");    
             },
             error: function(jqxr, status, exception){
                 alert("Failing at profilePic upload ajax call in account.js: " + exception);

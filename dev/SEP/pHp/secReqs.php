@@ -28,7 +28,8 @@
 
                     $req=array(
                         "rLevel" => $rLevel,
-                        "minScore" => $minScore
+                        "minScore" => $minScore,
+                        "resources" => $resources
                     );
                     $secReqs[] = $req;
                 }

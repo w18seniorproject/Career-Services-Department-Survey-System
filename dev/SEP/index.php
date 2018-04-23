@@ -57,6 +57,10 @@
                 ManageSurvey::DeleteSurvey($db);
                 exit();
             }
+            elseif(isset($_POST['profPic'])){
+                PollsterAccount::SetProfilePic($db);
+                exit();
+            }
             //otherwise throw error code Bad Request
             else{
                 http_response_code(400);
@@ -80,10 +84,6 @@
             //if so, return questions. 
             elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){ 
                 Survey::sendSurvey($db);
-                exit();
-            }
-            elseif(isset($_POST['profPic'])){
-                PollsterAccount::SetProfilePic($db);
                 exit();
             }
             //otherwise throw error code

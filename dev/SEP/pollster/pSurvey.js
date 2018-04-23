@@ -254,7 +254,7 @@ function checkQuestions(){
     var value = true;
     $(".sWrapper").each(function(i, sWrapper){
         var questions = $(sWrapper).children().toArray();
-        if(questions.length < 3){
+        if(questions.length < 4){
             value = false;
         }
     });

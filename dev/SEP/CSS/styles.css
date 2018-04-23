@@ -196,7 +196,7 @@ html, body{
     width: 100%;
     padding: 10px;
     height: 50px;
-    background-color: #ececec;
+    background-color: #fafafa;
 }
 .survey-right, .survey-left{
     display: inline-block;
