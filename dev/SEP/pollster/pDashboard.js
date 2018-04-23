@@ -3,6 +3,15 @@ function showCreateSurvey(){
     $("#rContainer").load("embed.pSurvey.html");
 }
 
+function showMyAccount(){
+    $("#rContainer").html("");
+    $("#rContainer").load("embed.account.html");
+}
+
+function showWelcome(){
+    $("#rContainer").html("<h1>Tutorial and Welcome Stuff will go here</h1>");
+}
+
 function showManageSurvey(surName, surText){
     $("#rContainer").html("");
     $("#rContainer").load("embed.manageSurvey.html", function(){

@@ -68,13 +68,6 @@
 }
 
 /*Common to any page that needs them*/
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0; 
-}
 .onoffswitch {
     position: relative; width: 66px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; user-select: none;
@@ -199,6 +192,12 @@ html, body{
     overflow-y: scroll;
     padding-bottom: 50px;
 }
+#leftContentHeader{
+    width: 100%;
+    padding: 10px;
+    height: 50px;
+    background-color: #ececec;
+}
 .survey-right, .survey-left{
     display: inline-block;
     *display: inline;
@@ -305,6 +304,7 @@ html, body{
 }
 .close{
     margin: 0;
+    float: right;
     margin-bottom: 10px;
     margin-left: 100%;
     font-weight: bolder;
@@ -520,6 +520,6 @@ html, body{
     display: block;
 }
 
-.dropdown a:hover {background-color: #ddd}
+.dropdown a:hover {background-color: #ececec}
 
 .show {display:block;}
