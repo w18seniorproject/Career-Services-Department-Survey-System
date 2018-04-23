@@ -32,7 +32,7 @@ CREATE TABLE `accounts` (
   `pass` text,
   `email` varchar(30) NOT NULL,
   `acctName` varchar(20) DEFAULT NULL,
-  `profpic` longblob DEFAULT NULL
+  `profpic` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

@@ -22,8 +22,12 @@
         <form class='form-centered'>
             <legend class='legend'>My Account</legend>
             <div class='ppContainer'>
+                <input type="file" style="display: none" id="ppUpload">
                 <div><img class='overlay' onclick='changepic()' src='../graphics/ppOverlay.jpg'></div>
-                <div><img src='../index.php?profpic=yes' class='profilepic'></div>
+                <div id='ppHolder'></div>
+                <script type='text/javascript'>
+                    getPP();
+                </script>
             </div>
         </br> 
             <input type='email' name='email' placeholder='Email' id='email' class='form-control input'>

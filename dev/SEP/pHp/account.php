@@ -11,8 +11,28 @@
 
             $row = $result->fetch(PDO::FETCH_ASSOC);
 
-            header("Content-type: image/jpeg");
             echo $row['profpic'];
+        }
+
+        public static function SetProfilePic($db){
+            $conn = $db->getConnection('poll');
+
+            $acctName = $_SESSION['userName'];
+
+            $fileName = $acctName . ".jpg";
+
+            $dir = "pollster/profilePics/";
+            $data = base64_decode($_POST['profPic']);
+
+            file_put_contents($dir . $fileName);
+
+            $toInsert = "profilePics/" . $fileName;
+
+            $sql = "UPDATE `accounts` SET `profpic`=? WHERE `acctName`=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($toInsert, $acctName));
+
+            echo $toInsert;
         }
     }
 ?>

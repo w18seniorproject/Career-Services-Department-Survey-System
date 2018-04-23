@@ -44,10 +44,11 @@
 
             $hashedPass = password_hash($pass, PASSWORD_BCRYPT);
 
-            $sql = "INSERT INTO `accounts` (`pass`, `email`, `acctName`) VALUES (?, ?, ?);";
+            $ppLocation = '../graphics/profpicgeneric.jpg';
 
+            $sql = "INSERT INTO `accounts` (`pass`, `email`, `acctName`, `profpic`) VALUES (?, ?, ?, ?);";
             $result = $conn->prepare($sql);
-            $result->execute(array($hashedPass, $email, $username));
+            $result->execute(array($hashedPass, $email, $username, $ppLocation));
 
             session_start();
             session_destroy();

@@ -81,7 +81,11 @@
             elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){ 
                 Survey::sendSurvey($db);
                 exit();
-            }    
+            }
+            elseif(isset($_POST['profPic'])){
+                PollsterAccount::SetProfilePic($db);
+                exit();
+            }
             //otherwise throw error code
             else{
                 http_response_code(400);
