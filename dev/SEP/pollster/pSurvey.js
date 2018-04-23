@@ -49,8 +49,8 @@ function constructQuestionHTML(){
                             <th><h3 class='qLabel'></h3></th>\
                             <th><span class='close qClose'>&#10799</span></th>\
                         </tr></table>\
-                        <input class='form-control input' placeholder='Enter Question Text' type='text'>\
-                        <input class='form-control qWeight' placeholder='Enter Weight' type='number'>\
+                        <input class='form-control input' placeholder='Enter Question Text' type='text'></br>\
+                        <input class='form-control qWeight' placeholder='Enter Weight' type='number' min='0'>\
                         <input class='form-control qNum' type='hidden'>\
                         </br>\
                         <select class='form-control select'>\
@@ -72,8 +72,8 @@ function constructSectionHTML(){
                                 <th><h2 class='sNum'></h2></th>\
                                 <th><span class='close sClose'>&#10799</span></th>\
                             </tr></table>" +
-                            "<input class='form-control input' placeholder='Enter a Section Title' type='text'>" +
-                            "<input class='form-control minScore' placeholder='Enter Minimum Section Score' type='number'>" +
+                            "<input class='form-control input' placeholder='Enter a Section Title' type='text'></br>" +
+                            "<input class='form-control minScore' placeholder='Enter Minimum Section Score' type='number' min='0'>" +
                         "</div>\
                         </br>\
                         <hr>\
@@ -176,7 +176,7 @@ function constructRadioHTML(tableAncestor){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' on='false' type='radio' name='r" + identifier + "'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
-                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number' min='0'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -186,7 +186,7 @@ function constructCheckboxHTML(){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' type='checkbox'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
-                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number' min='0'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;

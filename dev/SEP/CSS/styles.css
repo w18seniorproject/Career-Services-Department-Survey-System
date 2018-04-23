@@ -68,6 +68,13 @@
 }
 
 /*Common to any page that needs them*/
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
 .onoffswitch {
     position: relative; width: 66px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none; user-select: none;
