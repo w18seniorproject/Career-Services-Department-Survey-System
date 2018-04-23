@@ -67,7 +67,7 @@ function constructSectionHTML(){
                                 <th><h2 class='sNum'></h2></th>\
                                 <th><span class='close sClose'>&#10799</span></th>\
                             </tr></table>" +
-                            "<input class='form-control input' placeholder='Enter a Section Title' type='text' maxlength='30'>" +
+                            "<input class='form-control input' placeholder='Enter a Section Title' type='text'>" +
                         "</div>\
                         </br>\
                         <hr>\
@@ -113,11 +113,9 @@ function constructTypeHTML(){
 function addChoice(element, type){
     var choiceHTML;
     if(type == 1){
-        $(element).addClass("choiceQ");
         choiceHTML = constructRadioHTML(element);
     }
     else if(type ==2){
-        $(element).addClass("choiceQ");
         choiceHTML = constructCheckboxHTML();
     }
     else if(type ==3){
@@ -168,6 +166,8 @@ function constructRadioHTML(tableAncestor){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' on='false' type='radio' name='r" + identifier + "'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='text'></th>\
+                        <th class='qCell center-th'><input class='form-control qWeight' placeholder='Enter Weight' type='text'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -177,6 +177,8 @@ function constructCheckboxHTML(){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' type='checkbox'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='text'></th>\
+                        <th class='qCell center-th'><input class='form-control qWeight' placeholder='Enter Weight' type='text'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -191,6 +193,7 @@ function constructTrueFalseHTML(tableAncestor){
                         <th class='center-th'>\
                             <input class='ans' on='false' value='f' type='radio' name='r" + identifier + "'><label>False</label>\
                         </th>\
+                        <th class='qCell center-th'><input class='form-control qWeight' placeholder='Enter Weight' type='text'></th>\
                     </tr>";
     return toReturn;
 }
@@ -366,10 +369,20 @@ function promptCompletion(){
 
 function post(toSend){
     var instruc = $("#surText").val();
-    var form = $('<form action="pSubmit.php" method="post">\
-                <input type="hidden" name="dataArray" value="' + toSend + '"/>\
-                <input type="hidden" name="surText" value="' + instruc + '"/>\
-                </form>');
-    $('body').append(form);
-    $(form).submit();
+    $.ajax({
+        url: "../index.php",
+        type: "POST",
+        data: ({dataArray: toSend, surText: instruc, aType: "POLL"}),
+        success: function(response){
+            if(window.location.href.includes("pSurvey.html")){
+                window.location = "manageSurvey.html?pin=" + response;
+            }
+            else{
+                showManageSurvey(response);
+            }
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at post() ajax call in pSurvey.js");
+        }
+    });
 }

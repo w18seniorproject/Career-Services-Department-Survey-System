@@ -3,92 +3,32 @@
         public static function createSurvey($db){
             $conn = $db->getConnection('poll');
 
-            $surText = $_POST["surText"];
-
+            //TO-DO: Check if pin is taken after generation
             $pin = random_int(1000, 9999);
 
             $postData = $_POST["dataArray"];
 
-            $sections = explode("\$~\$", $postData);
-
-            $surTitle = $sections[0];
             $acctName = $_SESSION['userName'];
-            $_SESSION['surName'] = $surTitle;
-            $_SESSION['surText'] = $surText;
-            array_splice($sections, 0, 0);
-            $secNum = 0;
-            $qNum = 0;
+            $_SESSION['surName'] = $postData['title'];
+            $_SESSION['surText'] =  $_POST["surText"];
 
-            foreach($sections as $section){
-                $questions = explode("~\$~", $section);
-                $secTitle = array_shift($questions);
-                foreach($questions as $question){
-                    $qNum++;
-                    $choices = explode("#~#", $question);
-                    $qText = array_shift($choices);
-                    if($choices[0][0] == "m"){
-                        $choice = explode("~#~", $choices[0]);
-                        $type = array_shift($choice);
-                        $ans = "";
-                        $cTexts = "";
-                        $weight = 1;
-                        foreach($choice as $part){
-                            $cText = substr($part, 0, -4);
-                            $selected = substr($part, -1);
-                            if($selected == 't'){
-                                $ans = $cText;
-                                $weight = 2;
-                            }
-                            $cTexts .= $cText."~$#";
-                        }
-                        $cTexts = substr($cTexts, 0, -3);
-                        Survey::choiceAddToDB($conn, $surTitle, $qNum, $type, $qText, $cTexts, $ans, $weight, $secNum, $secTitle, $acctName);
-                    }
-                    else if($choices[0][0] == "c"){
-                        $choice = explode("~#~", $choices[0]);
-                        $type = array_shift($choice);
-                        $ans = "";
-                        $cTexts = "";
-                        $weight = 1;
-                        foreach($choice as $part){
-                            $cText = substr($part, 0, -4);
-                            $selected = substr($part, -1);
-                            if($selected == 't'){
-                                $ans .= $cText."~$#";
-                                $weight = 2;
-                            }
-                            $cTexts .= $cText."~$#";
-                        }
-                        $cTexts = substr($cTexts, 0, -3);
-                        Survey::choiceAddToDB($conn, $surTitle, $qNum, $type, $qText, $cTexts, $ans, $weight, $secNum, $secTitle, $acctName);
-                    }
-                    else if($choices[0][0] == "t"){
-                        $type = "tf";
-                        $ans = substr($choices[0], 3);
-                        $weight = 2;
-                        if($ans == "none"){
-                            $weight = 1;
-                        }
-                        Survey::otherAddToDB($conn, $surTitle, $qNum, $type, $qText, $ans, $weight, $secNum, $secTitle, $acctName);
-                    }
-                    else if($choices[0][0] == "s"){
-                        $type = "s";
-                        $ans = substr($choices[0], 2);
-                        $weight = 2;
-                        if($ans == "none"){
-                            $weight = 1;
-                        }
-                        Survey::otherAddToDB($conn, $surTitle, $qNum, $type, $qText, $ans, $weight, $secNum, $secTitle, $acctName);
-                    }
+            foreach($postData['sections'] as $section){  
+                foreach($section['questions'] as $question){
+                    if($question['type'] == "mc" || $question['type'] == "chk"){
+                        Survey::choiceAddToDB($conn, $_SESSION['surName'], $question['num'], $question['type'], $question['text'], $question['answers'], $question['qAns'], $question['weight'], $section['secNum'], $section['secName'], $acctName);
+                    }else{
+                        Survey::otherAddToDB($conn, $_SESSION['surName'], $question['num'], $question['type'], $question['text'], $question['qAns'], $question['weight'], $section['secNum'], $section['secName'], $acctName);
+                    }      
                 }
-                $secNum++;
+                Survey::secAddToDB($conn, $acctName, $_SESSION['surName'], $section['secNum'], $section['minScore']);
+                $secNum = $section['secNum'];
             }
 
             $_SESSION['rLevel'] = $secNum;
 
             $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`, `groupName`) VALUES (?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
-            $result->execute(array($pin, $surTitle, $acctName, $surText, 0, "General"));
+            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 0, "General"));
 
             echo $pin;
         }
@@ -110,5 +50,11 @@
             $sql = "INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qChoices`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
             $result->execute(array($surName, $qNum, $qType, $qText, $qChoices, $qAns, $qWeight, $rLevel, $rName, $acctName));
+        }
+        
+        private static function secAddToDB($conn, $acctName, $surName, $rLevel, $minScore){
+            $sql = "INSERT INTO `secReqs` (`acctName`, `surName`, `rLevel`, `minScore`) VALUES (?, ?, ?, ?);";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName, $rLevel, $minScore));
         }
     }

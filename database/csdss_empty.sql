@@ -126,14 +126,19 @@ CREATE TABLE `tokens` (
 --
 -- Event to remove expired records from tokens table
 --
+SET GLOBAL event_scheduler = ON;
+
 DELIMITER $$
 
-CREATE EVENT csdss.deleteExpiredTokens ON SCHEDULE EVERY 1 DAY 
+CREATE EVENT csdss.deleteExpired ON SCHEDULE EVERY 1 DAY 
+STARTS CURRENT_TIMESTAMP
+ON COMPLETION PRESERVE
 DO BEGIN
 DELETE FROM tokens WHERE expiration < NOW();
 END $$
 
 DELIMITER ;
+
 
 --
 -- Indexes for dumped tables
