@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
+-- version 4.5.4.1deb2ubuntu2
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 08, 2018 at 07:40 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.9
+-- Host: localhost
+-- Generation Time: Apr 24, 2018 at 03:56 PM
+-- Server version: 5.7.22-0ubuntu0.16.04.1
+-- PHP Version: 7.0.28-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -32,7 +30,7 @@ CREATE TABLE `accounts` (
   `pass` text,
   `email` varchar(30) NOT NULL,
   `acctName` varchar(20) DEFAULT NULL,
-  `profpic` text DEFAULT NULL
+  `profpic` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -106,8 +104,8 @@ CREATE TABLE `secReqs` (
   `surName` varchar(30) CHARACTER SET latin1 NOT NULL,
   `rLevel` int(11) NOT NULL,
   `minScore` int(11) NOT NULL,
-  `resources` text,
-  `resourceMarkup` text
+  `resources` text COLLATE utf8mb4_bin,
+  `resourceMarkup` text COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
@@ -122,23 +120,6 @@ CREATE TABLE `tokens` (
   `expiration` datetime NOT NULL,
   `tokenUsed` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Event to remove expired records from tokens table
---
-SET GLOBAL event_scheduler = ON;
-
-DELIMITER $$
-
-CREATE EVENT csdss.deleteExpired ON SCHEDULE EVERY 1 DAY 
-STARTS CURRENT_TIMESTAMP
-ON COMPLETION PRESERVE
-DO BEGIN
-DELETE FROM tokens WHERE expiration < NOW();
-END $$
-
-DELIMITER ;
-
 
 --
 -- Indexes for dumped tables
@@ -188,8 +169,16 @@ ALTER TABLE `secReqs`
 -- AUTO_INCREMENT for table `results`
 --
 ALTER TABLE `results`
-  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-COMMIT;
+  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `deleteExpiredTokens` ON SCHEDULE EVERY 1 DAY STARTS '2018-04-20 04:05:29' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+DELETE FROM tokens WHERE expiration < NOW();
+END$$
+
+DELIMITER ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

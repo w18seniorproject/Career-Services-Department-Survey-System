@@ -359,6 +359,10 @@ html, body{
     font-weight: normal;
     margin-left: 10px;
 }
+.qPoints{
+    height: 30px;
+    font-weight: normal;
+}
 
 /*Survey page*/
 .survey-wrapper{
