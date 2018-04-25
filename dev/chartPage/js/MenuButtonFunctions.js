@@ -319,6 +319,7 @@ function exportResponsesToCSV(var SurName)
     let row=rowArray.join(",");
     csvContent+= row +"\r\n";
   }
-  var encodedUri = encodeURI
+  var encodedUri = encodeURI(csvContent);
+  window.open(encodedUri);
 
 }
