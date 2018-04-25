@@ -1,7 +1,14 @@
 
 var js_relationArrayJSON;
 var js_groupArrayJSON;
-
+var temp;
+var ctx;
+var surveyName;
+var resultChart=null;
+$(document).ready(function(){
+  temp=document.getElementById("myCanvas");
+  ctx=temp.getContext("2d");
+});
 $.ajax({
 
   type: "POST",
@@ -15,9 +22,7 @@ $.ajax({
 
 });
 
-var temp=document.getElementById("myCanvas");
-var ctx=temp.getContext("2d");
-var resultChart=null;
+
 function createMixedChart(){
   if(resultChart!=null)
   {
@@ -189,13 +194,23 @@ var groupedBySurveyName=groupBy(js_questionJSON, 'surName');
   }else {
     x.style.display="none";
   }
-
+  var y=document.getElementById("indResultsButton")
+  if(y.style.display=="none"){
+    y.style.display="block";
+  }else {
+    y.style.display="none";
+  }
 
 }
 
 $('.surButton').click(function(){
+surveyName=this.innerHTML;
+  answersButtonFiller(surveyName);
 
-  answersButtonFiller(this.innerHTML);
+});
+$('#indResultsButton').click(function(){
+
+  exportResponsesToCSV(surveyName);
 });
 function answersButtonFiller(surname)
 {
@@ -278,19 +293,31 @@ function pieChartMaker(qNum, SurName)
 
 }
 
-function exportResponsesToCSV()
+function exportResponsesToCSV(var SurName)
 {
-  js_resultJSON;
   let csvContent = "data:text/csv;charset=utf-8,";
-  var listedResults=[];
-  
+  var filtered = js_questionJSON.filter(function(item){
+
+    return item.surName === SurName;
+  });
+  var titleRowArray=["Record Number","Group Name","Relation Level"]
+  for(var i=0; i<filtered.length; i++)
+  {
+    titleRowArray.push("Question"+filtered[i].qNum);
+  }
+  let titleRow=titleRowArray.join(",");
+  csvContent+= titleRow +"\r\n";
+  var filteredResults = js_resultJSON.filter(function(item){
+
+    return item.surName === SurName;
+  });
   for (var i=0; i<js_resultJSON.length; i++)
   {
     var answers = js_resultJSON[i].surResults.split("`|");
-    var row=[js_resultJSON[i].recNum, js_resultJSON[i].groupName, js_resultJSON[i].rLevel];
-
-    row.push.apply(answers);
-    listedResults.push(row);
+    var rowArray=[js_resultJSON[i].recNum, js_resultJSON[i].groupName, js_resultJSON[i].rLevel];
+    rowArray.push.apply(answers);
+    let row=rowArray.join(",");
+    csvContent+= row +"\r\n";
   }
   var encodedUri = encodeURI
 
