@@ -32,6 +32,20 @@
 
             echo $pin;
         }
+
+        public static function sendComment($db){
+            $conn = $db->getConnection('taker');
+
+            $surName = $_SESSION['surName'];
+            $acctName = $_SESSION['acctName'];
+            $comment = $_POST['comment'];
+
+            $sql = "INSERT INTO `comments` (`recNum`, `acctName`, `surName`, `comment`) VALUES (0, ?, ?, ?);";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName, $comment));
+
+            echo "<h3 style='text-align: center'>Thank you for your thoughts</h3>";
+        }
         
         public static function sendSurvey($db){ 
             $questions = Questions::getQuestions($db);

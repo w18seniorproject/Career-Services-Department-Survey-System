@@ -86,6 +86,10 @@
                 Survey::sendSurvey($db);
                 exit();
             }
+            elseif(isset($_POST['comment'])){
+                Survey::sendComment($db);
+                exit();
+            }
             //otherwise throw error code
             else{
                 http_response_code(400);

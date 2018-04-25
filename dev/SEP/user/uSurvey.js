@@ -264,12 +264,29 @@ function sendResults(){
                                             <div id='comments'>\
                                                 <textarea id='commentbox' placeholder='Comments, Questions, etc. (optional)' class='form-control'></textarea>\
                                             </br>\
-                                                <input type='button' value='Submit Comment' onclick='submitComment()' class='btn btn-primary btn-lg btn-block shadow'>\
+                                                <input type='button' value='Submit Comment' id='submitComment' class='btn btn-primary btn-lg btn-block shadow'>\
                                             </div>\
                                         </form>");
+            $("#submitComment").click(function(){
+                submitComment();
+            });
         },
         error: function (jqxr, status, exception){
             alert("Failing at sendResults() ajax call in uSurvey.js");
         }
     });
+}
+
+function submitComment(){
+    function submitComment(){
+        $.ajax({
+            type: 'POST',
+            url: '../index.php',
+            cache: false,
+            data: {comment: $("#commentbox").val(), aType: "TAKE"},
+            success: function(data){
+                $("#comments").html(data);
+            }
+        });
+    }
 }
