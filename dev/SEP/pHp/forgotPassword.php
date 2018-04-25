@@ -1,6 +1,6 @@
 <?php
 //include db connection file
-include_once "../config/pollsterDB.php";
+include_once "../../config/pollsterDB.php";
 
 $database = new Database();
 
@@ -54,19 +54,20 @@ $stmt->bindParam(4, $expiration);
 $stmt->execute();
 
 //CHANGE TO CORRECT EXTERNAL LINK
-$msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/csdss/dev/pollster/passwordReset.html?";
+//$msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/csdss/dev/pollster/passwordReset.html?";
+$msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/passwordReset.html?";
 
 $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
    
     //"FROM" PARAM ISN'T A VALID EMAIL ADDRESS.
    mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
 
-   header("Location: pLogin.html?response=emailSent");
+   header("Location: ../pollster/pLogin.html?response=emailSent");
     die();
     }// end if(rows==1)
     else{
 
-    header("Location: forgotPassword.html?response=noAccount");
+    header("Location: ../pollster/forgotPassword.html?response=noAccount");
     die();
     }
 ?>
