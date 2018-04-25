@@ -51,7 +51,7 @@ CREATE TABLE `bans` (
 --
 
 CREATE TABLE `comments` (
-  `recNum` int AUTO_INCREMENT,
+  `recNum` int(11) NOT NULL,
   `acctName` varchar(20),
   `surName` varchar(256),
   `comment` text
@@ -189,6 +189,13 @@ ALTER TABLE `secReqs`
 --
 ALTER TABLE `results`
   MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
+
 DELIMITER $$
 --
 -- Events
