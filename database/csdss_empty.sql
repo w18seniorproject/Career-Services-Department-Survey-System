@@ -47,6 +47,19 @@ CREATE TABLE `bans` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `recNum` int AUTO_INCREMENT,
+  `acctName` varchar(20),
+  `surName` varchar(256),
+  `comment` text
+)
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pins`
 --
 
@@ -130,6 +143,12 @@ CREATE TABLE `tokens` (
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`email`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`recNum`);
 
 --
 -- Indexes for table `bans`
