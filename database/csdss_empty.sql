@@ -55,7 +55,7 @@ CREATE TABLE `comments` (
   `acctName` varchar(20),
   `surName` varchar(256),
   `comment` text
-)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
