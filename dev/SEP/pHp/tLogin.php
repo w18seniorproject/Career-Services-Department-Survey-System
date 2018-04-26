@@ -30,6 +30,7 @@
             $_SESSION["surName"] = $surveyName;
             $_SESSION["acctName"] = $account;
             $_SESSION["groupName"] = $groupName;
+            $_SESSION['startTime'] = time();
 
             header("Location: user/uSurvey.html");
         }

@@ -11,8 +11,6 @@
             $resp = new Response($db);
             $stmt = $resp->buildQuery($surResults, $rLevel);
             $stmt->execute();
-            session_unset();
-            header("Location: user/uLogin.html");
         }
         
         private function buildQuery($surResults, $rLevel){
@@ -20,7 +18,9 @@
                 if(!isset($_SESSION["groupName"])){
                     $_SESSION["groupName"] = "None";
                 }
-                $query = "INSERT INTO " . $this->table . " (surName, groupName, surResults, rLevel, acctName) VALUES (?, ?, ?, ?, ?)";
+                $startTime = $_SESSION['startTime'];
+                $time = time() - $startTime;
+                $query = "INSERT INTO " . $this->table . " (surName, groupName, surResults, rLevel, acctName, time) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($query);
 
                 $stmt->bindParam(1, $_SESSION["surName"]);
@@ -28,6 +28,7 @@
                 $stmt->bindValue(3, $surResults);
                 $stmt->bindValue(4, $rLevel);
                 $stmt->bindValue(5, $_SESSION["acctName"]);
+                $stmt->bindValue(6, $time);
 
                 return $stmt;			
             }
