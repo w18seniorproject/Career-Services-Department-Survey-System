@@ -1,66 +1,69 @@
 <?php
 
-error_reporting(E_ALL);
+class PasswordReset{
+    public static function pReset($db){
 
-include_once "../../config/pollsterDB.php";
-include_once "../pollster/passwordReset.html";
+        error_reporting(E_ALL);
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $database = new Database();
-    $conn = $database->getConnection();
+        include_once "../../config/pollsterDB.php";
+        include_once "../pollster/passwordReset.html";
 
-    if(isset($_POST['token'])){
-        $token = $_POST['token'];
-    }else{
-        http_response_code(400);
-        echo "Token not received in passwordReset.php.";
-        exit();
-    }
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+  
+            $conn = $db->getConnection('poll');
 
-    //Make sure token arrived as hexadecimal
-    if(preg_match('/^[0-9A-Fa-f]+$/', $token)){
+            if(isset($_POST['token'])){
+                $token = $_POST['token'];
+            }else{
+                http_response_code(400);
+                echo "Token not received in passwordReset.php.";
+                exit();
+            }
 
-        $queryHash = hash("sha256", $token, FALSE);
+            //Make sure token arrived as hexadecimal
+            if(preg_match('/^[0-9A-Fa-f]+$/', $token)){
 
-        //get record from db by matching hashed token received with hashed token that is stored in tokens table.
-        $sql = "SELECT acctName, expiration, tokenUsed FROM tokens WHERE tokenHash = ?;";
+                $queryHash = hash("sha256", $token, FALSE);
 
-        $result = $conn->prepare($sql);
-        $result->execute(array($queryHash));
+                //get record from db by matching hashed token received with hashed token that is stored in tokens table.
+                $sql = "SELECT acctName, expiration, tokenUsed FROM tokens WHERE tokenHash = ?;";
 
-        $numRows = $result->rowCount();
+                $result = $conn->prepare($sql);
+                $result->execute(array($queryHash));
 
-        if($numRows == 0){
-            header("Location: ../pollster/passwordReset.html?error=tokenRemoved");
-            die();
-        }
+                $numRows = $result->rowCount();
 
-        if($numRows == 1){
-            $row = $result->fetch(PDO::FETCH_ASSOC);
+                if($numRows == 0){
+                 header("Location: ../pollster/passwordReset.html?error=tokenRemoved");
+                 die();
+             }
 
-            //If token hasn't expired...
-            $expiration = strtotime($row['expiration']);
+             if($numRows == 1){
+                   $row = $result->fetch(PDO::FETCH_ASSOC);
+
+                   //If token hasn't expired...
+                   $expiration = strtotime($row['expiration']);
             
-            if($expiration < strtotime(date("Y-m-d H:i:s"))){
+                    if($expiration < strtotime(date("Y-m-d H:i:s"))){
 
-            header("Location: ../pollster/passwordReset.html?error=tokenExpired");
-            die();
-            }
+                   header("Location: ../pollster/passwordReset.html?error=tokenExpired");
+                   die();
+                  }
 
-            $used = $row['tokenUsed'];
-            //Check to see if the token was used previously
-            if($used){
+                   $used = $row['tokenUsed'];
+                   //Check to see if the token was used previously
+                   if($used){
 
-            header("Location: ../pollster/passwordReset.html?error=tokenUsed");
-            die();
-            }
+                   header("Location: ../pollster/passwordReset.html?error=tokenUsed");
+                   die();
+                   }
 
-            $acctName = $row['acctName'];        
+                  $acctName = $row['acctName'];        
 
-        }else{ //If more than one row is returned from token table query. Should never happen.
-            echo "Internal error. There is more than one account associated with this Token.";
-        }     
-            //Make sure newly entered passwords match
+               }else{ //If more than one row is returned from token table query. Should never happen.
+                   echo "Internal error. There is more than one account associated with this Token.";
+             }     
+                  //Make sure newly entered passwords match
             if($_POST["newPassword"] === $_POST["confirmPassword"]){
 
                 $pwd = $_POST["newPassword"];
@@ -97,19 +100,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                 header("Location: ../pollster/passwordReset.html?response=success");
                 }
-            }
-        $stmt = null;
+              }
+              $stmt = null;
 
         
-        }else{ 
-            echo "Passwords do not match.";
-        }
-    }else{// token was not correctly formatted when it arrived (not hexadecimal)
-        echo "Error. Link has been corrupted.";
-    }
+               }else{ 
+                  echo "Passwords do not match.";
+              }
+         }else{// token was not correctly formatted when it arrived (not hexadecimal)
+              echo "Error. Link has been corrupted.";
+           }
 
-}else{
-    http_response_code(400);
-    exit();
+        }else{
+          http_response_code(400);
+         exit();
+        }
+    }
 }
 ?>

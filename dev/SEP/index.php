@@ -18,11 +18,21 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/tLogin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pDashboard.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/passwordReset.php';
 
         if($_POST['aType'] === 'POLL'){
             /* POLLSTER HANDLING */
             if(isset($_POST['username']) && isset($_POST['pword'])){
                 PollsterLogin::login($db);
+                exit();
+            }
+            elseif(isset($_POST['known_value'])){
+                ForgotPassword::sendToken($db);
+                exit();
+            }
+            elseif(isset($_POST['token'])){
+                PasswordReset::pReset($db);
                 exit();
             }
             elseif(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
