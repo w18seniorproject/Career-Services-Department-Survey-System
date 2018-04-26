@@ -84,6 +84,11 @@
                 TakerLogin::login($db);
                 exit();
             }
+            //check if taker is posting a comment to survey
+            elseif(isset($_POST['comment'])){
+                Survey::sendComment($db);
+                exit();
+            }
             //check if taker is posting a response to a survey; if so, send
             //results and unset session variables
             elseif(isset($_POST['response']) && isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
@@ -92,12 +97,8 @@
             }
             //check if user has already entered a valid pin, gotten session variables; 
             //if so, return questions. 
-            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){ 
+            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['startTime'])){ 
                 Survey::sendSurvey($db);
-                exit();
-            }
-            elseif(isset($_POST['comment'])){
-                Survey::sendComment($db);
                 exit();
             }
             //otherwise throw error code

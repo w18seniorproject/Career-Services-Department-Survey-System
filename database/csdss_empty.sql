@@ -103,7 +103,8 @@ CREATE TABLE `results` (
   `groupName` varchar(20) NOT NULL,
   `recNum` int(11) NOT NULL,
   `surResults` text,
-  `rLevel` int(11) DEFAULT NULL
+  `rLevel` int(11) DEFAULT NULL,
+  `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

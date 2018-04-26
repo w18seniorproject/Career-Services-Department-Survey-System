@@ -272,21 +272,22 @@ function sendResults(){
             });
         },
         error: function (jqxr, status, exception){
-            alert("Failing at sendResults() ajax call in uSurvey.js");
+            alert("Failing at sendResults() ajax call in uSurvey.js: " + exception);
         }
     });
 }
 
 function submitComment(){
-    function submitComment(){
-        $.ajax({
-            type: 'POST',
-            url: '../index.php',
-            cache: false,
-            data: {comment: $("#commentbox").val(), aType: "TAKE"},
-            success: function(data){
-                $("#comments").html(data);
-            }
-        });
-    }
+    $.ajax({
+        type: 'POST',
+        url: '../index.php',
+        cache: false,
+        data: {comment: $("#commentbox").val(), aType: "TAKE"},
+        success: function(data){
+            $("#comments").html(data);
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at submitComment() ajax call in uSurvey.js: " + exception);
+        }
+    });
 }
