@@ -87,7 +87,7 @@
             }
             //check if user has already entered a valid pin, gotten session variables; 
             //if so, return questions. 
-            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){ 
+            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['startTime'])){ 
                 Survey::sendSurvey($db);
                 exit();
             }

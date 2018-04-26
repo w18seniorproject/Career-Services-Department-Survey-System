@@ -284,7 +284,6 @@ function submitComment(){
         cache: false,
         data: {comment: $("#commentbox").val(), aType: "TAKE"},
         success: function(data){
-            alert(data);
             $("#comments").html(data);
         },
         error: function(jqxr, status, exception){

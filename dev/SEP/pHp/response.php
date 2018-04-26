@@ -11,6 +11,7 @@
             $resp = new Response($db);
             $stmt = $resp->buildQuery($surResults, $rLevel);
             $stmt->execute();
+            unset($_SESSION['startTime']);
         }
         
         private function buildQuery($surResults, $rLevel){
