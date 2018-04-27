@@ -6,7 +6,7 @@
             
             $acctName = $_SESSION['userName'];
 
-            $sql = "SELECT surName, pin, surText, live FROM pins WHERE acctName= ? ORDER BY surName;";
+            $sql = "SELECT surName, pin, surText, live FROM pins WHERE acctName=? ORDER BY surName;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName));
 

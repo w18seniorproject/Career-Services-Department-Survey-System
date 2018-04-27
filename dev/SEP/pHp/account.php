@@ -32,10 +32,21 @@
             $result = $conn->prepare($sql);
             $result->execute(array($toInsert, $acctName));
 
-            Header("Location: $toInsert");
+            echo $toInsert . "?time=" . time();
+        }
 
-            echo $toInsert;
+        public static function GetAccountInfo($db){
+            $conn = $db->getConnection("poll");
 
+            $acctName = $_SESSION['userName'];
+
+            $sql = "SELECT `email` from `accounts` WHERE `acctName`=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName));
+
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+
+            echo $row['email'];
         }
     }
 ?>

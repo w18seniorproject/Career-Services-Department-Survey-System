@@ -27,7 +27,7 @@ function showSurveys(){
         type: "POST",
         data: ({pdd: "true", aType: "POLL"}),
         success: function(response){
-            if(response == "NONE"){
+            if(response.includes("NONE")){
                 $("#lContainer").html(  "<div style='padding-top: 48%; text-align: center;'>\
                                             <h3 class='greyed-out'>No Surveys</h3>\
                                             <input type='button' onclick='showCreateSurvey()' value='Create New Survey' class='btn btn-secondary shadow'>\
@@ -76,8 +76,19 @@ function displayManageSurvey(ele){
 }
 
 function constructSurveyListHTML(surveyJSON){
+    alert(surveyJSON);
     var html = "<ul class='surveyList'>";
-    var surArr = JSON.parse(surveyJSON);
+    //try-catch for error handling.
+    try{
+        var surArr = JSON.parse(surveyJSON);
+    }
+    catch(e){
+        alert(e);
+        $("#lContainer").html(  "<div style='padding-top: 48%; text-align: center;'>\
+                                    <h3 class='greyed-out'>No Surveys</h3>\
+                                    <input type='button' onclick='showCreateSurvey()' value='Create New Survey' class='btn btn-secondary shadow'>\
+                                </div>");
+    }
     for(var i = 0; i < surArr.length; i++){
         var survey = surArr[i];
         var liveIndicatorClass = "live";

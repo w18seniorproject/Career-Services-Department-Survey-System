@@ -113,6 +113,9 @@
             PollsterAccount::GetProfilePic($db);
             exit();
         }
+        elseif(isset($_GET['accountInfo'])){
+            PollsterAccount::GetAccountInfo($db);
+        }
         elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){      
             header("Location: user/uSurvey.html");
             exit();
