@@ -71,9 +71,13 @@
                 PollsterAccount::SetProfilePic($db);
                 exit();
             }
+            elseif(isset($_POST['password']) && isset($_POST['email']) && isset($_POST['password-confirm'])){
+                PollsterAccount::SetAccountInfo($db);
+            }
             //otherwise throw error code Bad Request
             else{
                 http_response_code(400);
+                echo "Bad Request: Pollster";
                 exit();
             }
         }
@@ -104,6 +108,7 @@
             //otherwise throw error code
             else{
                 http_response_code(400);
+                echo "Bad Request: Taker";
                 exit();
             }
         } 
@@ -128,5 +133,6 @@
     //otherwise throw error code Bad Request
     else{
         http_response_code(400);
+        echo "Bad Request: Outside";
         exit();
     }

@@ -76,7 +76,6 @@ function displayManageSurvey(ele){
 }
 
 function constructSurveyListHTML(surveyJSON){
-    alert(surveyJSON);
     var html = "<ul class='surveyList'>";
     //try-catch for error handling.
     try{

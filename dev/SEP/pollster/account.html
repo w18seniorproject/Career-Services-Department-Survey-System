@@ -19,7 +19,7 @@
     <body>
         <div id="header"></div>
 
-        <form class='form-centered'>
+        <form class='form-centered' method="POST" action="../index.php" id="accountInfoForm" onsubmit='return save();'>
             <legend class='legend'>My Account</legend>
             <div class='ppContainer'>
                 <input type="file" style="display: none" id="ppUpload">
@@ -36,7 +36,9 @@
         </br> 
             <input type='password' name='password-confirm' id='password-confirm' placeholder='Confirm Password' class='form-control input'>
         </br> 
-            <input type='button' name='save' value='Save' onclick='save()' class='btn btn-primary btn-lg btn-block'>
+            <input type='submit' name='btnSave' value='Save' class='btn btn-primary btn-lg btn-block'>
+            <input type="hidden" value="POLL" name="aType">
+            <label class="errorMessage" id="errorMessage"></label>
         </form>
         <script type='text/javascript'>
             getAccountInfo();
