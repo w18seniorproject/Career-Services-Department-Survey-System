@@ -92,7 +92,7 @@ function constructSurveyListHTML(surveyJSON){
         var survey = surArr[i];
         var liveIndicatorClass = "live";
         var liveIndicator = "live";
-        if(survey.live == "0"){
+        if(survey.live === "0"){
             liveIndicatorClass = "not-live";
             liveIndicator = "not live";
         }
