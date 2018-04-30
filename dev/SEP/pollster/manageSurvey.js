@@ -58,12 +58,12 @@ function constructInitialGroupPinHTML(pin, groupName){
     return html;
 }
 
-function showPinsAndGroupsFilled(surveyName, surveyText){
+function showPinsAndGroupsFilled(surveyName){
     $.ajax({
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({manageSurveyEditPins: "filler", surText: surveyText, surName: surveyName, aType: "POLL"}),
+        data: ({manageSurveyEditPins: "true", surName: surveyName, aType: "POLL"}),
         success: function(response){
             var pinGroupArray = JSON.parse(response);
             var html = constructInitialGroupPinHTML(pinGroupArray[0].pin, pinGroupArray[0].groupName);

@@ -12,13 +12,12 @@ function showWelcome(){
     $("#rContainer").html("<h1>Tutorial and Welcome Stuff will go here</h1>");
 }
 
-function showManageSurvey(surName, surText){
+function showManageSurvey(surName){
     $("#rContainer").html("");
     $("#rContainer").load("embed.manageSurvey.html", function(){
-        showPinsAndGroupsFilled(surName, surText);
+        showPinsAndGroupsFilled(surName);
         showResourcesFilled(surName);
     });
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 function showSurveys(){
