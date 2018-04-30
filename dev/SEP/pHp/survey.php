@@ -71,4 +71,15 @@
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName, $rLevel, $minScore));
         }
+
+        private static function PGetSurvey($db){
+            $acctName = $_SESSION['userName'];
+            $surName = $_POST['surName'];
+
+            $conn = $db->getConnection('poll');
+
+            $sql = "SELECT * FROM `questions` WHERE `acctName`=? AND `surName`=?;";
+            $result = "";
+            //TODO get questions and secReqs, package them, and echo as json
+        }
     }

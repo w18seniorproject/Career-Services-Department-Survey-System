@@ -27,6 +27,10 @@
                 PollsterLogin::login($db);
                 exit();
             }
+            elseif(isset($_POST['editSurvey'])){
+                Survey::PGetSurvey($db);
+                exit();
+            }
             elseif(isset($_POST['known_value'])){
                 ForgotPassword::sendToken($db);
                 exit();

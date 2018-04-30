@@ -408,3 +408,18 @@ function post(toSend){
         }
     });
 }
+
+function fillSurveyFields(surveyName){
+    $.ajax({
+        type: 'POST',
+        url: '../index.php',
+        cache: false,
+        data: {editSurvey: true, surName: surveyName, aType: "POLL"},
+        success: function(data){
+            //TODO
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at fillSurveyFields() ajax call in pSurvey.js: " + exception);
+        }
+    });
+}

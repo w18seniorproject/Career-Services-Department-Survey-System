@@ -187,11 +187,11 @@ function showSelectedItem(ele){
 function showCreateSurvey(){
     if(!mobile){
         $("#rContainer").html("");
-        $("#rContainer").load("embed.pSurvey.html");
+        $("#rContainer").load("embed.pSurvey.html?new=true");
     }
     else{
         $("#contentContainer").html("");
-        $("#contentContainer").load("embed.pSurvey.html");
+        $("#contentContainer").load("embed.pSurvey.html?new=true");
     }
 }
 
@@ -234,11 +234,14 @@ function showManageSurvey(surName){
 
 function showEditSurvey(surName){
     if(!mobile){
-        $("#rContainer").html("<h1>Edit Survey will go here</h1>");
+        $("#rContainer").html("");
+        $("#rContainer").load("embed.pSurvey.html");
     }
     else{
-        $("#contentContainer").html("<h1>Edit Survey will go here</h1>");
+        $("#contentContainer").html("");
+        $("#contentContainer").load("embed.pSurvey.html");
     }
+    fillSurveyFields(surName);
 }
 
 function showResults(surName){
