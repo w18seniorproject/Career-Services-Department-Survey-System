@@ -1,4 +1,6 @@
 
+var surName;
+
 function addSection(){
     var sectionHTML = constructSectionHTML();
     $("#section-wrapper").append(sectionHTML);
@@ -274,6 +276,7 @@ function checkChoices(){
 
 function submit(){
     var title = $("#surTitle").val();
+    surName = title;
     var exit = false;
     if(!checkSections()){
         alert("Please create at least one Section");
@@ -398,7 +401,7 @@ function post(toSend){
         type: "POST",
         data: ({dataArray: toSend, surText: instruc, aType: "POLL"}),
         success: function(response){
-            window.location = "manageSurvey.html?pin=" + response;
+            window.location = "pDashboard.html?content=manage&surName=" + surName;
         },
         error: function(jqxr, status, exception){
             alert("Failing at post() ajax call in pSurvey.js");
