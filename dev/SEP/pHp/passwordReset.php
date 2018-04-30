@@ -4,8 +4,7 @@ class PasswordReset{
     public static function pReset($db){
 
         error_reporting(E_ALL);
-
-        include_once "../../config/pollsterDB.php";
+        
         include_once "../pollster/passwordReset.html";
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
