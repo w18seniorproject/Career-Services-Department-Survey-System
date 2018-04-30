@@ -9,7 +9,7 @@ function deleteSurvey(){
             data: ({deleteSurvey: "yes", aType: "POLL"}),
             success: function(response){
                 alert("Survey Deleted");
-                location.reload();
+                window.location = "pDashboard.html";
             },
             error: function(jqxr, status, exception){
                 alert("Failing at deleteSurvey() ajax call in manageSurvey.js: " + exception);
