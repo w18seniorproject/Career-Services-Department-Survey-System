@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang= en>
 	<head>
         <title>Dashboard</title>
         <meta charset="utf-8">
@@ -14,36 +14,12 @@
             $(function(){
                 $("#header").load("../headerLoggedIn.html"); 
             });
-            $(function(){
-                makeItLookNice();
-            })
         </script>
     </head>
-    <body style="overflow: hidden;">
-        <div id="header"></div>
-        
-        <div class="dContainer">
-            <div class='leftContent'>
-                <div id='leftContentHeader' class='shadow'>
-                    <input type='button' class='btn btn-primary btn-sm shadow' style='display: inline-block; margin: 0px; margin-right: 10px;' onclick='showCreateSurvey()' value='New Survey'>
-                    <input type='button' class='btn btn-primary btn-sm shadow' style='display: inline-block; margin: 0px; margin-right: 10px;' onclick='showMyAccount()' value='My Account'>
-                    <input type='button' class='btn btn-primary btn-sm shadow' style='float: right;' onclick='showWelcome()' value='Welcome/Tutorial'>
-                </div>
-                <div id="lContainer"></div>
-                <script type="text/javascript">
-                    showSurveys();
-                </script>
-            </div>
-            <div class='rightContent'>
-                <div class='rContainer' id="rContainer">
-                    <h1>Tutorial and Welcome Stuff will go here</h1>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(window).on('resize', function(){
-                makeItLookNice();
-            });
+    <body>
+        <div id='header'></div>              
+        <script type='text/javascript'>
+            determineLayout();
         </script>
     </body>
 </html>

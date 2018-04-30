@@ -64,8 +64,6 @@
             $conn = $db->getConnection('poll');
 
             $surName = $_POST['surName'];
-            $surText = $_POST['surText'];
-            $_SESSION['surText'] = $surText;
             $_SESSION['surName'] = $surName;
             $acctName = $_SESSION['userName'];
 
