@@ -3,7 +3,7 @@
         private $conn;
         private $table = "results";
         
-        public function __construct($db){
+        private function __construct($db){
             $this->conn = $db->getConnection('taker');
         }
         
