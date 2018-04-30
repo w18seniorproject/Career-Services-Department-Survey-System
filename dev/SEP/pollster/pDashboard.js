@@ -235,13 +235,16 @@ function showManageSurvey(surName){
 function showEditSurvey(surName){
     if(!mobile){
         $("#rContainer").html("");
-        $("#rContainer").load("embed.pSurvey.html");
+        $("#rContainer").load("embed.pSurvey.html", function(){
+            fillSurveyFields(surName);
+        });
     }
     else{
         $("#contentContainer").html("");
-        $("#contentContainer").load("embed.pSurvey.html");
+        $("#contentContainer").load("embed.pSurvey.html", function(){
+            fillSurveyFields(surName);
+        });
     }
-    fillSurveyFields(surName);
 }
 
 function showResults(surName){

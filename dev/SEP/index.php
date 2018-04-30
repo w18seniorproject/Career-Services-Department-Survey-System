@@ -28,7 +28,10 @@
                 exit();
             }
             elseif(isset($_POST['editSurvey'])){
-                Survey::PGetSurvey($db);
+                $_SESSION['surName'] = $_POST['surName'];;
+                $_SESSION['acctName'] = $_SESSION['userName'];
+                Survey::sendSurvey($db);
+                unset($_SESSION['acctName']);
                 exit();
             }
             elseif(isset($_POST['known_value'])){

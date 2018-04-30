@@ -74,7 +74,7 @@ function constructSectionHTML(){
                                 <th><h2 class='sNum'></h2></th>\
                                 <th><span class='close sClose'>&#10799</span></th>\
                             </tr></table>" +
-                            "<input class='form-control input' placeholder='Enter a Section Title' type='text'></br>" +
+                            "<input class='form-control input secName' placeholder='Enter a Section Title' type='text'></br>" +
                             "<input class='form-control minScore' placeholder='Enter Minimum Section Score' type='number' min='0'>" +
                         "</div>\
                         </br>\
@@ -416,10 +416,54 @@ function fillSurveyFields(surveyName){
         cache: false,
         data: {editSurvey: true, surName: surveyName, aType: "POLL"},
         success: function(data){
-            //TODO
+            alert(data);
+            var survey = JSON.parse(data);
+            var questions = JSON.parse(survey[0]);
+            var secReqs = JSON.parse(survey[1]);
+
+            //TODO get surText from pins table on backend.
+            // Also needed in taker survey page
+
+            curSec = 0;
+
+            addSection();
+
+            $("#surTitle").val(surveyName);
+            for(var i =0; i < questions.length; i++){
+                $(".minScore").get(i).val(secReqs[i].minScore);
+                $(".secName").get(i).val(questions[i].rName);
+                addQuestion($(".btn-secondary").get(i));
+
+                //TODO fill in qText, qType, and weight
+
+                switch(questions[i].qType){
+                    case 'mc':
+                        // Fill in mc data
+                        break;
+                    case 'chk':
+                        //Fill in chk data
+                        break;
+                    case 'tf':
+                        //Fill in tf data
+                        break;
+                    case 's':
+                        //Fill in s data
+                        break;
+                    default:
+                        break;
+                }
+
+                if(questions[i].rLevel > curSec){
+                    addSection();
+                    curSec = questions[i].rLevel;
+                }
+            }
+
+            //TODO change save button onclick handler to update, not create
         },
         error: function(jqxr, status, exception){
             alert("Failing at fillSurveyFields() ajax call in pSurvey.js: " + exception);
         }
     });
 }
+
