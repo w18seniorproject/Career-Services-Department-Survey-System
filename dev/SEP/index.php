@@ -27,6 +27,10 @@
                 PollsterLogin::login($db);
                 exit();
             }
+            elseif(isset($_POST['getResults'])){
+                Results::GetResults($db);
+                exit();
+            }
             elseif(isset($_POST['editSurvey'])){
                 $_SESSION['surName'] = $_POST['surName'];;
                 $_SESSION['acctName'] = $_SESSION['userName'];

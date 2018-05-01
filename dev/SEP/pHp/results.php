@@ -32,7 +32,7 @@
                 echo json_encode($resultsArray);
             }
             else{
-                echo "NONE";
+                echo "THERE ARE NO RESULTS TO BE HAD";
             }
         }
         

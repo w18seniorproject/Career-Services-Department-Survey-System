@@ -106,8 +106,8 @@ function displaySurveys(){
                 })
             }
         },
-        error: function(xhr, status, error){
-            alert("Error: " + error);
+        error: function(jxqr, status, exception){
+            alert("Failing at displaySurveys() ajax call in pDashboard.js: " + exception);
         }
     })
 }
@@ -119,7 +119,7 @@ function constructSurveyListHTML(surveyJSON){
         var surArr = JSON.parse(surveyJSON);
     }
     catch(e){
-        alert(e);
+        alert("Failing at constructSurveyListHTML() try/catch in pDashboard.js: " + e);
         $("#lContainer").html(  "<div style='padding-top: 48%; text-align: center;'>\
                                     <h3 class='greyed-out'>No Surveys</h3>\
                                     <input type='button' onclick='showCreateSurvey()' value='Create New Survey' class='btn btn-secondary shadow'>\
@@ -249,9 +249,15 @@ function showEditSurvey(surName){
 
 function showResults(surName){
     if(!mobile){
-        $("#rContainer").html("<h1>Results will go here</h1>");
+        $("#rContainer").html("");
+        $("#rContainer").load("embed.results.html", function(){
+            showData(surName);
+        });
     }
     else{
-        $("#contentContainer").html("<h1>Results will go here</h1>");
+        $("#contentContainer").html("");
+        $("#contentContainer").load("embed.results.html", function(){
+            showData(surName);
+        });
     }
 }
