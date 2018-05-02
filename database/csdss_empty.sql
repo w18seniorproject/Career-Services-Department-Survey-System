@@ -30,7 +30,8 @@ CREATE TABLE `accounts` (
   `pass` text,
   `email` varchar(30) NOT NULL,
   `acctName` varchar(20) DEFAULT NULL,
-  `profpic` text
+  `profpic` text,
+  `active` BOOLEAN NOT NULL DEFAULT FALSE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -196,6 +197,7 @@ ALTER TABLE `results`
 --
 ALTER TABLE `comments`
   MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
+
 
 DELIMITER $$
 --
