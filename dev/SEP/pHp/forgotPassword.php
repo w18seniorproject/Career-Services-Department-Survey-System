@@ -10,10 +10,10 @@ $known_value = $_POST["known_value"];
 //Determine if user input is a valid email address. If not, assume that it is a username.
 if(filter_var($known_value, FILTER_VALIDATE_EMAIL)){
 
-    $sql = "SELECT acctName, email FROM accounts WHERE email = ?;";
+    $sql = "SELECT acctName, email FROM accounts WHERE email = ? AND active = '1';";
     }   
     else{
-    $sql = "SELECT acctName, email FROM accounts WHERE acctName = ?;";
+    $sql = "SELECT acctName, email FROM accounts WHERE acctName = ? AND active = '1';";
     }
     //$result is a PDO object, which holds returned records after execute()
     $result = $conn->prepare($sql);

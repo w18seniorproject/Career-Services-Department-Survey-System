@@ -7,7 +7,7 @@
 
             $pass = $_POST["pword"];
 
-            $sql = "SELECT pass FROM accounts WHERE acctName= ?;";
+            $sql = "SELECT pass FROM accounts WHERE acctName= ? AND active = '1';";
 
             $result = $conn->prepare($sql);
             $result->execute(array($username));

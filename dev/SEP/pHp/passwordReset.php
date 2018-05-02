@@ -69,7 +69,7 @@ class PasswordReset{
                 $pwd = $_POST["newPassword"];
                 $hashedPass = password_hash($pwd, PASSWORD_BCRYPT);
 
-                $sql = "UPDATE accounts SET pass = ? WHERE acctName = ?;";
+                $sql = "UPDATE accounts SET pass = ? WHERE acctName = ? AND active = '1';";
 
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(1, $hashedPass);
