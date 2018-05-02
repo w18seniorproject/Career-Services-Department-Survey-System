@@ -26,7 +26,6 @@
                         "rLevel" => $rLevel,
                         "time" => $time
                     );
-
                     $resultsArray[] = $result;
                 }
                 echo json_encode($resultsArray);
