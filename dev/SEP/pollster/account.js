@@ -69,3 +69,28 @@ function setPP(toSend){
         }
     });
 }
+
+function save(){
+    if($("#email").val() != ""){
+        var email = $("#email").val();
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!re.test(String(email).toLowerCase())){
+            $("#errorMessage").html("Not a valid email");
+            return false;
+        }
+    }
+    if($("#password").val() != ""){
+        if($("#password").val() != $("#password-confirm").val()){
+            $("#errorMessage").html("Passwords must match");
+            return false;
+        }
+    }
+    $("#errorMessage").html("");
+    return true;
+}
+
+function fixForEmbed(){
+    $("#accountInfoForm").submit(function(){
+        save();
+    });
+}

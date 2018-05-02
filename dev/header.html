@@ -12,7 +12,7 @@
       </a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right navbar-item-list">
+      <ul class="nav navbar-nav navbar-right navbar-item-list" id='headerItemList'>
         <li class="navbar-item">
           <a href="../pollster/pSignup.html">
             <span class="glyphicon glyphicon-user"></span> Sign Up</a>
@@ -21,7 +21,7 @@
           <a href="../pollster/pLogin.html">
             <span class="glyphicon glyphicon-log-in"></span> Login</a>
         </li>
-        <li class="navbar-item">
+        <li class="navbar-item" id='helpDropdownItem'>
           <div class="dropdown">
             <button onclick="showMenu()" class="dropbtn">
               <span class="glyphicon glyphicon-menu-down"></span> Help</button>
@@ -39,7 +39,7 @@
   $(window).resize(
     function () {
       var width = $(window).width();
-      if (width < 720) {
+      if (width < 750) {
         document.getElementById("brand").innerHTML = "USS";
       }
       else {

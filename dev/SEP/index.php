@@ -27,6 +27,17 @@
                 PollsterLogin::login($db);
                 exit();
             }
+            elseif(isset($_POST['getResults'])){
+                Results::GetResults($db);
+                exit();
+            }
+            elseif(isset($_POST['editSurvey'])){
+                $_SESSION['surName'] = $_POST['surName'];;
+                $_SESSION['acctName'] = $_SESSION['userName'];
+                Survey::sendSurvey($db);
+                unset($_SESSION['acctName']);
+                exit();
+            }
             elseif(isset($_POST['known_value'])){
                 ForgotPassword::sendToken($db);
                 exit();
@@ -71,9 +82,13 @@
                 PollsterAccount::SetProfilePic($db);
                 exit();
             }
+            elseif(isset($_POST['password']) && isset($_POST['email']) && isset($_POST['password-confirm'])){
+                PollsterAccount::SetAccountInfo($db);
+            }
             //otherwise throw error code Bad Request
             else{
                 http_response_code(400);
+                echo "Bad Request: Pollster";
                 exit();
             }
         }
@@ -104,6 +119,7 @@
             //otherwise throw error code
             else{
                 http_response_code(400);
+                echo "Bad Request: Taker";
                 exit();
             }
         } 
@@ -128,5 +144,6 @@
     //otherwise throw error code Bad Request
     else{
         http_response_code(400);
+        echo "Bad Request: Outside";
         exit();
     }

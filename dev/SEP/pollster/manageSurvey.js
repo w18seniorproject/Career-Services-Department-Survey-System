@@ -1,25 +1,3 @@
-function showPinsAndGroups(pin){
-    var html =  constructInitialGroupPinHTML(pin, "General");
-    $("#pinsandgroups").append(html);
-    $(".refreshPin").each(function(i, ele){
-        $(ele).unbind('click');
-        $(ele).on('click', function(){
-            refreshPin(ele);
-        });
-    });
-    $(".add-choice").each(function(i, ele){
-        $(ele).unbind('click');
-        $(ele).on("click", function(){
-            addGroup(ele);
-        });
-    });
-    $(".remove-choice").each(function(i, ele){
-        $(ele).unbind('click');
-        $(ele).on("click", function(){
-            removeGroup(ele);
-        });
-    });
-}
 
 function deleteSurvey(){
     var shouldDelete = confirm("Are you sure you want to Delete this survey?\nThis action cannot be undone");
@@ -31,7 +9,7 @@ function deleteSurvey(){
             data: ({deleteSurvey: "yes", aType: "POLL"}),
             success: function(response){
                 alert("Survey Deleted");
-                location.reload();
+                window.location = "pDashboard.html";
             },
             error: function(jqxr, status, exception){
                 alert("Failing at deleteSurvey() ajax call in manageSurvey.js: " + exception);
@@ -58,12 +36,12 @@ function constructInitialGroupPinHTML(pin, groupName){
     return html;
 }
 
-function showPinsAndGroupsFilled(surveyName, surveyText){
+function showPinsAndGroupsFilled(surveyName){
     $.ajax({
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({manageSurveyEditPins: "filler", surText: surveyText, surName: surveyName, aType: "POLL"}),
+        data: ({manageSurveyEditPins: "true", surName: surveyName, aType: "POLL"}),
         success: function(response){
             var pinGroupArray = JSON.parse(response);
             var html = constructInitialGroupPinHTML(pinGroupArray[0].pin, pinGroupArray[0].groupName);
@@ -155,49 +133,6 @@ function constructGroupPinHTML(pin, groupName){
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
-}
-
-function showResources(){
-    $.ajax({
-        url: "../index.php",
-        cache: false,
-        type: "POST",
-        data: ({manageSurveyInitial: "showResources", aType: "POLL"}),
-        success: function(response){
-            for(var i = 1; i < response; i++){
-                $("#resources").append(constructResourceHTML(i, ""));
-                var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + (i-1) + "']";
-                new MdHtmlForm($(selector));
-                $(".btn-bold").each(function(i, ele){
-                    $(ele).unbind('click');
-                    $(ele).on("click", function(){
-                        embolden(ele);
-                    });
-                });
-                $(".btn-italic").each(function(i, ele){
-                    $(ele).unbind('click');
-                    $(ele).on("click", function(){
-                        italicize(ele);
-                    });
-                });
-                $(".btn-link").each(function(i, ele){
-                    $(ele).unbind('click');
-                    $(ele).on("click", function(){
-                        showLink(ele);
-                    });
-                });
-                $(".btn-bullets").each(function(i, ele){
-                    $(ele).unbind('click');
-                    $(ele).on("click", function(){
-                        bullet(ele);
-                    });
-                });
-            }
-        },
-        error: function(jqxr, status, exception){
-            alert("Failing at showResources() ajax call in manageSurvey.js");
-        }
-    });
 }
 
 function showResourcesFilled(surveyName){
