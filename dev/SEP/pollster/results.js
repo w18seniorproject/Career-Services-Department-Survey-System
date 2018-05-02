@@ -1,7 +1,3 @@
-var groups = array();
-var resultsArr = array();
-var rLevelArr = array();
-var timeArr = array();
 
 function showData(surveyName){
     $.ajax({
@@ -21,13 +17,7 @@ function showData(surveyName){
                 var result;
                 var results = JSON.parse(response);
                 for(var i = 0; i < results.length; i++){
-                    result = JSON.parse(results[i]);
-                    var groupName = result.groupName;
-                    groups.push(groupName);
-                    var qAnswers = parseQuestionData(result.surResults); //May not need this
-                    resultsArr.push(qAnswers);
-                    var time = result.time;
-                    timeArr.push(time);
+                    //TODO
                 }
                 displayOverall();
             }
@@ -36,12 +26,6 @@ function showData(surveyName){
             alert("Failing at showData() ajax call in results.js");
         }
     });
-}
-
-function parseQuestionData(questionsDelimited){ //May not need this
-    var questions = array();
-    
-    return questions;
 }
 
 function displayOverall(){

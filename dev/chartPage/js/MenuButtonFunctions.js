@@ -293,7 +293,7 @@ function pieChartMaker(qNum, SurName)
 
 }
 
-function exportResponsesToCSV(var SurName)
+function exportResponsesToCSV(SurName)
 {
   let csvContent = "data:text/csv;charset=utf-8,";
   var filtered = js_questionJSON.filter(function(item){

@@ -9,30 +9,48 @@
             $surName = $_POST['surName'];
 
             $sql = "SELECT `groupName`, `surResults`, `rLevel`, `time` FROM `results` WHERE `acctName`=? AND `surName`=?;";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute(array($acctName, $surName));
+            $resultsSTMT = $conn->prepare($sql);
+            $resultsSTMT->execute(array($acctName, $surName));
 
-            $rNum = $stmt->rowCount();
+            $sql = "SELECT `qNum`, `qType`, `qText`, `qChoices`, `qAns`, `qWeight`, `rLevel` AS `qrLevel`, `rName` AS `qrName` FROM `questions` WHERE `acctName`=? AND `surName`=?;";
+            $questionsSTMT = $conn->prepare($sql);
+            $questionsSTMT->execute(array($acctName, $surName));
+
+
+
+            $rNum = $resultsSTMT->rowCount();
 
             if($rNum > 0){
-                $resultsArray = array();
+                $returnArr = array();
+                while($rRow = $resultsSTMT->fetch(PDO::FETCH_ASSOC)){
+                    extract($rRow);
 
-                while($row = $result->fetch(PDO::FETCH_ASSOC)){
-                    extract($row);
+                    $qResults = parseResults($surResults);
 
-                    $result=array(
+                    $result = array(
                         "groupName" => $groupName,
-                        "surResults" => $surResults,
-                        "rLevel" => $rLevel,
-                        "time" => $time
+                        "rName" => $rName,
+                        "rLevel" =>$rLevel,
+                        "time" => $time,
+                        "qPoints" => $qPoints,
+                        "surResults" => $surResultsJSON
                     );
-                    $resultsArray[] = $result;
+                    $returnArr[] = $result;
                 }
-                echo json_encode($resultsArray);
+                $rRow = $resultsSTMT->fetch(PDO::FETCH_ASSOC);
+
+
+
             }
+
+            
             else{
                 echo "THERE ARE NO RESULTS TO BE HAD";
             }
+        }
+
+        private static function parseResults($surResults){
+            
         }
         
     }
