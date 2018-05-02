@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang= en>
+	<head>
+        <title>Resources</title>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="resources.js"></script>
+        <script type="text/javascript" src="../scripts/utils.js"></script>
+        <script>
+            $(function(){
+                $("#header").load("../header.html"); 
+            });
+        </script>
+    </head>
+    <body>
+        <div id="header"></div>
+        <div class="form-centered">
+            <legend class="legend">Thank you for your Response!</legend>
+            <div id="resources">
+                <script type="text/javascript">showResources()</script>
+            </div>
+        </br>
+            <div id="comments">
+                <textarea id="commentbox" placeholder="Comments, Questions, etc. (optional)" class="form-control"></textarea>
+            </br>
+                <input type="button" value="Submit Comment" onclick="submitComment()" class="btn btn-primary btn-lg btn-block shadow">
+            </div>
+        </div>
+
+    </body>
+</html>

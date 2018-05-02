@@ -1,0 +1,68 @@
+<nav class="navbar navbar-default shadow">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" id="brand" href="../user/uLogin.html">University Survey System</a>
+      <a class="logo" href="../user/uLogin.html">
+        <img src="../graphics/logo_white_small.png" width="48" />
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right navbar-item-list">
+        <li class="navbar-item">
+          <a href="../pollster/pDashboard.html">
+            <span class="glyphicon glyphicon-user"></span> Dashboard</a>
+        </li>
+        <li class="navbar-item">
+          <a href="../pollster/pSurvey.html">
+            <span class="glyphicon glyphicon-plus"></span> New Survey</a>
+        </li>
+        <li class="navbar-item">
+          <div class="dropdown">
+            <button onclick="showMenu()" class="dropbtn">
+              <span class="glyphicon glyphicon-menu-down"></span> Help</button>
+            <div id="helpDropdown" class="dropdown-content">
+              <a href="#about">About</a>
+              <a href="#userGuide">User Guide</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script type="text/javascript">
+  $(window).resize(
+    function () {
+      var width = $(window).width();
+      if (width < 720) {
+        document.getElementById("brand").innerHTML = "USS";
+      }
+      else {
+        document.getElementById("brand").innerHTML = "University Survey System";
+      }
+    }
+  ).resize();
+</script>
+<script>
+  /* When the user clicks on the button, 
+  toggle between hiding and showing the dropdown content */
+  function showMenu() {
+    document.getElementById("helpDropdown").classList.toggle("show");
+  }
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function (e) {
+    if (!e.target.matches('.dropbtn')) {
+      var helpDropdown = document.getElementById("helpDropdown");
+      if (helpDropdown.classList.contains('show')) {
+        helpDropdown.classList.remove('show');
+      }
+    }
+  }
+</script>

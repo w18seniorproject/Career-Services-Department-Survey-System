@@ -1,0 +1,4 @@
+#ignoring user profile pictures
+
+*/profilePics/*.jpg
+.vscode/launch.json

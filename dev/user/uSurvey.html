@@ -15,23 +15,20 @@
                 $("#header").load("../header.html"); 
             });
         </script>
-        <script>
-            $(function(){
-                $("#footer").load("../footer.html"); 
-            });
-        </script>
     </head>
     <body>
         <div id="header"></div>
-        <div class="survey-wrapper">
+        <div class="survey-wrapper" id="survey-wrapper">
             <legend class="legend">Survey</legend>
-            <form action="submit.php" method="post" id="questions-wrapper" class="questions-wrapper">
+            <div id="questions-wrapper" class="questions-wrapper">
+                <h3 id="msg" style="text-align: center"></h3>
+                <input type="button" value="Continue" id="continue" class="btn btn-survey">
                 <script type="text/javascript">
-                    showQuestions();
+                    showLanding();
+                    window.onunload= function() {};
                 </script>
-            </form>
+            </div>
+            <p id="errorMessage" class="errorMessage"></p>
         </div>
-
-        <div id="footer"></div>
     </body>
 </html>

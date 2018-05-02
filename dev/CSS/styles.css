@@ -67,18 +67,23 @@
     color: #a10022;
 }
 
-/*For Login, Signin, Subit, etc.*/
+/*Common to any page that needs them*/
 .btn-primary,
 .btn-primary:focus{
-    background-color: #a10022;
+    background-color: #a10022 !important;
     border: none;
     border-radius: 0 !important;
 }
 .btn-primary:hover{
-    background-color: #a32244;
+    background-color: #a32244 !important;
 }
-
-/*For forms that are the main content on the page*/
+.shadow{
+    box-shadow: 0px 2px 5px #cccccc;
+}
+.btn-right{
+    float: right;
+    margin-right: 10px;
+}
 .form-centered{
     width: 60%;
     margin-left: auto;
@@ -92,29 +97,10 @@
     color: #a10022;
     font-weight: bold;
 }
-
-/*Footer*/
-.footer{
-    padding-top: 5px;
-    bottom: 0 !important;
-    text-align: center;
-    font-size: 12pt;
-    font-family: Arial;
-    width: 100%;
-    height: 50px;
-    background-color: #6d6e71;
-    color: white;
-    position: static;
-    margin-top: 400px;
-}
-
-
-/*Common to All pages*/
-html{
+html, body{
     min-height: 100% !important;
     height: 100% !important;
 }
-
 .hyperlink,
 .hyperlink:hover,
 .hyperlink:visited,
@@ -128,22 +114,278 @@ html{
     text-align: center;
     margin-top: 60px !important;
 }
+.select{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    line-height: 5px;
+}
+.btn-secondary,
+.btn-secondary:focus{
+    background-color: #6d6e71;
+    color: #ffffff;
+    border-radius: 0;
+    border: none;
+}
+.btn-secondary:hover{
+    background-color: #7e7f82;
+    color: #ffffff;
+}
+
+/* Pollster Dashboard */
+.rightContent, .leftContent, .dContainer{
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    vertical-align: top;
+    height: 100%;
+}
+.leftContent{
+    width: 33%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: grey;
+    float: left;
+    padding: 10px;
+}
+.rightContent{
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 67%;
+    padding: 10px;
+}
+.dContainer{
+    margin-top: 60px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+.rContainer{
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+/*Survey Creation Page*/
+.center-th{
+    text-align: center;
+}
+.ans{
+    margin-right: 10px;
+}
+.new-survey-wrapper{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    max-width: 820px !important;
+    padding: 10px;
+}
+.new-section{
+    background-color: #fafafa;
+    border: none;
+    box-shadow: 0px 2px 5px #cccccc;
+    border-radius: 0;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+.close{
+    margin: 0;
+    margin-bottom: 10px;
+    margin-left: 100%;
+    font-weight: bolder;
+    font-size: 30px;
+    color: #a10022;
+    opacity: 0.7;
+}
+.close:hover{
+    color: #a10022;
+    opacity: 1;
+}
+.qClose{
+    font-size: 20px;
+}
+.sNum{
+    white-space: nowrap;
+}
+.qTable{
+    border-spacing: 10px;
+    border-collapse: separate;
+    width: 100%;
+    margin: 10px;
+    padding-bottom: 5px;
+}
+.add-choice{
+    color: #029934;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 35px;
+    margin: 5px;
+    line-height: 20px;
+}
+.add-choice:hover{
+    color: #029934;
+    opacity: 1;
+}
+.remove-choice{
+    color: #a10022;
+    opacity: 0.7;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 25px;
+    margin: 5px;
+    line-height: 20px;
+}
+.remove-choice:hover{
+    color: #a10022;
+    opacity: 1;
+}
+.qChoice{
+    height: 30px;
+    font-weight: normal;
+    margin-left: 10px;
+}
 
 /*Survey page*/
 .survey-wrapper{
     margin-left: 10px;
     margin-right: 10px;
+    margin-bottom: 100px;
 }
 .questions-wrapper {
     background-color: #fafafa;
     border: none;
     box-shadow: 0px 2px 5px #cccccc;
     border-radius: 0;
-    padding: 0;
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 50px;
     width: 100%;
     max-width: 800px !important;
     margin: 0 auto;
-    margin-bottom: 200px;
   }
+.question{
+    display: none;
+}
+@keyframes appear{
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
+.iiiiii{
+    display: block;
+    animation-name: appear;
+    animation-duration: 1s;
+}
+.btn-survey{
+    background-color: #6d6e71;
+    color: #ffffff;
+    border: none;
+    border-radius: 0 !important;
+    float: right;
+    margin-left: 10px;
+}
+.btn-survey:hover,
+.btn-survey:focus{
+    background-color: #7e7f82;
+    color: #ffffff;
+}
 
+/*Resources Page*/
+#resources{
+    margin: 20px;
+}
+#resources > h3{
+    text-align: center;
+}
+#resources > a{
+    text-align: center;
+    color: #a10022;
+    font-size: 14pt;
+}
+.refreshPin{
+    color: #029934;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 20px;
+}
+.refreshPin:hover{
+    opacity: 1;
+}
+.refreshPin-disabled{
+    color: #6d6e71;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 20px;
+}
+.remove-choice-disabled{
+    color: #6d6e71;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 25px;
+    margin: 5px;
+    line-height: 20px;
+}
+.preview{
+    background-color: #fafafa;
+    border: #cccccc;
+    border-style: solid;
+    border-width: 1px;
+}
+.edit-btn{
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+    font-size: 12pt;
+    cursor: pointer;
+    background-color: #fafafa;
+    border: #cccccc;
+    border-style: solid;
+    border-width: 1px;
+}
+.edit-btn:hover{
+    background-color: #cccccc;
+}
+
+/*Help menu dropdown*/
+.dropbtn {
+    background-color: inherit;
+    color: white;
+    padding: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: inherit;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: #a10022;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd}
+
+.show {display:block;}
   

@@ -1,0 +1,25 @@
+<script type="text/javascript" src="manageSurvey.js"></script>
+<script src="../scripts/showdown.js"></script>
+<script src="../scripts/mdhtmlform.js"></script>
+<script src="../scripts/jquery-fieldselection.js"></script>
+</br>
+</br>
+<input type='button' class='btn btn-primary shadow' style='margin-left: 20px;' onclick='deleteSurvey()' value='Delete Survey'>
+<div class="onoffswitch" id="liveornot" style="float: right; margin-right: 20px;" title="Toggle whether Survey is Live or not">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+    <label class="onoffswitch-label" for="myonoffswitch"></label>
+</div>
+<div class="form-centered" style="margin-top: 0px;">
+    <legend class="legend" style="margin-top: 0px;">Survey Groups</legend>
+    <div id="pinsandgroups">
+    </div>
+    <legend class="legend">Resources</legend>
+    <div id="resources">
+    </div>
+<br/>
+<br/>
+<br/>
+    <input type='button' class='btn btn-primary btn-lg btn-block shadow' onclick='save()' value='Save' style='bottom: 40px'>
+<br/>
+<br/>
+</div>

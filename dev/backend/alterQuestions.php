@@ -113,6 +113,10 @@
 			http_response_code(200);
 			header("Allow: POST, PUT, DELETE");
 			break;
+			
+		default:
+			http_response_code(400);
+			break;
 	}	
 	
 ?>

@@ -7,10 +7,7 @@
 		public $qNum;
 		public $qType;
 		public $qText;
-		public $ansOne;
-		public $ansTwo;
-		public $ansThree;
-		public $ansFour;
+		public $qChoices;
 		public $qAns;
 		public $qWeight;
 		public $rLevel;

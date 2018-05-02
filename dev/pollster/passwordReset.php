@@ -1,36 +1,114 @@
 <?php
-//include db connection file
+
+error_reporting(E_ALL);
+
 include_once "../config/pollsterDB.php";
+include_once "passwordReset.html";
 
-$database = new Database();
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $database = new Database();
+    $conn = $database->getConnection();
 
-$conn = $database->getConnection();
-
-$email = $_POST["email"];
-
-$sql = "SELECT pass, acctName FROM accounts WHERE email = ?;";
-
-$result = $conn->prepare($sql);
-$result->execute(array($email));
-
-$numRows = $result->rowCount();
-
-if( numRows == 1){
-    $row = $result->fetch(PDO::FETCH_ASSOC);
-
-        $pass = $row['pass'];
-        $acctName = $row['acctName'];
-        $msg = "Your user name is: " . $acctName . "\nYour password is: " .$pass;
-    //This might need to be javascript... Get email address from user. Query database to make sure email address is
-    // associated with an account. Send link to email address with hashed (encrypted somehow - hashing every username
-    // to ge a match would be bad...) username as a Query String 
-    //(start by sending unhashed username, just to make sure it works). When link is clicked, open 
-    //"update password" page. Send the same query string along with it, so that the correct account is opened.
-    // On the "update password" page, display the username and provide two password boxes.
-        mail( $email, "USS Password Reset", $msg );
+    if(isset($_POST['token'])){
+        $token = $_POST['token'];
+    }else{
+        http_response_code(400);
+        echo "Token not received in passwordReset.php.";
+        exit();
     }
-    else{
 
-        echo "There is no account associated with this email address.";
+    //Make sure token arrived as hexadecimal
+    if(preg_match('/^[0-9A-Fa-f]+$/', $token)){
+
+        $queryHash = hash("sha256", $token, FALSE);
+
+        //get record from db by matching hashed token received with hashed token that is stored in tokens table.
+        $sql = "SELECT acctName, expiration, tokenUsed FROM tokens WHERE tokenHash = ?;";
+
+        $result = $conn->prepare($sql);
+        $result->execute(array($queryHash));
+
+        $numRows = $result->rowCount();
+
+        if($numRows == 0){
+            header("Location: passwordReset.html?error=tokenRemoved");
+            die();
+        }
+
+        if($numRows == 1){
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+
+            //If token hasn't expired...
+            $expiration = strtotime($row['expiration']);
+            
+            if($expiration < strtotime(date("Y-m-d H:i:s"))){
+
+            header("Location: passwordReset.html?error=tokenExpired");
+            die();
+            }
+
+            $used = $row['tokenUsed'];
+            //Check to see if the token was used previously
+            if($used){
+
+            header("Location: passwordReset.html?error=tokenUsed");
+            die();
+            }
+
+            $acctName = $row['acctName'];        
+
+        }else{ //If more than one row is returned from token table query. Should never happen.
+            echo "Internal error. There is more than one account associated with this Token.";
+        }     
+            //Make sure newly entered passwords match
+            if($_POST["newPassword"] === $_POST["confirmPassword"]){
+
+                $pwd = $_POST["newPassword"];
+                $hashedPass = password_hash($pwd, PASSWORD_BCRYPT);
+
+                $sql = "UPDATE accounts SET pass = ? WHERE acctName = ?;";
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(1, $hashedPass);
+                $stmt->bindParam(2, $acctName);
+                $stmt->execute();
+
+                if(!$stmt){
+                echo "Error. Password update failed. ";
+                exit();
+
+                           }
+            else{
+
+                echo "<h2>The password associated with account name \"$acctName\" has been updated.</h2>";
+                
+                //Mark token as "used"
+                $used = true;
+
+                $sql = "UPDATE tokens SET tokenUsed = ?;";
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(1, $used);
+                $stmt->execute();       
+
+                if(!$stmt){
+                    echo "Error. Token not updated to 'used'.";
+                }else{
+
+                header("Location: passwordReset.html?response=success");
+                }
+            }
+        $stmt = null;
+
+        
+        }else{ 
+            echo "Passwords do not match.";
+        }
+    }else{// token was not correctly formatted when it arrived (not hexadecimal)
+        echo "Error. Link has been corrupted.";
     }
-?>
+
+}else{
+    http_response_code(400);
+    exit();
+}

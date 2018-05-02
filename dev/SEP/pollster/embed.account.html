@@ -1,0 +1,26 @@
+<script type='text/javascript' src='account.js'></script>
+<form class='form-centered' method="POST" action="../index.php" id="accountInfoForm" onsubmit='return save();'>
+    <legend class='legend'>My Account</legend>
+    <div class='ppContainer'>
+        <input type="file" style="display: none" id="ppUpload">
+        <div><img class='overlay' onclick='changepic()' src='../graphics/ppOverlay.jpg'></div>
+        <div id='ppHolder'></div>
+        <script type='text/javascript'>
+            getPP();
+            fixForEmbed();
+        </script>
+    </div>
+</br> 
+    <input type='email' name='email' placeholder='Email' id='email' class='form-control input'>
+</br> 
+    <input type='password' name='password' id='password' placeholder='New Password' class='form-control input'>
+</br> 
+    <input type='password' name='password-confirm' id='password-confirm' placeholder='Confirm Password' class='form-control input'>
+</br> 
+    <input type='submit' name='btnSave' value='Save' class='btn btn-primary btn-lg btn-block'>
+    <input type="hidden" value="POLL" name="aType">
+    <label class="errorMessage" id="errorMessage"></label>
+</form>
+<script type='text/javascript'>
+    getAccountInfo();
+</script>

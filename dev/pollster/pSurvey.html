@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang= en>
+	<head>
+        <title>New Survey</title>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../scripts/utils.js"></script>
+        <script type="text/javascript" src="pSurvey.js"></script>
+        <script>
+            $(function(){
+                $("#header").load("../headerLoggedIn.html"); 
+            });
+        </script>
+    </head>
+    <body>
+        <div id="header"></div>
+        <legend class="legend">Create Survey</legend>
+        <div id="new-survey-wrapper" class="new-survey-wrapper">
+            <input id="surTitle" class="form-control input-lg" placeholder="Enter a Survey Title" type="text" name="title" maxlength='30'>
+        </br>
+            <textarea id='surText' class='form-control' placeholder='Enter Survey Instructions for the User'></textarea> 
+        </br>
+            <div id="section-wrapper"></div>
+            <input class="btn btn-primary btn-lg btn-block shadow" type="button" value="Add Section" onclick="addSection()">
+        </br>
+            <a onclick="submit()"><input class="btn btn-primary btn-right shadow" type="button" id="save" name="submit" value="Save"/></a>
+            <a onclick="cancel()"><input class="btn btn-secondary btn-right shadow" type="button" id="cancel" name="cancel" value="Cancel"/></a>
+        </div>
+    </body>
+</html>

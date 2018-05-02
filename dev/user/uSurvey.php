@@ -4,12 +4,16 @@
 
     session_start();
 
-    //If this file has already been run, that means
-    //that this request is from the ajax in uSurvey.js
-    //So it will run the following and die.
     if(isset($_SESSION["questions"])){
-        echo $_SESSION["questions"];
-        die();
+        if(isset($_SESSION["surText"])){
+            echo $_SESSION["surText"];
+            unset($_SESSION['surText']);
+            die();
+        }
+        else{
+            echo $_SESSION["questions"];
+            die();
+        }
     }
 
     $db = new Database();
