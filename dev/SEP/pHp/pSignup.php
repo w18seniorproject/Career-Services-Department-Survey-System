@@ -77,7 +77,7 @@
         $stmt->execute();
 
         //CHANGE TO CORRECT EXTERNAL LINK
-        $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pDashboard.html?";
+        $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.php?";
 
         $msg .= "token=". $bytes . "&view=first" . "\n\nDo not reply to this email.";     
    

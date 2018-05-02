@@ -42,7 +42,7 @@
                 ForgotPassword::sendToken($db);
                 exit();
             }
-            elseif(isset($_POST['token'])){
+            elseif(isset($_POST['newPassword']) && isset($_POST['confirmPassword'])){
                 PasswordReset::pReset($db);
                 exit();
             }
