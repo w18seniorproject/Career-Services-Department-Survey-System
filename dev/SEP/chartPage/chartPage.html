@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="css\main.css" type="text/css" rel="stylesheet">
+
+    <script src="..\JQuery\jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.bundle.min.js"></script>
+    <script src="js\MenuButtonFunctions.js"></script>
+    <title>EWU Career Services Department Survey System Survey Page</title>
+  </head>
+<body>
+  <noscript>
+   For full functionality of this site it is necessary to enable JavaScript.
+   Here are the <a href="https://www.enable-javascript.com/" target="_blank">
+   instructions how to enable JavaScript in your web browser</a>.
+  </noscript>
+  <div class="top"><header class="head"><img src="https://sites.ewu.edu/hpfw/files/2017/08/dropdown_logo.png" alt="Eastern Washington University Logo" id="EasternLogo"><p>Career Services<br>Department Survey System</p></header>
+  <ul class="navigation">
+    <li class="Home"><a href="#">Home</a></li>
+    <li class="Charts"><a href="#">Charts</a></li>
+    <li class="Surveys"><a href="#">Surveys</a></li>
+    <li class="Admins"><a href="#">Admins</a></li>
+    <li class="Comments"><a href="#">Comments</a></li>
+  </ul>
+  </div>
+  <div id="MenuButtons">
+    <button type="button" class="btn btn-primary" id="curRelLevelButton">Current Relation Levels</button>
+    <button type="button" class="btn btn-primary" id="answersMenuButton">Answers For Each Question</button>
+  </div>
+  <br/>
+  <div id="surveyButtons" style="display:none">
+  <button type="button" class="btn btn-primary" onclick="createBarChart()">Relation Chart(Bar)</button>
+  <button type="button" class="btn btn-primary" onclick="createLineChart()">Relation Chart(Line)</button>
+  <button type="button" class="btn btn-primary" onclick="createMixedChart()">Relation Chart(Mixed)</button></div>
+
+  <div id="AnswerDropdown" style="display:none">
+
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="SurveyButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Survey</button>
+    <div id="surveyMenuItems" aria-labelledby="SurveyButton">
+
+    </div>
+    <br/>
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="QuestionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">Survey</button>
+    <div id="questionMenuItems" aria-labelledby="QuestionButton">
+
+  </div>
+</div>
+  <div id="graphContainer">
+  <canvas id="myCanvas" width="400" height="400"></canvas>
+  <div id="ExportDropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="ExportButtonMenu" style="display:none" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export Data As</button>
+    <div class="dropdown-menu" id="exportMenu" aria-labelledby="dropdownMenu2">
+  <button class="dropdown-item" id="indResultsButton" type="button">Export Individual Results And Choices As CSV</button>
+</div>
+  </div>
+</div>
+
+</html>
