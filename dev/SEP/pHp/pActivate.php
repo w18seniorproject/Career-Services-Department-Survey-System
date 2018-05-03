@@ -6,6 +6,7 @@ class AccountActivate{
         error_reporting(E_ALL);
         
         include_once "../pollster/pActivate.html";
+        include_once "../pollster/pDashboard.html";
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
   
@@ -46,7 +47,7 @@ class AccountActivate{
                     if($expiration < strtotime(date("Y-m-d H:i:s"))){
 
                    header("Location: ../pollster/pActivate.html?error=tokenExpired");
-                   die();
+                   die("Token Expired");
                   }
 
                    $used = $row['tokenUsed'];
@@ -54,16 +55,11 @@ class AccountActivate{
                    if($used){
 
                    header("Location: ../pollster/pActivate.html?error=tokenUsed");
-                   die();
+                   die("Token Used");
                    }
 
                     $acctName = $row['acctName'];        
                     $true = 1;
-
-               }else{ //If more than one row is returned from token table query. Should never happen.
-                   echo "Internal error. There is more than one account associated with this Token.";
-                   die();
-                    }     
     
                     $sql = "UPDATE accounts SET active = ? WHERE acctName = ?;";
     
@@ -72,12 +68,12 @@ class AccountActivate{
                     $stmt->bindParam(2, $acctName);
                     $stmt->execute();
     
-                    if(!$stmt){
+                   if(!$stmt){
                     echo "Error. Account activation failed. ";
                     exit();
-    
-                    }else{
-                
+                   }else{ //$stmt executed correctly
+
+                    $stmt = null;
                     //Mark token as "used", and redirect to the pollster dashboard:
                     $used = true;
     
@@ -87,29 +83,32 @@ class AccountActivate{
                     $stmt->bindParam(1, $used);
                     $stmt->execute();       
     
-                    if(!$stmt){
+                    if(!$stmt){//token update failed
                         echo "Error. Token not updated to 'used'.";
                     }
                     //else{
                    // header("Location: ../pollster/pActivate.html?response=success");
                    // }
                   //}
-                  $stmt = null;
-                  
+                  //Everything is ok, so redirect to dashboard:
                   session_start();
                   session_destroy();
                   session_start();
                   $_SESSION["userName"] = $acctName;
-                  header("Location: ../pollster/pDashboard.html?view=first");
-                    }
-                }else{// token was not correctly formatted when it arrived (not hexadecimal)
+                 header("Location: ../pollster/pDashboard.html?view=first"); 
+                    } //$stmt executed correctly
+
+                    }else{// token was not correctly formatted when it arrived (not hexadecimal)
                   echo "Error. Link has been corrupted.";
-                }
-    
-            }else{//server request method not POST
+                    }//nearest else above
+                }else{ //If more than one row is returned from token table query. Should never happen.
+                echo "Internal error. There is more than one account associated with this Token.";
+                die();
+                 }//nearest else above   
+            }else{//server request method not === POST
               http_response_code(400);
              exit();
-            }
-        }
-    }
+            }//last else
+        }//end pActivate
+    }//end class
 ?>

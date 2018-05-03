@@ -19,7 +19,7 @@
         <div id="header"></div>
         <div class="form-centered">
             <legend class="legend" >Survey Adminstrator Account Activation</legend>
-
+            <p><h2>Please wait...</h2></p>
             <form id="acctActivate" action="../index.php" method="post">
             <script> 
             //the following is supposed to be better than window.location.href(), so that the back button doesn't just flip flop between two pages
@@ -27,10 +27,11 @@
                 $("#acctActivate").prepend('<input value=' + getUrlParameter('token') + ' type="hidden" name="token">');
             </script>
 
+            <input class="btn btn-primary btn-lg btn-block" type="submit" value="Submit"></input>
             <input type="hidden" value="POLL" name="aType">
 
             <!--submit form without a button being clicked:-->
-            <script>$("#acctActivate").submit</script>
+            <!--<script>$("#acctActivate").submit</script>-->
             </form>     
       
 <br/>
@@ -60,7 +61,7 @@
         //}
     </script>
 </p>
-<!--put error messages here, in case activation fails. return error message from php file-->
+
         </div>
     </body>
 </html>

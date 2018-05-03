@@ -1,6 +1,9 @@
 <?php
     class PollsterLogin {
         public static function login($db){
+
+            include_once"../pollster/pLogin.html";
+
             $conn = $db->getConnection('poll');
 
             $username = $_POST["username"];

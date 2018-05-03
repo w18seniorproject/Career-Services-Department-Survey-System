@@ -33,7 +33,7 @@ class PasswordReset{
                 $numRows = $result->rowCount();
 
                 if($numRows == 0){
-                 header("Location: ../pollster/passwordReset.html?error=tokenRemoved");
+                 header("Location: ./pollster/passwordReset.html?error=tokenRemoved");
                  die();
              }
 
@@ -45,7 +45,7 @@ class PasswordReset{
             
                     if($expiration < strtotime(date("Y-m-d H:i:s"))){
 
-                   header("Location: ../pollster/passwordReset.html?error=tokenExpired");
+                   header("Location: ./pollster/passwordReset.html?error=tokenExpired");
                    die();
                   }
 
@@ -53,7 +53,7 @@ class PasswordReset{
                    //Check to see if the token was used previously
                    if($used){
 
-                   header("Location: ../pollster/passwordReset.html?error=tokenUsed");
+                   header("Location: ./pollster/passwordReset.html?error=tokenUsed");
                    die();
                    }
 

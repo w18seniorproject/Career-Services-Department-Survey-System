@@ -78,9 +78,9 @@
 
 
         //CHANGE TO CORRECT EXTERNAL LINK
-        //$msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+        $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
 
-        $msg = "Please click on the link to activate your account:\n\n" . $_SERVER['SERVER_PROTOCOL'] . $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+        //$msg = "Please click on the link to activate your account:\n\n" . $_SERVER['SERVER_PROTOCOL'] . $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
 
 
         $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
