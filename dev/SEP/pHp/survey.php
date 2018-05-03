@@ -50,9 +50,26 @@
         public static function sendSurvey($db){ 
             $questions = Questions::getQuestions($db);
             $secReqs = SecReqs::getReqs($db);
-            $survey = json_encode(array($questions, $secReqs));
+            $surText = Survey::getSurText($db);
+            $survey = json_encode(array($questions, $secReqs, $surText));
             echo $survey;
         }
+
+        private static function getSurText($db){
+            $conn = $db->getConnection('taker');
+
+            $surName = $_SESSION['surName'];
+            $acctName = $_SESSION['acctName'];
+
+            $sql = 'SELECT `surText` FROM `pins` WHERE `acctName`=? AND `surName`=?;';
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName));
+
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            
+            return $row['surText'];
+        }
+
                
         private static function otherAddToDB($conn, $surName, $qNum, $qType, $qText, $qAns, $qWeight, $rLevel, $rName, $acctName){
             $sql = "INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
