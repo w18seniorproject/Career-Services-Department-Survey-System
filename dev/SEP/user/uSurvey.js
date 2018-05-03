@@ -253,7 +253,7 @@ function getResults(){
                     qNum: curQ,
                     value: ans.value
                 }
-                results[curQ] = JSON.stringify(answer); 
+                results[curQ-1] = JSON.stringify(answer); 
             }
         });
     }
