@@ -76,23 +76,14 @@
 
         $stmt->execute();
 
-        //CHANGE TO CORRECT EXTERNAL LINK
-        $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.php?";
+        $msg = "Please click on the link to activate your account:\n\n" . $_SERVER['SERVER_PROTOCOL'] . $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.php?";
 
         $msg .= "token=". $bytes . "&view=first" . "\n\nDo not reply to this email.";     
    
         //"from" param is not a valid email address.
         if(mail( $email, "USS Account Activation", $msg, "From: webslave@notarealdomain.com" )){
-
-
+            // Open page with instructions message perhaps?
         }
 //-----------------------------------------------
-/*
-            session_start();
-            session_destroy();
-            session_start();
-            $_SESSION["userName"] = $username;
-            header("Location: ./pollster/pDashboard.html?view=first");
-            */
         }
     }

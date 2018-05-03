@@ -91,10 +91,14 @@ class PasswordReset{
                     if(!$stmt){
                         echo "Error. Token not updated to 'used'.";
                     }
-                    /*else{
-    
-                    header("Location: ../pollster/pActivate.html?response=success");
-                    }*/
+                    else{
+                        // Everything was successful. Redirecting to pDashboard.html
+                        session_start();
+                        session_destroy();
+                        session_start();
+                        $_SESSION["userName"] = $acctName;
+                        header("Location: ./pollster/pDashboard.html?view=first");            
+                    }
                   }
                   $stmt = null;
                   
