@@ -21,6 +21,7 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/passwordReset.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pActivate.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/results.php';
         
 
         if($_POST['aType'] === 'POLL'){
@@ -30,11 +31,14 @@
                 exit();
             }
             elseif(isset($_POST['getResults'])){
+                $_SESSION['surName'] = $_POST['surName'];
+                $_SESSION['acctName'] = $_SESSION['userName'];
                 Results::GetResults($db);
+                unset($_SESSION['acctName']);
                 exit();
             }
             elseif(isset($_POST['editSurvey'])){
-                $_SESSION['surName'] = $_POST['surName'];;
+                $_SESSION['surName'] = $_POST['surName'];
                 $_SESSION['acctName'] = $_SESSION['userName'];
                 Survey::sendSurvey($db);
                 unset($_SESSION['acctName']);

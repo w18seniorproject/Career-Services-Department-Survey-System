@@ -96,10 +96,10 @@ function displaySurveys(){
                     $(ele).on("click", function(){showEditSurvey($(ele).parent().parent().attr("surName"))});
                 });
                 $(".survey-left").each(function(i, ele){
-                    $(ele).on("click", function(){showResults($(ele).parent().parent().attr("surName"))});
+                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"))});
                 });
                 $(".survey-middle").each(function(i, ele){
-                    $(ele).on("click", function(){showResults($(ele).parent().parent().attr("surName"))});
+                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"))});
                 });
                 $(".surveyListItem").each(function(i, ele){
                     $(ele).on("click", function(){showSelectedItem(ele)});

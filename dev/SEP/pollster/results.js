@@ -16,11 +16,11 @@ function showData(surveyName){
                 $("#exportDataButton").remove();
             }
             else{
+                alert(response);
                 var data = JSON.parse(response);
                 questions = JSON.parse(data[0]);
                 secReqs = JSON.parse(data[1]);
                 results = JSON.parse(data[2]);
-
                 displayAllGroups();
             }
         },
@@ -52,6 +52,8 @@ function constructDashDataHTML(rAvg, timeAvg, num){
     var toReturn = "<h4>TOTAL RESPONSES</h4><h3>" + num + "</h3>\
                     <h4>AVERAGE TIME</h4><h3>" + timeAvg + "</h3>\
                     <h4>AVERAGE RLEVEL</h4><h3>" + rAvg + "</h3>";
+
+    alert(toReturn);
 
     return toReturn;
 }
