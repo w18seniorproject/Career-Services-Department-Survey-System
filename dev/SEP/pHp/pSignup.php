@@ -76,8 +76,12 @@
 
         $stmt->execute();
 
+
         //CHANGE TO CORRECT EXTERNAL LINK
-        $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+        //$msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+
+        $msg = "Please click on the link to activate your account:\n\n" . $_SERVER['SERVER_PROTOCOL'] . $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+
 
         $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
    
@@ -90,12 +94,5 @@
             echo "Please check your email inbox for a link to activate your account.";
         }
 //-----------------------------------------------
-/*
-            session_start();
-            session_destroy();
-            session_start();
-            $_SESSION["userName"] = $username;
-            header("Location: ./pollster/pDashboard.html?view=first");
-            */
         }
     }

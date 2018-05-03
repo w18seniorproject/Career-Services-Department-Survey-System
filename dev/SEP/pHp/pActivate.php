@@ -90,9 +90,9 @@ class AccountActivate{
                     if(!$stmt){
                         echo "Error. Token not updated to 'used'.";
                     }
-                    else{
-                    header("Location: ../pollster/pActivate.html?response=success");
-                    }
+                    //else{
+                   // header("Location: ../pollster/pActivate.html?response=success");
+                   // }
                   //}
                   $stmt = null;
                   

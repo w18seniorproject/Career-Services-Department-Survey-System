@@ -5,12 +5,13 @@ var maxSec;
 var secBound;
 var secReqs;
 var qWeights;
+var questions
 
 function setupPage(){
     $("#header").load("../header.html");
     
     curSec = 0;
-    showQuestions();
+    showSurText();
 }
 
 function getQuest(quest){
@@ -71,62 +72,70 @@ function getTFAns(quest){
     return toReturn;
 }
 
-function showQuestions(){
+function showSurText(){
     $.post("../index.php", { aType: 'TAKE' }, function(data){
         var survey = JSON.parse(data);
-        var questions = JSON.parse(survey[0]);
+        questions = JSON.parse(survey[0]);
         secReqs = JSON.parse(survey[1]);
-        
-        if(questions.length > 0){
-            $('#questions-wrapper').html("");
-            
-            $(window).on('beforeunload', function() {
-                return "Do you really want to close?";
-            });
-            
-            maxSec = 0;
-            secBound = new Array();
-            qWeights = new Array();
-            
-            for(var i = 0; i < questions.length; i++){
-               $('#questions-wrapper').append(getQuest(questions[i]));
-                switch(questions[i].qType){
-                    case 'mc':
-                        $('#questions-wrapper').append(getMCAns(questions[i]));
-                        break;
-                    case 'chk':
-                        $('#questions-wrapper').append(getCBAns(questions[i]));
-                        break;
-                    case 'tf':
-                        $('#questions-wrapper').append(getTFAns(questions[i]));
-                        break;
-                    case 's':
-                        $('#questions-wrapper').append(getSCAns(questions[i]));
-                        break;
-                    default:
-                        break;                
-                }
-                if(questions[i].rLevel > maxSec)
-                {    
-                    maxSec = questions[i].rLevel;
-                }
-                qWeights[i] = questions[i].qWeight;
-                secBound[maxSec] = questions[i].qNum;
-            }
+        var surText = survey[2];
 
-            $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');   
-            $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
+        $("#questions-wrapper").html("<h4>" + surText + "</h4>");
+        $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">'); 
+        $('#continue').click(showQuestions);
 
-            $('#continue').click(loadNextSec);
-            $('#back').click(loadLastSec);
-
-            $('#back').css('display', 'none');
-
-            loadNextSec(); 
-        }
     }).fail(function(){
         $('#questions-wrapper').html("Error - Not logged into quiz. Please return to the login page and enter a pin.");
     });
+}
+
+function showQuestions(){
+    if(questions.length > 0){
+        $('#questions-wrapper').html("");
+        
+        $(window).on('beforeunload', function() {
+            return "Do you really want to close?";
+        });
+        
+        maxSec = 0;
+        secBound = new Array();
+        qWeights = new Array();
+        
+        for(var i = 0; i < questions.length; i++){
+           $('#questions-wrapper').append(getQuest(questions[i]));
+            switch(questions[i].qType){
+                case 'mc':
+                    $('#questions-wrapper').append(getMCAns(questions[i]));
+                    break;
+                case 'chk':
+                    $('#questions-wrapper').append(getCBAns(questions[i]));
+                    break;
+                case 'tf':
+                    $('#questions-wrapper').append(getTFAns(questions[i]));
+                    break;
+                case 's':
+                    $('#questions-wrapper').append(getSCAns(questions[i]));
+                    break;
+                default:
+                    break;                
+            }
+            if(questions[i].rLevel > maxSec)
+            {    
+                maxSec = questions[i].rLevel;
+            }
+            qWeights[i] = questions[i].qWeight;
+            secBound[maxSec] = questions[i].qNum;
+        }
+
+        $('#questions-wrapper').append('<input type="button" value="Continue" id="continue" class="btn btn-survey">');   
+        $('#questions-wrapper').append('<input type="button" value="Back" id="back" class="btn btn-survey">');
+
+        $('#continue').click(loadNextSec);
+        $('#back').click(loadLastSec);
+
+        $('#back').css('display', 'none');
+
+        loadNextSec(); 
+    }
 }
 
 function loadNextSec(){
@@ -146,7 +155,6 @@ function loadNextSec(){
         $('#continue').css('display', 'none');
         
         sendResults();
-        //TO-DO: Display resources from secReqs table.
         return;
     }
     
@@ -234,19 +242,22 @@ function checkScore(){
 
 function getResults(){
     var answers;
-    var results = "";
+    var results = Array();
     var lastQ = secBound[maxSec];
     
     for(var curQ = 1; curQ <= lastQ; curQ++){
-        results = results + " Q" + curQ + ":";
         answers = document.querySelectorAll('.ans.n' + curQ);
         answers.forEach( (ans) => {
-            if(ans.checked)
-                results = results + "|" + ans.value + "|"; 
+            if(ans.checked){
+                var answer = {
+                    qNum: curQ,
+                    value: ans.value
+                }
+                results[curQ-1] = JSON.stringify(answer); 
+            }
         });
     }
-    
-    return results;
+    return JSON.stringify(results);
 }
 
 function sendResults(){

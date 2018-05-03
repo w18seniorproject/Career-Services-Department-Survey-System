@@ -28,7 +28,7 @@
             </script>
 
             <input type="hidden" value="POLL" name="aType">
-            
+
             <!--submit form without a button being clicked:-->
             <script>$("#acctActivate").submit</script>
             </form>     
@@ -37,7 +37,6 @@
 </br>
 <p id="errorMessage" class="errorMessage">
     <script type="text/javascript">
-        var response = getUrlParameter("response");
         var string = getUrlParameter("error");
 
         if (string == "tokenRemoved") {
@@ -52,12 +51,13 @@
             alert("The link accessing this page has already been used. Please try again.");
             window.location.href = 'pSignup.html';
         }
-        
+       /* 
         var response = getUrlParameter("response");
         if (response == "success") {
             alert("Your account has been activated.");
             window.location.href = 'pLogin.html';
-        }
+            */
+        //}
     </script>
 </p>
 <!--put error messages here, in case activation fails. return error message from php file-->
