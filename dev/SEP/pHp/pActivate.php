@@ -1,7 +1,7 @@
 <?php
 
-class PasswordReset{
-    public static function pReset($db){
+class AccountActivate{
+    public static function pActivate($db){
 
         error_reporting(E_ALL);
         
@@ -62,7 +62,8 @@ class PasswordReset{
 
                }else{ //If more than one row is returned from token table query. Should never happen.
                    echo "Internal error. There is more than one account associated with this Token.";
-             }     
+                   die();
+                    }     
     
                     $sql = "UPDATE accounts SET active = ? WHERE acctName = ?;";
     
@@ -76,10 +77,8 @@ class PasswordReset{
                     exit();
     
                     }else{
-    
-                    echo "<h2>The account for \"$acctName\" has been activated.</h2>";
                 
-                    //Mark token as "used"
+                    //Mark token as "used", and redirect to the pollster dashboard:
                     $used = true;
     
                     $sql = "UPDATE tokens SET tokenUsed = ?;";
@@ -91,11 +90,10 @@ class PasswordReset{
                     if(!$stmt){
                         echo "Error. Token not updated to 'used'.";
                     }
-                    /*else{
-    
+                    else{
                     header("Location: ../pollster/pActivate.html?response=success");
-                    }*/
-                  }
+                    }
+                  //}
                   $stmt = null;
                   
                   session_start();
@@ -103,12 +101,12 @@ class PasswordReset{
                   session_start();
                   $_SESSION["userName"] = $acctName;
                   header("Location: ../pollster/pDashboard.html?view=first");
-
+                    }
                 }else{// token was not correctly formatted when it arrived (not hexadecimal)
                   echo "Error. Link has been corrupted.";
                 }
     
-            }else{
+            }else{//server request method not POST
               http_response_code(400);
              exit();
             }

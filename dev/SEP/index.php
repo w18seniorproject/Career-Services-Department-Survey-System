@@ -20,6 +20,8 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pDashboard.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/passwordReset.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pActivate.php';
+        
 
         if($_POST['aType'] === 'POLL'){
             /* POLLSTER HANDLING */
@@ -42,8 +44,12 @@
                 ForgotPassword::sendToken($db);
                 exit();
             }
-            elseif(isset($_POST['newPassword']) && isset($_POST['confirmPassword'])){
+            elseif(isset($_POST['newPassword']) && isset($_POST['confirmPassword']) && isset($_POST['token'])){
                 PasswordReset::pReset($db);
+                exit();
+            }/*The order of the statements immediately above and below this comment is critical for proper execution. Don't swap them. */
+            elseif(isset($_POST['token'])){
+                AccountActivate::pActivate($db);
                 exit();
             }
             elseif(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
