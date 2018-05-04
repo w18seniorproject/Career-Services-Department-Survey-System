@@ -1,14 +1,12 @@
 
 <?php
 
-  include_once "./config/pollsterDB.php";
-
   $database = new Database();
 
   $conn = $database->getConnection();
 
 
-  $sqlquery = "SELECT groupname, ROUND(AVG(relationlevel),0) AS average_relationship FROM results GROUP BY groupname ORDER BY groupname; ";
+  $sqlquery = "SELECT groupname, ROUND(AVG(rLevel),0) AS average_relationship FROM results GROUP BY groupname ORDER BY groupname; ";
   $groupNameArray=array();
   $relationLevelArray=array();
 
