@@ -16,7 +16,6 @@ function showData(surveyName){
                 $("#exportDataButton").remove();
             }
             else{
-                alert(response);
                 var data = JSON.parse(response);
                 questions = JSON.parse(data[0]);
                 secReqs = JSON.parse(data[1]);
@@ -31,29 +30,44 @@ function showData(surveyName){
 }
 
 function displayAllGroups(){
-    var timeSum=0, num=0, timeAvg, rSum=0, rAvg;
-    for(; num < results.Length; num++){
+    var timeSD, timeSum=0, num=0, timeAvg, rSum=0, rAvg, timeSumofSquares=0;
+    for(; num < results.length; num++){
         if(!groupArr.includes(results[num].groupName)){
             groupArr.push(results[num].groupName);
         }
         timeSum += results[num].time;
         rSum += results[num].rLevel;
+        timeSumofSquares += results[num].time*results[num].time;
     }
+    timeVar = (num * timeSumofSquares - timeSum*timeSum)/(num*num);
+    timeSD = Math.sqrt(timeVar);
     rAvg = rSum/num;
     timeAvg = timeSum/num;
-    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num));
+    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
 }
 
 function displayGroup(groupNum){
-    //TODO display question view for particular group
+    var timeSD, timeSum=0, num=0, timeAvg, rSum=0, rAvg, timeSumofSquares=0;
+    for(var i=0; i<results.length; i++){
+        if(groupArr.indexOf(results[i].groupName) === groupNum){
+            num++;
+            timeSum += results[i].time;
+            rSum += results[num].rLevel;
+            timeSumofSquares += results[num].time*results[num].time;    
+        }
+    }
+    timeVar = (num * timeSumofSquares - timeSum*timeSum)/(num*num);
+    timeSD = Math.sqrt(timeVar);
+    rAvg = rSum/num;
+    timeAvg = timeSum/num;
+    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));    
 }
 
-function constructDashDataHTML(rAvg, timeAvg, num){
-    var toReturn = "<h4>TOTAL RESPONSES</h4><h3>" + num + "</h3>\
-                    <h4>AVERAGE TIME</h4><h3>" + timeAvg + "</h3>\
-                    <h4>AVERAGE RLEVEL</h4><h3>" + rAvg + "</h3>";
-
-    alert(toReturn);
+function constructDashDataHTML(rAvg, timeAvg, num, timeSD){
+    var toReturn = "<h4>TOTAL RESPONSES</h4><h3>" + num + "</h3></br>\
+                    <h4>TIME</h4><h3>Average: " + Math.round(timeAvg) + " Seconds</h3>\
+                    <h3>Standard Deviation: " + Math.round(timeSD) + " Seconds</h3></br>\
+                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg + 1 )+ "</h3></br>";
 
     return toReturn;
 }
