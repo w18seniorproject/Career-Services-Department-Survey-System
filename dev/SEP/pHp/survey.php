@@ -32,6 +32,10 @@
 
             echo $pin;
         }
+        
+        public static function updateSurvey($db){
+            $conn = $db->getConnection('poll');
+        }
 
         public static function sendComment($db){
             $conn = $db->getConnection('taker');
