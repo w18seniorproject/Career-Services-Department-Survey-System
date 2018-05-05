@@ -35,6 +35,9 @@
         
         public static function updateSurvey($db){
             $conn = $db->getConnection('poll');
+            
+            ManageSurvey::DeleteSurvey($db);
+            Survey::createSurvey($db);
         }
 
         public static function sendComment($db){

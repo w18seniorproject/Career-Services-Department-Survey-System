@@ -275,7 +275,7 @@ function checkChoices(){
     return value;
 }
 
-function submit(){
+function submit(update){
     var title = $("#surTitle").val();
     surName = title;
     var exit = false;
@@ -388,21 +388,21 @@ function submit(){
     if(exit){
         return;
     }
-    post(survey);
+    post(survey, update);
 }
 
 function promptCompletion(){
     alert("Please fill out all fields");
 }
 
-function post(toSend){
+function post(toSend, update){
     var instruc = $("#surText").val();
     $.ajax({
         url: "../index.php",
         type: "POST",
-        data: ({dataArray: toSend, surText: instruc, aType: "POLL"}),
+        data: ({dataArray: toSend, surText: instruc, aType: "POLL", update: update}),
         success: function(response){
-            window.location = "pDashboard.html?content=manage&surName=" + surName;
+            window.location = "pDashboard.html?content=manage&surName=" + surName;      
         },
         error: function(jqxr, status, exception){
             alert("Failing at post() ajax call in pSurvey.js");
@@ -462,7 +462,7 @@ function fillSurveyFields(surveyName){
             $("#save").prop('onclick',null).off('click');
 
             $('#save').click(function() {
-                submit();
+                submit(true);
             }); 
         },
         error: function(jqxr, status, exception){
@@ -473,6 +473,6 @@ function fillSurveyFields(surveyName){
 
 function setupPage(){
     $('#save').click(function() {
-        submit();
+        submit(null);
     }); 
 }

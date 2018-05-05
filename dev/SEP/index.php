@@ -64,8 +64,13 @@
                 PollsterDashboard::GetSurveys($db);
                 exit();
             }
-            elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray'])){
-                Survey::createSurvey($db);
+            elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray']) && isset($_POST['update'])){
+                if($_POST['update'] == true){
+                    Survey::updateSurvey ($db);
+                }
+                else{
+                    Survey::createSurvey($db);
+                }
                 exit();
             }
             elseif(isset($_POST['resources']) && isset($_POST['pins']) && isset($_POST['groups'])){
