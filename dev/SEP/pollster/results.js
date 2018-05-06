@@ -21,6 +21,8 @@ function showData(surveyName){
                 secReqs = JSON.parse(data[1]);
                 results = JSON.parse(data[2]);
                 displayAllGroups();
+                displayGroupButtons();
+
             }
         },
         error: function(jxqr, status, exception){
@@ -46,10 +48,34 @@ function displayAllGroups(){
     $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
 }
 
-function displayGroup(groupNum){
+function displayGroupButtons(){
+    for(var i = 0; i < groupArr.length; i++){
+        var button = "<input value='" + groupArr[i] + "' type='button' style='display: inline-block; margin: 0px; margin-right: 10px;' class='btn btn-secondary btn-sm shadow gb' groupNum='" + (i+1) + "'>";
+        $("#groupButtonBar").append(button);
+    }
+    var allGroupButton = "<input value='All Groups' type='button' style='display: inline-block; margin: 0px; margin-right: 10px; float: right;' class='btn btn-primary btn-sm shadow gb' groupNum='0'>";
+    $("#groupButtonBar").append(allGroupButton);
+    $(".gb").each(function(i, ele){
+        $(ele).click(function(){
+            displayGroup($(ele).attr("groupNum"));
+            $(".gb").each(function(i, element){
+                $(element).removeClass("btn-primary");
+                $(element).addClass("btn-secondary");
+            })
+            $(ele).removeClass("btn-secondary");
+            $(ele).addClass("btn-primary");
+        });
+    });
+}
+
+function displayGroup(groupNum){ // DOESN'T WORK YET!!!
+    if(groupNum == 0){
+        displayAllGroups();
+        return;
+    }
     var timeSD, timeSum=0, num=0, timeAvg, rSum=0, rAvg, timeSumofSquares=0;
     for(var i=0; i<results.length; i++){
-        if(groupArr.indexOf(results[i].groupName) === groupNum){
+        if(groupArr.indexOf(results[i].groupName)+1 === groupNum){
             num++;
             timeSum += results[i].time;
             rSum += results[num].rLevel;
