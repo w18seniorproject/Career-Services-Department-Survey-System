@@ -527,3 +527,11 @@ html, body{
 .dropdown a:hover {background-color: #ececec}
 
 .show {display:block;}
+
+/* Results Page */
+
+.solid-bar{
+    background-color: #006ea1;
+    border-radius: 1px;
+    display: inline-block;
+}

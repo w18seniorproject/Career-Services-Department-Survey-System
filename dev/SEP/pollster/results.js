@@ -120,19 +120,20 @@ function displayQuestionDataAll(){
 }
 
 function getResponsesAll(qNum, qType){
-    var toReturn = {};
+    var toReturn = {"total":0};
     switch(qType){
         case "tf":
-            toReturn = {"t":0, "f":0};
+            toReturn = {"t":0, "f":0, "total":0};
             break;
         case "s":
-            toReturn = {"sta":0, "a":0,"sla":0, "sld":0, "d":0, "std":0};
+            toReturn = {"sta":0, "a":0,"sla":0, "sld":0, "d":0, "std":0, "total":0};
             break;
         case "mc":
             var ans = questions[qNum].qChoices;
             var choiceArr = ans.split("~$#");
             for(var i = 0; i < choiceArr.length; i++){
                 toReturn[choiceArr[i].substr(0, -3)] = 0;
+                toReturn.total++;
             }
     }
 
@@ -155,7 +156,7 @@ function getResponsesAll(qNum, qType){
 function getResponsesCHKAll(qNum){
     var ans = questions[qNum].qChoices;
     var choiceArr = ans.split("~$#");
-    var toReturn = {};
+    var toReturn = {"total":0};
     for(var i = 0; i < choiceArr.length; i++){
         var choice = choiceArr[i].substr(0, choiceArr[i].length-3);
         toReturn[choice] = 0;
@@ -169,6 +170,7 @@ function getResponsesCHKAll(qNum){
             for(var key in toReturn){
                 if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
                     toReturn[key]++;
+                    toReturn.total++;
                 }
             }
         }
@@ -181,7 +183,11 @@ function getResponsesCHKAll(qNum){
 function constructQuestHTML(qText, qNum, qAns, qWeight, response){
     var toReturn = "<h3>" + qText + "</h3>";
     for(var key in response){
-        toReturn += "<h4>" + key + ": " + response[key] + "</h4>";
+        if(key != "total"){
+            toReturn += "<h4>" + key + "</h4>";
+            var width = Math.round((response[key]/response.total)*100);
+            toReturn += "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + "</span>";
+        }
     }
     return toReturn;
 }
