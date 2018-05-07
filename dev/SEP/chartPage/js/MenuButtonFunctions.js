@@ -108,7 +108,7 @@ window.onload = function(){
     $.ajax({
 
       type: "POST",
-      url: 'include/SEP/pHp/questions.php',
+      url: './SEP/pHp/questions.php',
       dataType: 'json',
       success: function(json){
         js_questionJSON=JSON.parse(json);
@@ -130,7 +130,7 @@ window.onload = function(){
     $.ajax({
 
       type: "POST",
-      url: 'include/SEP/pHp/results.php',
+      url: './SEP/pHp/results.php',
       dataType: 'json',
       success: function(json){
         js_resultJSON=JSON.parse(json);
