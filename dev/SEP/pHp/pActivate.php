@@ -34,7 +34,7 @@ class AccountActivate{
                 $numRows = $result->rowCount();
 
                 if($numRows == 0){
-                 header("Location: ../pollster/pActivate.html?error=tokenRemoved");
+                 header("Location: ./pollster/pActivate.html?error=tokenRemoved");
                  die();
              }
 
@@ -46,7 +46,7 @@ class AccountActivate{
             
                     if($expiration < strtotime(date("Y-m-d H:i:s"))){
 
-                   header("Location: ../pollster/pActivate.html?error=tokenExpired");
+                   header("Location: ./pollster/pActivate.html?error=tokenExpired");
                    die("Token Expired");
                   }
 
@@ -54,7 +54,7 @@ class AccountActivate{
                    //Check to see if the token was used previously
                    if($used){
 
-                   header("Location: ../pollster/pActivate.html?error=tokenUsed");
+                   header("Location: ./pollster/pActivate.html?error=tokenUsed");
                    die("Token Used");
                    }
 
@@ -95,7 +95,7 @@ class AccountActivate{
                   session_destroy();
                   session_start();
                   $_SESSION["userName"] = $acctName;
-                 header("Location: ../pollster/pDashboard.html?view=first"); 
+                 header("Location: ./pollster/pDashboard.html?view=first"); 
                     } //$stmt executed correctly
 
                     }else{// token was not correctly formatted when it arrived (not hexadecimal)

@@ -97,7 +97,7 @@ class PasswordReset{
                     echo "Error. Token not updated to 'used'.";
                 }else{
 
-                header("Location: ../pollster/passwordReset.html?response=success");
+                header("Location: ./pollster/passwordReset.html?response=success");
                 }
               }
               $stmt = null;
