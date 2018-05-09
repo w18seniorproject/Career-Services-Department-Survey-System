@@ -16,7 +16,6 @@
         });
     </script>
 </head>
-
 <body>
     <div id="header"></div>
     <div class="form-centered">
@@ -25,15 +24,18 @@
             <h2>Please wait...</h2>
         </p>
         <form id="acctActivate" action="../index.php" method="post">
-            <script> 
-                //the following is supposed to be better than window.location.href(), so that the back button doesn't just flip flop between two pages
-                //window.location.replace("pActivate.php?token=" + getUrlParameter('token'))       
+            <script>      
                 $("#acctActivate").prepend('<input value=' + getUrlParameter('token') + ' type="hidden" name="token">');
+                //alert(" Token: " + getUrlParameter('token'));
             </script>
             <input type="hidden" value="POLL" name="aType">
         </form>
         <!--submit form without a button being clicked:-->
-        <script>document.forms["acctActivate"].submit();</script>
+        <script>
+        if(getUrlParameter('token')!= ""){
+            document.forms["acctActivate"].submit();
+        }
+        </script>
         <br/>
         </br>
         <p id="errorMessage" class="errorMessage">
@@ -52,13 +54,6 @@
                     alert("The link accessing this page has already been used. Please try again.");
                     window.location.href = 'pSignup.html';
                 }
-       /* 
-        var response = getUrlParameter("response");
-        if (response == "success") {
-            alert("Your account has been activated.");
-            window.location.href = 'pLogin.html';
-            */
-        //}
             </script>
         </p>
 

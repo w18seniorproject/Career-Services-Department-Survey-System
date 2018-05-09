@@ -5,7 +5,7 @@ class PasswordReset{
 
         error_reporting(E_ALL);
         
-        include_once "../pollster/passwordReset.html";
+        include_once "./pollster/passwordReset.html";
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
   

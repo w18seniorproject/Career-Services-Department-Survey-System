@@ -91,7 +91,9 @@
             header("Location: ../pollster/pSignup.html?error=badEmail");
             die("mail function failure");
         }else{
-            echo "Please check your email inbox for a link to activate your account.";
+            header("Location: ./pollster/pSignup.html?error=noError");
+                    die();
+            //echo "<h2>Please check your email inbox for a link to activate your account.</h2>";
         }
 //-----------------------------------------------
         }

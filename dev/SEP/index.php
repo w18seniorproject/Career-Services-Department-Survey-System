@@ -51,8 +51,8 @@
             elseif(isset($_POST['newPassword']) && isset($_POST['confirmPassword']) && isset($_POST['token'])){
                 PasswordReset::pReset($db);
                 exit();
-            }/*The order of the statements immediately above and below this comment is critical for proper execution. Don't swap them. */
-            elseif(isset($_POST['token'])){
+            }
+            elseif(!isset($_POST['newPassword']) && isset($_POST['token'])){
                 AccountActivate::pActivate($db);
                 exit();
             }

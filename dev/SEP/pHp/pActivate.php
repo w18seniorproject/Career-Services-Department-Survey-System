@@ -5,8 +5,19 @@ class AccountActivate{
 
         error_reporting(E_ALL);
         
-        include_once "../pollster/pActivate.html";
-        include_once "../pollster/pDashboard.html";
+        include_once "./pollster/pActivate.html";
+        include_once "./pollster/pDashboard.html";
+
+         //Deletes accounts when activation fails, to prevent primary key error from being thrown by the database.
+         function deleteInactive($db, $conn){
+            $sql = "DELETE FROM accounts WHERE active = 0;";
+            $del = $conn->prepare($sql);
+            $del->execute();
+
+            if(!$del){
+                echo "Internal error. Inactive accounts were not deleted from accounts table.";
+                }
+            }//end deleteInactive()
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
   
@@ -17,6 +28,7 @@ class AccountActivate{
             }else{
                 http_response_code(400);
                 echo "Token not received in pActivate.php.";
+                deleteInactive($db, $conn);
                 exit();
             }
 
@@ -34,26 +46,26 @@ class AccountActivate{
                 $numRows = $result->rowCount();
 
                 if($numRows == 0){
-                 header("Location: ./pollster/pActivate.html?error=tokenRemoved");
-                 die();
-             }
+                    deleteInactive($db, $conn);
+                    header("Location: ./pollster/pActivate.html?error=tokenRemoved");
+                    die();
+                }
 
-             if($numRows == 1){
+                if($numRows == 1){
                    $row = $result->fetch(PDO::FETCH_ASSOC);
 
                    //If token hasn't expired...
                    $expiration = strtotime($row['expiration']);
             
                     if($expiration < strtotime(date("Y-m-d H:i:s"))){
-
-                   header("Location: ./pollster/pActivate.html?error=tokenExpired");
-                   die("Token Expired");
-                  }
+                    deleteInactive($db, $conn);
+                    header("Location: ./pollster/pActivate.html?error=tokenExpired");
+                    die("Token Expired");
+                    }
 
                    $used = $row['tokenUsed'];
                    //Check to see if the token was used previously
                    if($used){
-
                    header("Location: ./pollster/pActivate.html?error=tokenUsed");
                    die("Token Used");
                    }
@@ -69,7 +81,8 @@ class AccountActivate{
                     $stmt->execute();
     
                    if(!$stmt){
-                    echo "Error. Account activation failed. ";
+                    echo "Internal error. Account activation failed. Please try again.";
+                    deleteInactive($db, $conn);
                     exit();
                    }else{ //$stmt executed correctly
 
@@ -84,31 +97,31 @@ class AccountActivate{
                     $stmt->execute();       
     
                     if(!$stmt){//token update failed
-                        echo "Error. Token not updated to 'used'.";
+                        echo "Internal error. Token not updated to 'used'.";
                     }
-                    //else{
-                   // header("Location: ../pollster/pActivate.html?response=success");
-                   // }
-                  //}
                   //Everything is ok, so redirect to dashboard:
                   session_start();
                   session_destroy();
                   session_start();
                   $_SESSION["userName"] = $acctName;
                  header("Location: ./pollster/pDashboard.html?view=first"); 
+                 die();
                     } //$stmt executed correctly
-
-                    }else{// token was not correctly formatted when it arrived (not hexadecimal)
+                }else{ //More than one row is returned from token table query. Should never happen.
+                    echo "Internal error. There is more than one account associated with this Token.";
+                    deleteInactive($db, $conn);                
+                    die();
+                     } 
+            }else{// token was not correctly formatted when it arrived (not hexadecimal)
                   echo "Error. Link has been corrupted.";
-                    }//nearest else above
-                }else{ //If more than one row is returned from token table query. Should never happen.
-                echo "Internal error. There is more than one account associated with this Token.";
-                die();
-                 }//nearest else above   
+                  deleteInactive($db, $conn);
+                  die();
+            }
+                
             }else{//server request method not === POST
               http_response_code(400);
              exit();
             }//last else
-        }//end pActivate
+         }//end pActivate
     }//end class
 ?>
