@@ -99,15 +99,20 @@ class AccountActivate{
                     if(!$stmt){//token update failed
                         echo "Internal error. Token not updated to 'used'.";
                     }
+                    //This account has been set to "active". Get rid of all accounts that are not.
+                    deleteInactive($db, $conn);
+
                   //Everything is ok, so redirect to dashboard:
                   session_start();
                   session_destroy();
                   session_start();
                   $_SESSION["userName"] = $acctName;
+
                  header("Location: ./pollster/pDashboard.html?view=first"); 
                  die();
                     } //$stmt executed correctly
-                }else{ //More than one row is returned from token table query. Should never happen.
+                //More than one row is returned from token table query. Should never happen.
+                }else{ 
                     echo "Internal error. There is more than one account associated with this Token.";
                     deleteInactive($db, $conn);                
                     die();

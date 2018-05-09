@@ -76,11 +76,11 @@
 
         $stmt->execute();
 
-
-        //CHANGE TO CORRECT EXTERNAL LINK
+        //CHANGE TO CORRECT EXTERNAL LINK (COMMENTED OUT) WHEN THIS GOES TO THE SERVER.
+        //It won't capture the port number I'm using (10080) on XAMPP
         $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
 
-        //$msg = "Please click on the link to activate your account:\n\n" . $_SERVER['SERVER_PROTOCOL'] . $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+        //$msg = "Please click on the link to activate your account:\n\n http://" .  $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
 
 
         $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
@@ -93,8 +93,6 @@
         }else{
             header("Location: ./pollster/pSignup.html?error=noError");
                     die();
-            //echo "<h2>Please check your email inbox for a link to activate your account.</h2>";
         }
-//-----------------------------------------------
         }
     }
