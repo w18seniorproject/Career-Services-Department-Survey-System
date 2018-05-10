@@ -140,7 +140,7 @@ function getResponsesAll(qNum, qType){
     for(var i = 0; i < results.length; i++){
         var surResults = results[i].surResults;
         rArr = JSON.parse(surResults);
-        rAns = JSON.parse(rArr[qNum]);
+        rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
         try{
             for(var key in toReturn){
                 if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
@@ -165,16 +165,20 @@ function getResponsesCHKAll(qNum){
     for(var i = 0; i < results.length; i++){
         var surResults = results[i].surResults;
         rArr = JSON.parse(surResults);
-        rAns = JSON.parse(rArr[qNum]);
-        try{
-            for(var key in toReturn){
-                if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
-                    toReturn[key]++;
-                    toReturn.total++;
+        rAnsChoiceArr = JSON.parse(rArr[qNum]);
+        toReturn.total++;
+        for(var j = 0; j < rAnsChoiceArr.length; j++){
+            var choice = rAnsChoiceArr[j];
+            rAns = JSON.parse(choice);
+            try{
+                for(var key in toReturn){
+                    if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                        toReturn[key]++;
+                    }
                 }
             }
+            catch{continue;} // try/catch here because not all records will have all questions
         }
-        catch{return toReturn} // try/catch here because not all records will have all questions
     }
 
     return toReturn;

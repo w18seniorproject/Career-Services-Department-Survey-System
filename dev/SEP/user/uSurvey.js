@@ -247,15 +247,17 @@ function getResults(){
     
     for(var curQ = 1; curQ <= lastQ; curQ++){
         answers = document.querySelectorAll('.ans.n' + curQ);
+        results[curQ-1] = Array();
         answers.forEach( (ans) => {
             if(ans.checked){
                 var answer = {
                     qNum: curQ,
                     value: ans.value
                 }
-                results[curQ-1] = JSON.stringify(answer); 
+                results[curQ-1].push(JSON.stringify(answer)); 
             }
         });
+        results[curQ-1] = JSON.stringify(results[curQ-1]);
     }
     return JSON.stringify(results);
 }
