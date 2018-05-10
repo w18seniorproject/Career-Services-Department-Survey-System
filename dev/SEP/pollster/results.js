@@ -128,13 +128,12 @@ function getResponsesAll(qNum, qType){
         case "s":
             toReturn = {"sta":0, "a":0,"sla":0, "sld":0, "d":0, "std":0, "total":0};
             break;
-        case "mc":
+        case "mc":{
             var ans = questions[qNum].qChoices;
             var choiceArr = ans.split("~$#");
             for(var i = 0; i < choiceArr.length; i++){
                 toReturn[choiceArr[i].substr(0, -3)] = 0;
-                toReturn.total++;
-            }
+            }}
     }
 
     for(var i = 0; i < results.length; i++){
@@ -147,9 +146,11 @@ function getResponsesAll(qNum, qType){
                     toReturn[key]++;
                 }
             }
+            toReturn.total = i+1;
         }
-        catch{return toReturn} // try/catch here because not all records will have all questions
+        catch{continue;} // try/catch here because not all records will have all questions
     }
+    alert(toReturn.total);
     return toReturn;
 }
 
@@ -185,14 +186,15 @@ function getResponsesCHKAll(qNum){
 }
 
 function constructQuestHTML(qText, qNum, qAns, qWeight, response){
-    var toReturn = "<h3>" + qText + "</h3>";
+    var toReturn = "<div class='questions-wrapper'><h3>" + qNum + ") " +  qText + "</h3>";
     for(var key in response){
         if(key != "total"){
             toReturn += "<h4>" + key + "</h4>";
             var width = Math.round((response[key]/response.total)*100);
-            toReturn += "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + "</span>";
+            toReturn += "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + " (" + width + "%)" + "</span>";
         }
     }
+    toReturn += "</div></br>"
     return toReturn;
 }
 

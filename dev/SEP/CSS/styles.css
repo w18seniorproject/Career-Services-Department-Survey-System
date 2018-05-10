@@ -534,4 +534,8 @@ html, body{
     background-color: #006ea1;
     border-radius: 1px;
     display: inline-block;
+    line-height: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #ffffff;
 }
