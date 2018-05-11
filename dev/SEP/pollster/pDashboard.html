@@ -21,5 +21,10 @@
         <script type='text/javascript'>
             determineLayout();
         </script>
+        <input type="button" class="btn btn-sm" value="Log Out" id="logout" onclick="logout();">
+        <form id='logoutForm' action='../index.php' method='POST'>
+            <input type='hidden' value='logout' name='logout'>
+            <input type='hidden' value='POLL' name='aType'>
+        </form>
     </body>
 </html>

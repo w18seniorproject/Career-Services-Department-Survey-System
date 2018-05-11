@@ -275,6 +275,18 @@ html, body{
     box-shadow: 0px 2px 5px 5px #cccccc;
     background-color: #fff1f1
 }
+#logout{
+    opacity: 0.5;
+    background-color: #000000;
+    color: #ffffff;
+    bottom: 10px;
+    left: 10px;
+    z-index: 3;
+    position: fixed;
+}
+#logout:hover{
+    opacity: 1;
+}
 
 /*Survey Creation Page*/
 .center-th{

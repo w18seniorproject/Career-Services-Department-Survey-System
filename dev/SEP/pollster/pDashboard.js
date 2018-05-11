@@ -261,3 +261,7 @@ function showResults(surName){
         });
     }
 }
+
+function logout(){
+    $("#logoutForm").submit();   
+}
