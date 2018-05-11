@@ -50,10 +50,10 @@ function displayAllGroups(){
 
 function displayGroupButtons(){
     for(var i = 0; i < groupArr.length; i++){
-        var button = "<input value='" + groupArr[i] + "' type='button' style='display: inline-block; margin: 0px; margin-right: 10px;' class='btn btn-primary btn-sm shadow gb' groupNum='" + (i+1) + "'>";
+        var button = "<input value='" + groupArr[i] + "' type='button'class='btn btn-primary btn-sm shadow gb' groupNum='" + (i+1) + "'>";
         $("#groupButtonBar").append(button);
     }
-    var allGroupButton = "<input value='All Groups' type='button' style='display: inline-block; margin: 0px; margin-right: 10px; float: right;' class='btn btn-secondary btn-sm shadow gb' groupNum='0'>";
+    var allGroupButton = "<input value='All Groups' type='button' style='float: right;' class='btn btn-secondary btn-sm shadow gb' groupNum='0'>";
     $("#groupButtonBar").append(allGroupButton);
     $(".gb").each(function(i, ele){
         $(ele).click(function(){
@@ -94,7 +94,7 @@ function constructDashDataHTML(rAvg, timeAvg, num, timeSD){
     var toReturn = "<h4>TOTAL RESPONSES</h4><h3>" + num + "</h3></br>\
                     <h4>TIME</h4><h3>Average: " + Math.round(timeAvg) + " Seconds</h3>\
                     <h3>Standard Deviation: " + Math.round(timeSD) + " Seconds</h3></br>\
-                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg + 1 )+ "</h3></br>";
+                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg + 1 )+ "</h3>";
 
     return toReturn;
 }
@@ -146,11 +146,11 @@ function getResponsesAll(qNum, qType){
         rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
         try{
             for(var key in toReturn){
-                if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                if(key == rAns.value.substr(0, rAns.value.length-2)){
                     toReturn[key]++;
                 }
             }
-            toReturn.total = i+1;
+            toReturn.total++;
         }
         catch{continue;} // try/catch here because not all records will have all questions
     }
@@ -176,7 +176,7 @@ function getResponsesCHKAll(qNum){
             rAns = JSON.parse(choice);
             try{
                 for(var key in toReturn){
-                    if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                    if(key == rAns.value.substr(0, rAns.value.length-2)){
                         toReturn[key]++;
                     }
                 }
@@ -237,11 +237,11 @@ function getResponsesGroup(qNum, qType, groupNum){
             rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
             try{
                 for(var key in toReturn){
-                    if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                    if(key == rAns.value.substr(0, rAns.value.length-2)){
                         toReturn[key]++;
                     }
                 }
-                toReturn.total = i+1;
+                toReturn.total++;
             }
             catch{continue;} // try/catch here because not all records will have all questions
         }
@@ -269,7 +269,7 @@ function getResponsesCHKGroup(qNum, groupNum){
                 rAns = JSON.parse(choice);
                 try{
                     for(var key in toReturn){
-                        if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                        if(key == rAns.value.substr(0, rAns.value.length-2)){
                             toReturn[key]++;
                         }
                     }
@@ -282,12 +282,17 @@ function getResponsesCHKGroup(qNum, groupNum){
 }
 
 function constructQuestHTML(qText, qNum, qAns, qWeight, response){
-    var toReturn = "<div class='questions-wrapper'><h3>" + qNum + ") " +  qText + "</h3>";
+    var toReturn = "<div class='questions-wrapper shadow''><h3>" + qNum + ") " +  qText + "</h3>";
     for(var key in response){
         if(key != "total"){
             toReturn += "<h4>" + key + "</h4>";
             var width = Math.round((response[key]/response.total)*100);
-            toReturn += "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + " (" + width + "%)" + "</span>";
+            var bar = "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + " (" + width + "%)" + "</span>";
+            if(width == 0){
+                bar = bar.replace("solid-bar", "empty-choice");
+                bar = bar.replace("0%", "60px");
+            }
+            toReturn += bar;
         }
     }
     toReturn += "</div></br>"

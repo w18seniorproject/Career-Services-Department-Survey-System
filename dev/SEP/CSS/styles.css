@@ -539,3 +539,22 @@ html, body{
     font-weight: bolder;
     color: #ffffff;
 }
+.results-header{
+    margin-bottom: 20px; 
+    margin-top: 20px; 
+    text-align: center;
+    padding-bottom: 10px;
+}
+.gb{
+    display: inline-block;
+    margin: 0px; 
+    margin-right: 10px;
+}
+.empty-choice{
+    background-color: inherit;
+    display: inline-block;
+    line-height: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #000000;
+}
