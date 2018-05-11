@@ -22,8 +22,6 @@ function showData(surveyName){
                 results = JSON.parse(data[2]);
                 displayAllGroups();
                 displayGroupButtons();
-                displayQuestionDataAll();
-
             }
         },
         error: function(jxqr, status, exception){
@@ -47,6 +45,7 @@ function displayAllGroups(){
     rAvg = rSum/num;
     timeAvg = timeSum/num;
     $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
+    displayQuestionDataAll();
 }
 
 function displayGroupButtons(){
@@ -87,7 +86,8 @@ function displayGroup(groupNum){
     timeSD = Math.sqrt(timeVar);
     rAvg = rSum/num;
     timeAvg = timeSum/num;
-    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));    
+    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
+    displayQuestionDataGroup(groupNum);  
 }
 
 function constructDashDataHTML(rAvg, timeAvg, num, timeSD){
@@ -100,6 +100,7 @@ function constructDashDataHTML(rAvg, timeAvg, num, timeSD){
 }
 
 function displayQuestionDataAll(){
+    $("#questionData").html("");
     for(var i= 0; i < questions.length; i++){
         var qText = questions[i].qText;
         var qNum = questions[i].qNum;
@@ -107,9 +108,12 @@ function displayQuestionDataAll(){
         var rLevel = questions[i].rLevel;
         var qWeight = questions[i].qWeight;
 
-        var response = getResponsesAll(i, questions[i].qType);
+        var response;
         if(questions[i].qType == "chk"){
             response = getResponsesCHKAll(i);
+        }
+        else{
+            response = getResponsesAll(i, questions[i].qType);
         }
 
         var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response);
@@ -150,7 +154,6 @@ function getResponsesAll(qNum, qType){
         }
         catch{continue;} // try/catch here because not all records will have all questions
     }
-    alert(toReturn.total);
     return toReturn;
 }
 
@@ -181,7 +184,100 @@ function getResponsesCHKAll(qNum){
             catch{continue;} // try/catch here because not all records will have all questions
         }
     }
+    return toReturn;
+}
 
+function displayQuestionDataGroup(groupNum){
+    if(groupNum == 0){
+        displayQuestionDataAll();
+        return;
+    }
+    $("#questionData").html("");
+    for(var i= 0; i < questions.length; i++){
+        var qText = questions[i].qText;
+        var qNum = questions[i].qNum;
+        var qAns = questions[i].qAns;
+        var rLevel = questions[i].rLevel;
+        var qWeight = questions[i].qWeight;
+
+        var response;
+        if(questions[i].qType == "chk"){
+            response = getResponsesCHKGroup(i, groupNum);
+        }
+        else{
+            response = getResponsesGroup(i, questions[i].qType, groupNum);
+        }
+
+        var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response);
+
+        $("#questionData").append(appendHTML);
+    }
+}
+
+function getResponsesGroup(qNum, qType, groupNum){
+    var toReturn = {"total":0};
+    switch(qType){
+        case "tf":
+            toReturn = {"t":0, "f":0, "total":0};
+            break;
+        case "s":
+            toReturn = {"sta":0, "a":0,"sla":0, "sld":0, "d":0, "std":0, "total":0};
+            break;
+        case "mc":{
+            var ans = questions[qNum].qChoices;
+            var choiceArr = ans.split("~$#");
+            for(var i = 0; i < choiceArr.length; i++){
+                toReturn[choiceArr[i].substr(0, -3)] = 0;
+            }}
+    }
+    for(var i=0; i<results.length; i++){
+        if(groupArr.indexOf(results[i].groupName) === groupNum-1){
+            var surResults = results[i].surResults;
+            rArr = JSON.parse(surResults);
+            rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
+            try{
+                for(var key in toReturn){
+                    if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                        toReturn[key]++;
+                    }
+                }
+                toReturn.total = i+1;
+            }
+            catch{continue;} // try/catch here because not all records will have all questions
+        }
+    }
+    return toReturn;
+}
+
+function getResponsesCHKGroup(qNum, groupNum){
+    var ans = questions[qNum].qChoices;
+    var choiceArr = ans.split("~$#");
+    var toReturn = {"total":0};
+    for(var i = 0; i < choiceArr.length; i++){
+        var choice = choiceArr[i].substr(0, choiceArr[i].length-3);
+        toReturn[choice] = 0;
+    }
+
+    for(var i = 0; i < results.length; i++){
+        if(groupArr.indexOf(results[i].groupName) === groupNum-1){
+            var surResults = results[i].surResults;
+            rArr = JSON.parse(surResults);
+            rAnsChoiceArr = JSON.parse(rArr[qNum]);
+            toReturn.total++;
+            for(var j = 0; j < rAnsChoiceArr.length; j++){
+                var choice = rAnsChoiceArr[j];
+                rAns = JSON.parse(choice);
+                try{
+                    for(var key in toReturn){
+                        if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                            toReturn[key]++;
+                        }
+                    }
+                }
+                catch{continue;} // try/catch here because not all records will have all questions
+            }
+        }
+    }
     return toReturn;
 }
 
