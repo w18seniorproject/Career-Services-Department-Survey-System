@@ -9,6 +9,7 @@ function showData(surveyName){
         data: {aType: "POLL", getResults: "true", surName: surveyName},
         success: function(response){
             if(response.includes("THERE ARE NO RESULTS TO BE HAD")){
+                $("#overallData").removeClass("questions-wrapper");
                 $("#overallData").html("<div style='padding-top: 48%; text-align: center;'>\
                                             <h3 class='greyed-out'>No Results</h3>\
                                         </div>");
