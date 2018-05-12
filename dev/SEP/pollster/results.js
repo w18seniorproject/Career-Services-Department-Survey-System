@@ -9,6 +9,7 @@ function showData(surveyName){
         data: {aType: "POLL", getResults: "true", surName: surveyName},
         success: function(response){
             if(response.includes("THERE ARE NO RESULTS TO BE HAD")){
+                $("#overallData").removeClass("questions-wrapper");
                 $("#overallData").html("<div style='padding-top: 48%; text-align: center;'>\
                                             <h3 class='greyed-out'>No Results</h3>\
                                         </div>");
@@ -22,8 +23,6 @@ function showData(surveyName){
                 results = JSON.parse(data[2]);
                 displayAllGroups();
                 displayGroupButtons();
-                displayQuestionDataAll();
-
             }
         },
         error: function(jxqr, status, exception){
@@ -47,14 +46,15 @@ function displayAllGroups(){
     rAvg = rSum/num;
     timeAvg = timeSum/num;
     $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
+    displayQuestionDataAll();
 }
 
 function displayGroupButtons(){
     for(var i = 0; i < groupArr.length; i++){
-        var button = "<input value='" + groupArr[i] + "' type='button' style='display: inline-block; margin: 0px; margin-right: 10px;' class='btn btn-primary btn-sm shadow gb' groupNum='" + (i+1) + "'>";
+        var button = "<input value='" + groupArr[i] + "' type='button'class='btn btn-primary btn-sm shadow gb' groupNum='" + (i+1) + "'>";
         $("#groupButtonBar").append(button);
     }
-    var allGroupButton = "<input value='All Groups' type='button' style='display: inline-block; margin: 0px; margin-right: 10px; float: right;' class='btn btn-secondary btn-sm shadow gb' groupNum='0'>";
+    var allGroupButton = "<input value='All Groups' type='button' style='float: right;' class='btn btn-secondary btn-sm shadow gb' groupNum='0'>";
     $("#groupButtonBar").append(allGroupButton);
     $(".gb").each(function(i, ele){
         $(ele).click(function(){
@@ -87,19 +87,21 @@ function displayGroup(groupNum){
     timeSD = Math.sqrt(timeVar);
     rAvg = rSum/num;
     timeAvg = timeSum/num;
-    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));    
+    $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
+    displayQuestionDataGroup(groupNum);  
 }
 
 function constructDashDataHTML(rAvg, timeAvg, num, timeSD){
     var toReturn = "<h4>TOTAL RESPONSES</h4><h3>" + num + "</h3></br>\
                     <h4>TIME</h4><h3>Average: " + Math.round(timeAvg) + " Seconds</h3>\
                     <h3>Standard Deviation: " + Math.round(timeSD) + " Seconds</h3></br>\
-                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg + 1 )+ "</h3></br>";
+                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg + 1 )+ "</h3>";
 
     return toReturn;
 }
 
 function displayQuestionDataAll(){
+    $("#questionData").html("");
     for(var i= 0; i < questions.length; i++){
         var qText = questions[i].qText;
         var qNum = questions[i].qNum;
@@ -107,9 +109,12 @@ function displayQuestionDataAll(){
         var rLevel = questions[i].rLevel;
         var qWeight = questions[i].qWeight;
 
-        var response = getResponsesAll(i, questions[i].qType);
+        var response;
         if(questions[i].qType == "chk"){
             response = getResponsesCHKAll(i);
+        }
+        else{
+            response = getResponsesAll(i, questions[i].qType);
         }
 
         var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response);
@@ -128,27 +133,27 @@ function getResponsesAll(qNum, qType){
         case "s":
             toReturn = {"sta":0, "a":0,"sla":0, "sld":0, "d":0, "std":0, "total":0};
             break;
-        case "mc":
+        case "mc":{
             var ans = questions[qNum].qChoices;
             var choiceArr = ans.split("~$#");
             for(var i = 0; i < choiceArr.length; i++){
                 toReturn[choiceArr[i].substr(0, -3)] = 0;
-                toReturn.total++;
-            }
+            }}
     }
 
     for(var i = 0; i < results.length; i++){
         var surResults = results[i].surResults;
         rArr = JSON.parse(surResults);
-        rAns = JSON.parse(rArr[qNum]);
+        rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
         try{
             for(var key in toReturn){
-                if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
+                if(key == rAns.value.substr(0, rAns.value.length-2)){
                     toReturn[key]++;
                 }
             }
+            toReturn.total++;
         }
-        catch{return toReturn} // try/catch here because not all records will have all questions
+        catch{continue;} // try/catch here because not all records will have all questions
     }
     return toReturn;
 }
@@ -165,30 +170,133 @@ function getResponsesCHKAll(qNum){
     for(var i = 0; i < results.length; i++){
         var surResults = results[i].surResults;
         rArr = JSON.parse(surResults);
-        rAns = JSON.parse(rArr[qNum]);
-        try{
-            for(var key in toReturn){
-                if(key.includes(rAns.value.substr(0, rAns.value.length-2))){
-                    toReturn[key]++;
-                    toReturn.total++;
+        rAnsChoiceArr = JSON.parse(rArr[qNum]);
+        toReturn.total++;
+        for(var j = 0; j < rAnsChoiceArr.length; j++){
+            var choice = rAnsChoiceArr[j];
+            rAns = JSON.parse(choice);
+            try{
+                for(var key in toReturn){
+                    if(key == rAns.value.substr(0, rAns.value.length-2)){
+                        toReturn[key]++;
+                    }
                 }
             }
+            catch{continue;} // try/catch here because not all records will have all questions
         }
-        catch{return toReturn} // try/catch here because not all records will have all questions
+    }
+    return toReturn;
+}
+
+function displayQuestionDataGroup(groupNum){
+    if(groupNum == 0){
+        displayQuestionDataAll();
+        return;
+    }
+    $("#questionData").html("");
+    for(var i= 0; i < questions.length; i++){
+        var qText = questions[i].qText;
+        var qNum = questions[i].qNum;
+        var qAns = questions[i].qAns;
+        var rLevel = questions[i].rLevel;
+        var qWeight = questions[i].qWeight;
+
+        var response;
+        if(questions[i].qType == "chk"){
+            response = getResponsesCHKGroup(i, groupNum);
+        }
+        else{
+            response = getResponsesGroup(i, questions[i].qType, groupNum);
+        }
+
+        var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response);
+
+        $("#questionData").append(appendHTML);
+    }
+}
+
+function getResponsesGroup(qNum, qType, groupNum){
+    var toReturn = {"total":0};
+    switch(qType){
+        case "tf":
+            toReturn = {"t":0, "f":0, "total":0};
+            break;
+        case "s":
+            toReturn = {"sta":0, "a":0,"sla":0, "sld":0, "d":0, "std":0, "total":0};
+            break;
+        case "mc":{
+            var ans = questions[qNum].qChoices;
+            var choiceArr = ans.split("~$#");
+            for(var i = 0; i < choiceArr.length; i++){
+                toReturn[choiceArr[i].substr(0, -3)] = 0;
+            }}
+    }
+    for(var i=0; i<results.length; i++){
+        if(groupArr.indexOf(results[i].groupName) === groupNum-1){
+            var surResults = results[i].surResults;
+            rArr = JSON.parse(surResults);
+            rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
+            try{
+                for(var key in toReturn){
+                    if(key == rAns.value.substr(0, rAns.value.length-2)){
+                        toReturn[key]++;
+                    }
+                }
+                toReturn.total++;
+            }
+            catch{continue;} // try/catch here because not all records will have all questions
+        }
+    }
+    return toReturn;
+}
+
+function getResponsesCHKGroup(qNum, groupNum){
+    var ans = questions[qNum].qChoices;
+    var choiceArr = ans.split("~$#");
+    var toReturn = {"total":0};
+    for(var i = 0; i < choiceArr.length; i++){
+        var choice = choiceArr[i].substr(0, choiceArr[i].length-3);
+        toReturn[choice] = 0;
     }
 
+    for(var i = 0; i < results.length; i++){
+        if(groupArr.indexOf(results[i].groupName) === groupNum-1){
+            var surResults = results[i].surResults;
+            rArr = JSON.parse(surResults);
+            rAnsChoiceArr = JSON.parse(rArr[qNum]);
+            toReturn.total++;
+            for(var j = 0; j < rAnsChoiceArr.length; j++){
+                var choice = rAnsChoiceArr[j];
+                rAns = JSON.parse(choice);
+                try{
+                    for(var key in toReturn){
+                        if(key == rAns.value.substr(0, rAns.value.length-2)){
+                            toReturn[key]++;
+                        }
+                    }
+                }
+                catch{continue;} // try/catch here because not all records will have all questions
+            }
+        }
+    }
     return toReturn;
 }
 
 function constructQuestHTML(qText, qNum, qAns, qWeight, response){
-    var toReturn = "<h3>" + qText + "</h3>";
+    var toReturn = "<div class='questions-wrapper shadow''><h3>" + qNum + ") " +  qText + "</h3>";
     for(var key in response){
         if(key != "total"){
             toReturn += "<h4>" + key + "</h4>";
             var width = Math.round((response[key]/response.total)*100);
-            toReturn += "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + "</span>";
+            var bar = "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + " (" + width + "%)" + "</span>";
+            if(width == 0){
+                bar = bar.replace("solid-bar", "empty-choice");
+                bar = bar.replace("0%", "60px");
+            }
+            toReturn += bar;
         }
     }
+    toReturn += "</div></br>"
     return toReturn;
 }
 

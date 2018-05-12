@@ -275,6 +275,18 @@ html, body{
     box-shadow: 0px 2px 5px 5px #cccccc;
     background-color: #fff1f1
 }
+#logout{
+    opacity: 0.5;
+    background-color: #000000;
+    color: #ffffff;
+    bottom: 10px;
+    left: 10px;
+    z-index: 3;
+    position: fixed;
+}
+#logout:hover{
+    opacity: 1;
+}
 
 /*Survey Creation Page*/
 .center-th{
@@ -534,4 +546,27 @@ html, body{
     background-color: #006ea1;
     border-radius: 1px;
     display: inline-block;
+    line-height: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #ffffff;
+}
+.results-header{
+    margin-bottom: 20px; 
+    margin-top: 20px; 
+    text-align: center;
+    padding-bottom: 10px;
+}
+.gb{
+    display: inline-block;
+    margin: 0px; 
+    margin-right: 10px;
+}
+.empty-choice{
+    background-color: inherit;
+    display: inline-block;
+    line-height: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #000000;
 }
