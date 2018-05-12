@@ -23,11 +23,11 @@
         </li>
         <li class="navbar-item">
           <div class="dropdown">
-            <button onclick="showMenu()" class="dropbtn">
-            <span class="glyphicon glyphicon-menu-down"></span>Help</button>
+                <button id="helpButton" onclick="changeMenu()" class="dropbtn">
+            <span id="helpMenu" class="glyphicon glyphicon-question-sign"></span> Help</button>
             <div id="helpDropdown" class="dropdown-content">
-              <a href="#about">About</a>
-              <a href="#contact">Contact</a>
+              <a href="../documentation/aboutUs.htm">About</a>
+              <a href="../documentation/contactInfo.htm">Contact</a>
             </div>
           </div>
         </li>
@@ -48,6 +48,19 @@
     }
   ).resize();
 </script>
+
+<script type="text/javascript">
+//Opens the help menu in a separate window, so that the mobile "hamburger" menu works.
+function changeMenu(){
+var w = $(window).width();
+if(w < 750){
+window.open("../documentation/smallHelpMenu.html");
+}else{
+showMenu();
+}
+}
+</script>
+
 <script>
   /* When the user clicks on the button, 
   toggle between hiding and showing the dropdown content */

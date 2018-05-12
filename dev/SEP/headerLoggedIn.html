@@ -1,33 +1,78 @@
 <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span> 
-        </button>
-        <a class="navbar-brand" id="brand" href="../user/uLogin.html">University Survey System</a>
-        <a class="logo" href="../user/uLogin.html"><img src="../graphics/logo_white_small.png" width="48"/></a>
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right navbar-item-list">
-          <li class="navbar-item"><a href="../pollster/pDashboard.html?content=account"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
-          <li class="navbar-item"><a href="../pollster/pDashboard.html"><span class="glyphicon glyphicon-th-list"></span> Dashboard</a></li>
-          <li class="navbar-item"><a href="../pollster/pDashboard.html?content=welcome"><span class="glyphicon glyphicon-question-sign"></span> Help</a></li>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" id="brand" href="../user/uLogin.html">University Survey System</a>
+      <a class="logo" href="../user/uLogin.html">
+        <img src="../graphics/logo_white_small.png" width="48" />
+      </a>
     </div>
-  </nav>
-  <script type="text/javascript">
-    $(window).resize(
-      function(){
-          var width = $(window).width();
-          if(width < 750){
-            document.getElementById("brand").innerHTML = "USS";
-          }
-          else{
-            document.getElementById("brand").innerHTML = "University Survey System";
-          }
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right navbar-item-list">
+        <li class="navbar-item">
+          <a href="../pollster/pDashboard.html?content=account">
+            <span class="glyphicon glyphicon-user"></span> My Account</a>
+        </li>
+        <li class="navbar-item">
+          <a href="../pollster/pDashboard.html">
+            <span class="glyphicon glyphicon-th-list"></span> Dashboard</a>
+        </li>
+        <li class="navbar-item">
+          <div class="dropdown">
+            <button id="helpButton" onclick="changeMenu()" class="dropbtn">
+              <span id="helpMenu" class="glyphicon glyphicon-question-sign"></span> Help</button>
+            <div id="helpDropdown" class="dropdown-content">
+              <a href="../documentation/aboutUs.htm">About</a>
+              <a href="../documentation/contactInfo.htm">Contact</a>
+              <a href="../documentation/userGuide.htm">User Guide</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script type="text/javascript">
+  $(window).resize(
+    function () {
+      var width = $(window).width();
+      if (width < 750) {
+        document.getElementById("brand").innerHTML = "USS";
       }
-    ).resize();
-  </script>
+      else {
+        document.getElementById("brand").innerHTML = "University Survey System";
+      }
+    }
+  ).resize();
+</script>
+<script type="text/javascript">
+//Opens the help menu in a separate window, so that the mobile "hamburger" menu works.
+  function changeMenu() {
+    var w = $(window).width();
+    if (w < 750) {
+      window.open("../documentation/smHelpMenuLoggedIn.html");
+    } else {
+      showMenu();
+    }
+  }
+</script>
+<script>
+  /* When the user clicks on the button, 
+  toggle between hiding and showing the dropdown content */
+  function showMenu() {
+    document.getElementById("helpDropdown").classList.toggle("show");
+  }
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function (e) {
+    if (!e.target.matches('.dropbtn')) {
+      var helpDropdown = document.getElementById("helpDropdown");
+      if (helpDropdown.classList.contains('show')) {
+        helpDropdown.classList.remove('show');
+      }
+    }
+  }
+</script>
