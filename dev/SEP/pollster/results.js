@@ -108,16 +108,17 @@ function displayQuestionDataAll(){
         var qAns = questions[i].qAns;
         var rLevel = questions[i].rLevel;
         var qWeight = questions[i].qWeight;
+        var qType = questions[i].qType;
 
         var response;
-        if(questions[i].qType == "chk"){
+        if(qType == "chk"){
             response = getResponsesCHKAll(i);
         }
         else{
-            response = getResponsesAll(i, questions[i].qType);
+            response = getResponsesAll(i, qType);
         }
 
-        var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response);
+        var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response, qType);
 
         $("#questionData").append(appendHTML);
 
@@ -197,20 +198,21 @@ function displayQuestionDataGroup(groupNum){
     $("#questionData").html("");
     for(var i= 0; i < questions.length; i++){
         var qText = questions[i].qText;
+        var qType = questions[i].qType;
         var qNum = questions[i].qNum;
         var qAns = questions[i].qAns;
         var rLevel = questions[i].rLevel;
         var qWeight = questions[i].qWeight;
 
         var response;
-        if(questions[i].qType == "chk"){
+        if(qType == "chk"){
             response = getResponsesCHKGroup(i, groupNum);
         }
         else{
-            response = getResponsesGroup(i, questions[i].qType, groupNum);
+            response = getResponsesGroup(i, qType, groupNum);
         }
 
-        var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response);
+        var appendHTML = constructQuestHTML(qText, qNum, qAns, qWeight, response, qType);
 
         $("#questionData").append(appendHTML);
     }
@@ -283,7 +285,7 @@ function getResponsesCHKGroup(qNum, groupNum){
     return toReturn;
 }
 
-function constructQuestHTML(qText, qNum, qAns, qWeight, response){
+function constructQuestHTML(qText, qNum, qAns, qWeight, response, qType){
     var toReturn = "<div class='questions-wrapper shadow''><h3>" + qNum + ") " +  qText + "</h3>";
     for(var key in response){
         if(key != "total"){
@@ -318,11 +320,25 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response){
             }
             toReturn += "<h4>" + dispKey + "</h4>";
             var width = Math.round((response[key]/response.total)*100);
-            var bar = "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + " (" + width + "%)" + "</span>";
-            if(width == 0){
-                bar = bar.replace("solid-bar", "empty-choice");
-                bar = bar.replace("0%", "60px");
+            var percent = width;
+            var cssClass = "solid-bar";
+            if(qAns == key){
+                cssClass += " correctAnswer";
             }
+            else if(qType == 'chk'){
+                var ansArray = JSON.parse(qAns);
+                for(var k = 0; k < ansArray.length; k++){
+                    var ans = ansArray[k];
+                    if(key == ans){
+                        cssClass += " correctAnswer";
+                    }
+                }
+            }
+            if(width == 0){
+                cssClass = "empty-choice";
+                width = 100;
+            }
+            var bar = "<span class='" + cssClass + "' style='width: " + width + "%;'>" + response[key] + " (" + percent + "%)" + "</span>";
             toReturn += bar;
         }
     }
