@@ -137,8 +137,9 @@ function getResponsesAll(qNum, qType){
             var ans = questions[qNum].qChoices;
             var choiceArr = ans.split("~$#");
             for(var i = 0; i < choiceArr.length; i++){
-                toReturn[choiceArr[i].substr(0, -3)] = 0;
-            }}
+                toReturn[choiceArr[i].substr(0, choiceArr[i].length-3)] = 0;
+            }
+        }
     }
 
     for(var i = 0; i < results.length; i++){
@@ -228,7 +229,7 @@ function getResponsesGroup(qNum, qType, groupNum){
             var ans = questions[qNum].qChoices;
             var choiceArr = ans.split("~$#");
             for(var i = 0; i < choiceArr.length; i++){
-                toReturn[choiceArr[i].substr(0, -3)] = 0;
+                toReturn[choiceArr[i].substr(0, choiceArr[i].length-3)] = 0;
             }}
     }
     for(var i=0; i<results.length; i++){
