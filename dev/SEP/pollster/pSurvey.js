@@ -331,6 +331,7 @@ function submit(update){
                 "weight": qWeight
             };
             if(qType === "mc" || qType === "chk"){
+                var correctAnswers = Array();
                 $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
                     if(exit){
                         return;
@@ -342,14 +343,16 @@ function submit(update){
                         exit = true;
                         return;
                     }
-                    if($(tr).find("th").find(".ans").prop("checked") && qType !== "chk"){
-                        survey.sections[i].questions[j].qAns = k;
+                    if($(tr).find("th").find(".ans").prop("checked")){ // dunno if this is working
+                        correctAnswers.push(choiceText);
+                        survey.sections[i].questions[j].qAns = JSON.stringify(correctAnswers);        // find correct delimiter
                     }
                     qChoices += (choiceText + "|`" + qPoints + "~$#");
                 });
                 
-                if(!survey.sections[i].questions[j].qAns)
+                if(!survey.sections[i].questions[j].qAns){
                     survey.sections[i].questions[j].qAns = null;
+                }
                 
                 qChoices = qChoices.substring(0, qChoices.length - 3);
                 survey.sections[i].questions[j].answers = qChoices;

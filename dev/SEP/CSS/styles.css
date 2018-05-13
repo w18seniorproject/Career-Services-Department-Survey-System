@@ -551,6 +551,9 @@ html, body{
     font-weight: bolder;
     color: #ffffff;
 }
+.correctAnswer{
+    background-color: #029934;
+}
 .results-header{
     margin-bottom: 20px; 
     margin-top: 20px; 
