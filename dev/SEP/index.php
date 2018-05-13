@@ -6,7 +6,7 @@
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
     $db = new Database();
-        
+
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType'])){
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pLogin.php';
@@ -22,7 +22,8 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/passwordReset.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pActivate.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/results.php';
-        
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/chartHelper.php';
+
 
         if($_POST['aType'] === 'POLL'){
             /* POLLSTER HANDLING */
@@ -103,6 +104,28 @@
             }
             elseif(isset($_POST['password']) && isset($_POST['email']) && isset($_POST['password-confirm'])){
                 PollsterAccount::SetAccountInfo($db);
+                exit();
+            }
+            elseif(isset($_POST['getChartResults']))
+            {
+              Charts::GetChartResults($db);
+              exit();
+            }
+            elseif(isset($_POST['getAvgResults']))
+            {
+              Charts::GetAvgResults($db);
+              exit();
+            }
+            else if(isset($_POST['getQuestions']))
+            {
+              $questions = Questions::getQuestions($db);
+              echo json_encode($questions);
+              exit();
+            }
+            else if(isset($_POST['getChartResults']))
+            {
+              Charts::GetChartResults($db)
+              exit();
             }
             //otherwise throw error code Bad Request
             else{
@@ -129,9 +152,9 @@
                 Response::sendResponse($db, $_POST['response'], 0);
                 exit();
             }
-            //check if user has already entered a valid pin, gotten session variables; 
-            //if so, return questions. 
-            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['startTime'])){ 
+            //check if user has already entered a valid pin, gotten session variables;
+            //if so, return questions.
+            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['startTime'])){
                 Survey::sendSurvey($db);
                 exit();
             }
@@ -141,7 +164,7 @@
                 echo "Bad Request: Taker";
                 exit();
             }
-        } 
+        }
     }
     else if($_SERVER['REQUEST_METHOD'] === 'GET'){
         if(isset($_GET['profpic'])){
@@ -151,7 +174,7 @@
         elseif(isset($_GET['accountInfo'])){
             PollsterAccount::GetAccountInfo($db);
         }
-        elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){      
+        elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
             header("Location: user/uSurvey.html");
             exit();
         }
