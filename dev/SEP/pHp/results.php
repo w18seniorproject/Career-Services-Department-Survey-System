@@ -3,7 +3,7 @@
     class Results{
         
         public static function GetResults($db){
-            $conn = $db->getConnection('taker');
+            $conn = $db->getConnection('poll');
 
             $acctName = $_SESSION['userName'];
             $surName = $_SESSION['surName'];
