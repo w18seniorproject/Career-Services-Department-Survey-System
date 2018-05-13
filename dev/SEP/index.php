@@ -32,7 +32,7 @@
             }
             elseif(isset($_POST['getResults'])){
                 $_SESSION['surName'] = $_POST['surName'];
-                $_SESSION['acctName'] = $_SESSION['userName'];
+                $_SESSION['acctName'] = $_SESSION['userName']; //Setting this variable for code reuse. I'm reusing a "taker" function which needs 'acctName' to be set.
                 Results::GetResults($db);
                 unset($_SESSION['acctName']);
                 exit();
