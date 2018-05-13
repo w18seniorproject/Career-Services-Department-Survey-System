@@ -147,7 +147,7 @@ function getResponsesAll(qNum, qType){
         rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
         try{
             for(var key in toReturn){
-                if(key == rAns.value.substr(0, rAns.value.length-2)){
+                if(key == rAns.value.substr(0, rAns.value.length-2) || key == rAns.value){ //Two different cases for scales and true/false for some reason. May need reworking on response side
                     toReturn[key]++;
                 }
             }
@@ -286,7 +286,36 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response){
     var toReturn = "<div class='questions-wrapper shadow''><h3>" + qNum + ") " +  qText + "</h3>";
     for(var key in response){
         if(key != "total"){
-            toReturn += "<h4>" + key + "</h4>";
+            var dispKey;
+            switch(key){
+                case "t":
+                    dispKey = "True";
+                    break;
+                case "f":
+                    dispKey = "False";
+                    break;
+                case "sta":
+                    dispKey = "Strongly Agree";
+                    break;
+                case "std":
+                    dispKey = "Strongly Disagree";
+                    break;
+                case "a":
+                    dispKey = "Agree";
+                    break;
+                case "d":
+                    dispKey = "Disagree";
+                    break;
+                case "sla":
+                    dispKey = "Slightly Disagree";
+                    break;
+                case "sld":
+                    dispKey = "Slightly Disagree";
+                    break;
+                default:
+                    dispKey = key;
+            }
+            toReturn += "<h4>" + dispKey + "</h4>";
             var width = Math.round((response[key]/response.total)*100);
             var bar = "<span class='solid-bar' style='width: " + width + "%;'>" + response[key] + " (" + width + "%)" + "</span>";
             if(width == 0){
