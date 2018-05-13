@@ -38,7 +38,7 @@
             
             $postData = $_POST["dataArray"];
             
-            $oldSur = "Prev: " . $postData['title'] . " " . date('Y-m-d');
+            $oldSur = "Prev: " . $postData['title'] . " " . date('Y-m-d H:i:s');
             
             $sql = "UPDATE questions SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
             $result = $conn->prepare($sql);
