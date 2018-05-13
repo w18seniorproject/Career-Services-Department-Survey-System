@@ -3,31 +3,31 @@
     class Charts{
 
 
-        public static function GetSurNames($db){
-            $conn = $db->getConnection('poll');
+      public static function GetSurNames($db)
+      {
+        $acctName = $_SESSION['userName'];
+        $sql = "SELECT `surName` FROM `results` WHERE `acctName`=? GROUP BY surName ORDER BY surName;";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($acctName);
 
-            $acctName = $_SESSION['userName'];
-            $sql = "SELECT surName AS average_relationship FROM `results` WHERE `acctName`=? GROUP BY surName ORDER BY surName;";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute(array($acctName));
-            $rNum = $stmt->rowCount();
+        $rNum = $stmt->rowCount();
+        if($rNum > 0){
+            $resultsArr = array();
 
-            if($rNum > 0){
-                $resultsArr = array();
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                extract($row);
 
-                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    extract($row);
-
-                    $result = array(
-                        "surName" => $surName
-                      );
-                      $resultsArr[] = $result;
-                  }
-                  echo json_encode($resultsArr);
+                $result = array(
+                    "surName" => $surName,
+                );
+                $resultsArr[] = $result;
             }
+            echo json_encode($resultsArr);
         }
-
-
+        else{
+            echo "THERE ARE NO RESULTS TO BE HAD";
+        }
+      }
         public static function GetAvgResults($db)
         {
           $acctName = $_SESSION['userName'];

@@ -23,9 +23,15 @@
        Here are the <a href="https://www.enable-javascript.com/" target="_blank">
        instructions how to enable JavaScript in your web browser</a>.
       </noscript>
-        <div id="header"></div>
+        <div id="header">
 
-        <div id="MenuButtons">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="SurveyButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Survey</button>
+					<div id="surveyMenuItems" aria-labelledby="SurveyButton">
+
+					</div>
+				</div>
+
+        <div id="MenuButtons" style="display:none">
           <button type="button" class="btn btn-primary" id="curRelLevelButton">Current Relation Levels</button>
           <button type="button" class="btn btn-primary" id="answersMenuButton">Answers For Each Question</button>
         </div>
@@ -37,10 +43,7 @@
 
         <div id="AnswerDropdown" style="display:none">
 
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="SurveyButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Survey</button>
-          <div id="surveyMenuItems" aria-labelledby="SurveyButton">
 
-          </div>
           <br/>
           <button class="btn btn-secondary dropdown-toggle" type="button" id="QuestionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">Survey</button>
           <div id="questionMenuItems" aria-labelledby="QuestionButton">

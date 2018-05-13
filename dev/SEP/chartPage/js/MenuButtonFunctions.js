@@ -1,27 +1,64 @@
 
-var js_relationArrayJSON;
-var js_groupArrayJSON;
+var surNameJSON;
+var questionJSON;
+var resultJSON;
+var avgResultJSON;
+var groupArray;
+var avgArray;
 var temp;
 var ctx;
-var surveyName;
 var resultChart=null;
+
 $(document).ready(function(){
   temp=document.getElementById("myCanvas");
   ctx=temp.getContext("2d");
-});
-$.ajax({
+  $.ajax({
 
-  type: "POST",
-  url: 'php/relationChartCreator.php',
-  dataType: 'json',
-  success: function(json){
-    var completedJSON=JSON.parse(json);
-    js_relationArrayJSON=completedJSON.rLA;
-    js_groupArrayJSON=completedJSON.gNA;
+    type: "POST",
+    url: "../index.php",
+    data: ({getSurNames: "yes",aType: "POLL"}),
+    success: function(json){
+      var surNameJSON=JSON.parse(json);
+
+    error: function(){
+      alert('Error occurred while retrieving data.');
+      topRelMenuButton.disabled=true;
+      topAnsMenuButton.disabled=true;
+      return false;
+    }
+  );
+    var sMI=document.getElementById("surveyMenuItems");
+    sMI.innerHTML="";
+    //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
+    Object.keys(surNameJSON).forEach(function(category)
+    {
+        sMI.innerHTML+="<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>${category}</button>";
+
+    });
+  });
+});
+
+
+$('#curRelLevelButton').click(function(){
+  relationsButton()
+});
+function relationsButton(){
+
+  var x=document.getElementById("surveyButtons");
+  if(x.style.display=="none"){
+    x.style.display="block";
+  }else {
+    x.style.display="none";
   }
+  groupArray=[];
+  avgArray=[];
+  for(var i in avgResultJSON)
+  {
+    groupArray.push(avgResultJSON[i].groupName);
+    avgArray.push(avgResultJSON[i].average_relationship);
 
-});
-
+  }
+}
 
 function createMixedChart(){
   if(resultChart!=null)
@@ -34,14 +71,14 @@ function createMixedChart(){
     datasets: [{
 
       label: 'Bar_Set',
-      data: js_relationArrayJSON
+      data: avgArray
     }, {
     label:'Line_Set',
-    data: js_relationArrayJSON,
+    data: avgArray,
 
     type: 'line'
   }],
-  labels:js_groupArrayJSON
+  labels:groupArray
 },
 options: {
     scales: {
@@ -62,8 +99,8 @@ function createLineChart(){
  }
  resultChart= new Chart(ctx, {
  type: 'line',
- data: js_relationArrayJSON,
- labels:js_groupArrayJSON,
+ data: avgArray,
+ labels:groupArray,
 options: {
    scales: {
        yAxes: [{
@@ -84,7 +121,7 @@ function createBarChart(){
  resultChart= new Chart(ctx, {
  type: 'bar',
  data: js_relationArrayJSON,
- labels:js_groupArrayJSON,
+ labels:groupArray,
 options: {
    scales: {
        yAxes: [{
@@ -97,75 +134,7 @@ options: {
 });
 }
 
-var js_questionJSON;
-var js_resultJSON;
-window.onload = function(){
 
-
-
-  var topRelMenuButton=document.getElementById("curRelLevelButton");
-  var topAnsMenuButton=document.getElementById('answersMenuButton');
-    $.ajax({
-
-      type: "POST",
-      url: './SEP/pHp/questions.php',
-      dataType: 'json',
-      success: function(json){
-        js_questionJSON=JSON.parse(json);
-        if(js_questionJSON.hasOwnProperty('message'))
-        {
-          alert('No Questions Currently Exists In Database');
-          topRelMenuButton.disabled=true;
-          topAnsMenuButton.disabled=true;
-          return false;
-        }
-      },
-      error: function(){
-        alert('Error occurred while retrieving data.');
-        topRelMenuButton.disabled=true;
-        topAnsMenuButton.disabled=true;
-        return false;
-      }
-    });
-    $.ajax({
-
-      type: "POST",
-      url: './SEP/pHp/results.php',
-      dataType: 'json',
-      success: function(json){
-        js_resultJSON=JSON.parse(json);
-        if(js_resultJSON.hasOwnProperty('message'))
-        {
-          alert('No Results Currently Exists In Database');
-          topRelMenuButton.disabled=true;
-          topAnsMenuButton.disabled=true;
-          return false;
-        }
-      },
-      error: function(){
-        alert('Error occurred while retrieving data.');
-        topRelMenuButton.disabled=true;
-        topAnsMenuButton.disabled=true;
-        return false;
-      }
-    });
-
-
-
-}
-
-$('#curRelLevelButton').click(function(){
-  relationsButton()
-});
-function relationsButton(){
-
-  var x=document.getElementById("surveyButtons");
-  if(x.style.display=="none"){
-    x.style.display="block";
-  }else {
-    x.style.display="none";
-  }
-}
 
 $('#answersMenuButton').click(function(){
 
@@ -205,25 +174,56 @@ var groupedBySurveyName=groupBy(js_questionJSON, 'surName');
 
 $('.surButton').click(function(){
 surveyName=this.innerHTML;
-  answersButtonFiller(surveyName);
+$.ajax({
+
+  type: "POST",
+  url: "../index.php",
+  data: ({getAvgResults: "yes",aType: "POLL", surName:surveyName}),
+  success: function(json){
+    avgResultJSON=JSON.parse(json);
+  }
+});
+$.ajax({
+
+  type: "POST",
+  url: "../index.php",
+  data: ({getChartResults: "yes",aType: "POLL", surName:surveyName}),
+  success: function(json){
+    resultsJSON=JSON.parse(json);
+  }
+});
+
+$.ajax({
+
+  type: "POST",
+  url: "../index.php",
+  data: ({getQuestions: "yes",aType: "POLL", surName:surveyName}),
+  success: function(json){
+    questionJSON=JSON.parse(json);
+  }
+});
+
+  answersButtonFiller();
+  var x=document.getElementById("MenuButtons");
+  if(x.style.display=="none"){
+    x.style.display="block";
+  }else {
+    x.style.display="none";
+  }
 
 });
 $('#indResultsButton').click(function(){
 
   exportResponsesToCSV(surveyName);
 });
-function answersButtonFiller(surname)
+function answersButtonFiller()
 {
 
     var sMI=document.getElementById("questionMenuItems");
 
     sMI.innerHTML="";
-    var filtered = js_questionJSON.filter(function(item){
-
-      return item.surName === surname;
-    });
     var question=1;
-    filtered.forEach(function(item)
+    questionJSON.forEach(function(item)
     {
 
         sMI.innerHTML+="<button class=\"dropdown-item question-button\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value="+surname+" on>"+item.qNum+"</button>";
@@ -236,7 +236,7 @@ $('.question-button').click(function(){
 
   pieChartMaker(this.innerHTML, $(this).val());
 });
-function pieChartMaker(qNum, SurName)
+function pieChartMaker(qNum)
 {
   var qNumInt= parseInt(qNum);
   var filteredResults = js_resultJSON.filter(function(item){

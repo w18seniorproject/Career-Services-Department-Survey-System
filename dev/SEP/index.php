@@ -106,25 +106,29 @@
                 PollsterAccount::SetAccountInfo($db);
                 exit();
             }
-            elseif(isset($_POST['getChartResults']))
+
+            elseif(isset($_POST['getSurNames']))
             {
-              Charts::GetChartResults($db);
+              Charts::GetSurNames($db);
               exit();
             }
             elseif(isset($_POST['getAvgResults']))
             {
+              $_SESSION['surName'] = $_POST['surName'];
               Charts::GetAvgResults($db);
               exit();
             }
             else if(isset($_POST['getQuestions']))
             {
+              $_SESSION['surName'] = $_POST['surName'];
               $questions = Questions::getQuestions($db);
               echo json_encode($questions);
               exit();
             }
             else if(isset($_POST['getChartResults']))
             {
-              Charts::GetChartResults($db)
+              $_SESSION['surName'] = $_POST['surName'];
+              Charts::GetChartResults($db);
               exit();
             }
             //otherwise throw error code Bad Request
