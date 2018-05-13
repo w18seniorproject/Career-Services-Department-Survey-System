@@ -330,7 +330,7 @@ function submit(update){
                 "type": qType,
                 "weight": qWeight
             };
-            if(qType === "mc" || qType === "chk"){
+            if(qType === "chk"){
                 var correctAnswers = Array();
                 $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
                     if(exit){
@@ -343,9 +343,38 @@ function submit(update){
                         exit = true;
                         return;
                     }
-                    if($(tr).find("th").find(".ans").prop("checked")){ // dunno if this is working
+                    if($(tr).find("th").find(".ans").prop("checked")){
                         correctAnswers.push(choiceText);
-                        survey.sections[i].questions[j].qAns = JSON.stringify(correctAnswers);        // find correct delimiter
+                        survey.sections[i].questions[j].qAns = JSON.stringify(correctAnswers);
+                    }
+                    qChoices += (choiceText + "|`" + qPoints + "~$#");
+                });
+                
+                if(!survey.sections[i].questions[j].qAns){
+                    survey.sections[i].questions[j].qAns = null;
+                }
+                
+                qChoices = qChoices.substring(0, qChoices.length - 3);
+                survey.sections[i].questions[j].answers = qChoices;
+                
+                if(exit){
+                    return;
+                }
+            }
+            else if(qType == 'mc'){
+                $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
+                    if(exit){
+                        return;
+                    }
+                    var choiceText = $(tr).find('.qCell').find(".qChoice").val();
+                    var qPoints = $(tr).find('.qCell').find(".qPoints").val();
+                    if(!choiceText || !qPoints){
+                        promptCompletion();
+                        exit = true;
+                        return;
+                    }
+                    if($(tr).find("th").find(".ans").prop("checked")){
+                        survey.sections[i].questions[j].qAns = choiceText;
                     }
                     qChoices += (choiceText + "|`" + qPoints + "~$#");
                 });

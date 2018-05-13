@@ -325,7 +325,7 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response, qType){
             if(qAns == key){
                 cssClass += " correctAnswer";
             }
-            else if(qType == 'mc' || qType == 'chk'){
+            else if(qType == 'chk'){
                 var ansArray = JSON.parse(qAns);
                 for(var k = 0; k < ansArray.length; k++){
                     var ans = ansArray[k];
