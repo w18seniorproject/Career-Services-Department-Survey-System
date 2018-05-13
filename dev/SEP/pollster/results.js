@@ -153,7 +153,7 @@ function getResponsesAll(qNum, qType){
             }
             toReturn.total++;
         }
-        catch{continue;} // try/catch here because not all records will have all questions
+        catch(err){continue;} // try/catch here because not all records will have all questions
     }
     return toReturn;
 }
@@ -182,7 +182,7 @@ function getResponsesCHKAll(qNum){
                     }
                 }
             }
-            catch{continue;} // try/catch here because not all records will have all questions
+            catch(err){continue;} // try/catch here because not all records will have all questions
         }
     }
     return toReturn;
@@ -244,7 +244,7 @@ function getResponsesGroup(qNum, qType, groupNum){
                 }
                 toReturn.total++;
             }
-            catch{continue;} // try/catch here because not all records will have all questions
+            catch(err){continue;} // try/catch here because not all records will have all questions
         }
     }
     return toReturn;
@@ -275,7 +275,7 @@ function getResponsesCHKGroup(qNum, groupNum){
                         }
                     }
                 }
-                catch{continue;} // try/catch here because not all records will have all questions
+                catch(err){continue;} // try/catch here because not all records will have all questions
             }
         }
     }
