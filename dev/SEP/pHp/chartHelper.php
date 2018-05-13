@@ -5,10 +5,11 @@
 
       public static function GetSurNames($db)
       {
+          $conn = $db->getConnection("poll");
         $acctName = $_SESSION['userName'];
         $sql = "SELECT `surName` FROM `results` WHERE `acctName`=? GROUP BY surName ORDER BY surName;";
         $stmt = $conn->prepare($sql);
-        $stmt->execute($acctName);
+        $stmt->execute(array($acctName));
 
         $rNum = $stmt->rowCount();
         if($rNum > 0){
@@ -62,7 +63,7 @@
         {
           $acctName = $_SESSION['userName'];
           $surName = $_SESSION['surName'];
-          $sql = "SELECT `groupName`, `surResults`, `rLevel`, `time` FROM `results` WHERE `acctName`=? AND `surName`=?;"
+          $sql = "SELECT `groupName`, `surResults`, `rLevel`, `time` FROM `results` WHERE `acctName`=? AND `surName`=?;";
           $stmt = $conn->prepare($sql);
           $stmt->execute(array($acctName, $surName));
           $rNum = $stmt->rowCount();
