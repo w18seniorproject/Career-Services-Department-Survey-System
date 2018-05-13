@@ -36,7 +36,30 @@
         public static function updateSurvey($db){
             $conn = $db->getConnection('poll');
             
-            ManageSurvey::DeleteSurvey($db);
+            $postData = $_POST["dataArray"];
+            
+            $oldSur = "Prev: " . $postData['title'] . " " . date('Y-m-d');
+            
+            $sql = "UPDATE questions SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE comments SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE results SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE pins SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE secReqs SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
             Survey::createSurvey($db);
         }
 
