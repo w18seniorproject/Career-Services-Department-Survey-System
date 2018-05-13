@@ -23,7 +23,7 @@ $(document).ready(function () {
       sMI.innerHTML = "";
       //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
       Object.keys(surNameJSON).forEach(function (category) {
-        sMI.innerHTML += "<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>${category}</button>";
+        sMI.innerHTML += "<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>" + category + "</button>";
       });
     },
 
