@@ -28,7 +28,7 @@
 
             $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`, `groupName`) VALUES (?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
-            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 0, "General"));
+            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 1, "General"));
 
             echo $pin;
         }
@@ -52,7 +52,7 @@
             $result = $conn->prepare($sql);
             $result->execute();
             
-            $sql = "UPDATE pins SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE pins SET surName = '" . $oldSur . "', live='0' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
             $result = $conn->prepare($sql);
             $result->execute();
             
