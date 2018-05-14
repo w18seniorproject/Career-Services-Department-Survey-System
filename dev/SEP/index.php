@@ -38,6 +38,9 @@
                 unset($_SESSION['acctName']);
                 exit();
             }
+            elseif(isset($_POST['getNotificationCount'])){
+                PollsterDashboard::getNotificationCount($db);
+            }
             elseif(isset($_POST['editSurvey'])){
                 $_SESSION['surName'] = $_POST['surName'];
                 $_SESSION['acctName'] = $_SESSION['userName'];

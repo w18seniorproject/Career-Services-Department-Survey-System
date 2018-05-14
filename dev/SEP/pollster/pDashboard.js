@@ -265,3 +265,36 @@ function showResults(surName){
 function logout(){
     $("#logoutForm").submit();   
 }
+
+function getNotifications(){
+    $.ajax({
+        url: "../index.php",
+        type: "POST",
+        cache: false,
+        data: {aType: "POLL", getNotificationCount: true},
+        success: function(response){
+            if(response.trim() == "true"){
+                $("#notification-bell").addClass("opaque");
+            }
+        },
+        error: function(jxqr, status, exception){
+            alert("Failure at getNotifications() ajax call in pDashboard.js: " + exception);
+        }
+    })
+}
+
+function openNotifications(){
+    $("#notification-bell").removeClass("opaque");
+    if(!mobile){
+        $("#rContainer").html("");
+        $("#rContainer").load("embed.notifications.html", function(){
+            showNotifications();
+        });
+    }
+    else{
+        $("#contentContainer").html("");
+        $("#contentContainer").load("embed.notifications.html", function(){
+            showNotifications();
+        });
+    }
+}
