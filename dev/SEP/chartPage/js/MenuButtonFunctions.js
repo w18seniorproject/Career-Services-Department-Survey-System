@@ -15,16 +15,18 @@ $(document).ready(function () {
   $.ajax({
 
     type: "POST",
-    url: "../index.php",
+    url: "../../index.php",
     data: ({ getSurNames: "yes", aType: "POLL" }),
     success: function (json) {
+	alert(json);
       var surNameJSON = JSON.parse(json);
       var sMI = document.getElementById("surveyMenuItems");
       sMI.innerHTML = "";
       //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
-      Object.keys(surNameJSON).forEach(function (category) {
-        sMI.innerHTML += "<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>" + category + "</button>";
-      });
+      for(var i=0; i<surNameJSON.length; i++)
+	{
+        sMI.innerHTML += "<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"surNameJSON[i].surName\" onclick=\"surButtonClick()\")>" + surNameJSON[i].surName + "</button>";
+      };
     },
 
     error: function () {
@@ -166,23 +168,26 @@ function surveyButtonFiller() {
 
 }
 
-$('.surButton').click(function () {
+function surButtonClick () {
+alert("we are in the surButton method");
   surveyName = this.innerHTML;
   $.ajax({
 
     type: "POST",
-    url: "../index.php",
+    url: "../../index.php",
     data: ({ getAvgResults: "yes", aType: "POLL", surName: surveyName }),
     success: function (json) {
+	alert(json);
       avgResultJSON = JSON.parse(json);
     }
   });
   $.ajax({
 
     type: "POST",
-    url: "../index.php",
+    url: "../../index.php",
     data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
     success: function (json) {
+	alert(json);
       resultsJSON = JSON.parse(json);
     }
   });
@@ -190,9 +195,10 @@ $('.surButton').click(function () {
   $.ajax({
 
     type: "POST",
-    url: "../index.php",
+    url: "../../index.php",
     data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
     success: function (json) {
+	alert(json);
       questionJSON = JSON.parse(json);
     }
   });
@@ -205,7 +211,7 @@ $('.surButton').click(function () {
     x.style.display = "none";
   }
 
-});
+};
 $('#indResultsButton').click(function () {
 
   exportResponsesToCSV(surveyName);
