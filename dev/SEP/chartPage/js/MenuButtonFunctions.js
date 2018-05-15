@@ -12,13 +12,15 @@ var resultChart = null;
 $(document).ready(function () {
   temp = document.getElementById("myCanvas");
   ctx = temp.getContext("2d");
+  var topRelMenuButton = document.getElementById("curRelLevelButton");  // Nic did this. I guessed that this is what these variables are supposed to be.
+  var topAnsMenuButton = document.getElementById("answersMenuButton");
   $.ajax({
 
     type: "POST",
-    url: "../../index.php",
+    url: "../index.php",                                               // Fixed this. you only need ../index.php, not ../../index.php
     data: ({ getSurNames: "yes", aType: "POLL" }),
     success: function (json) {
-	alert(json);
+	    alert(json);                                                    // Can see errors with this
       var surNameJSON = JSON.parse(json);
       var sMI = document.getElementById("surveyMenuItems");
       sMI.innerHTML = "";
@@ -29,8 +31,8 @@ $(document).ready(function () {
       };
     },
 
-    error: function () {
-      alert('Error occurred while retrieving data.');
+    error: function (jqxr, status, exception) {
+      alert('Failure in ajax call to get Survey Names in MenuButtonFunctions.js: ' + exception);
       topRelMenuButton.disabled = true;
       topAnsMenuButton.disabled = true;
       return false;
