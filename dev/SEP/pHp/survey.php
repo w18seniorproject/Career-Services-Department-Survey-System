@@ -78,6 +78,10 @@
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName, $comment));
 
+            $sql = "UPDATE `notifications` SET count=count+1 WHERE acctName=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName));
+
             echo "<h3 style='text-align: center'>Thank you for your thoughts</h3>";
         }
         

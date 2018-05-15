@@ -8,9 +8,17 @@
         }
         
         public static function sendResponse($db, $surResults, $rLevel){
+            $notifConn = $db->getConnection("poll");
+            $accName = $_SESSION['acctName'];
+
             $resp = new Response($db);
             $stmt = $resp->buildQuery($surResults, $rLevel);
             $stmt->execute();
+
+            $sql = "UPDATE `notifications` SET count=count+1 WHERE acctName=?;";
+            $result = $notifConn->prepare($sql);
+            $result->execute(array($acctName));
+
             unset($_SESSION['startTime']);
         }
         
