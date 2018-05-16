@@ -8,16 +8,18 @@
         }
         
         public static function sendResponse($db, $surResults, $rLevel){
-            $notifConn = $db->getConnection("poll");
-            $accName = $_SESSION['acctName'];
+            $notifConn = $db->getConnection("taker");
+            $acctName = $_SESSION['acctName'];
+
+            $notifObject = "~`#" . json_encode(array('nType' => 'response', 'surName' => $_SESSION['surName']), JSON_FORCE_OBJECT);
 
             $resp = new Response($db);
             $stmt = $resp->buildQuery($surResults, $rLevel);
             $stmt->execute();
 
-            $sql = "UPDATE `notifications` SET count=count+1 WHERE acctName=?;";
+            $sql = "UPDATE `notifications` SET count=count+1, notifications=CONCAT(notifications, ?) WHERE acctName=?;";
             $result = $notifConn->prepare($sql);
-            $result->execute(array($acctName));
+            $result->execute(array($notifObject, $acctName));
 
             unset($_SESSION['startTime']);
         }

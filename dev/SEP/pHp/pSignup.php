@@ -50,6 +50,10 @@
             $result = $conn->prepare($sql);
             $result->execute(array($hashedPass, $email, $username, $ppLocation));
 
+            $sql = "INSERT INTO `notifications` (`acctName`, `count`, `notifications`) VALUES (?, 0, '');";
+            $result = $conn->prepare($sql);
+            $result->execute(array($username));
+
         //-------vvv----account activation via email----vvv----------------------------------
 
              //Create random token. Using bin2hex so that it can be used in a query string.

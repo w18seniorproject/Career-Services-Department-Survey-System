@@ -78,9 +78,11 @@
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName, $comment));
 
-            $sql = "UPDATE `notifications` SET count=count+1 WHERE acctName=?;";
+            $notifObject = "~`#" . json_encode(array('nType' => 'comment', 'surName' => $_SESSION['surName'], 'time' => time()), JSON_FORCE_OBJECT);
+
+            $sql = "UPDATE `notifications` SET count=count+1, notifications=CONCAT(notifications, ?) WHERE acctName=?;";
             $result = $conn->prepare($sql);
-            $result->execute(array($acctName));
+            $result->execute(array($notifObject, $acctName));
 
             echo "<h3 style='text-align: center'>Thank you for your thoughts</h3>";
         }
