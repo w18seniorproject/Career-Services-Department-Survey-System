@@ -208,10 +208,10 @@ function showMyAccount(){
 
 function showWelcome(){
     if(!mobile){
-        $("#rContainer").html("<h1>Tutorial and Welcome Stuff will go here</h1>");
+        $("#rContainer").html("<h1><br><b>Welcome to the University Survey System!<b></h1><br><br><p><h2>This is a free, easy-to-use survey system with:<br><br> ~ Multiple survey configurations<br> ~ Respondent anonymity<br> ~ A simple and efficient user interface<br> ~ The ability to export data for use with other software<br><br>We hope you enjoy using our product!</h2></p><br><br><a class= 'hyperlink' href= '../documentation/quickStart.htm'><h2><i>Quick Start Guide</i><h2></a><a class= 'hyperlink' href= '../documentation/userGuide.htm'><h2><i>User Guide</i><h2></a> ");
     }
     else{
-        $("#contentContainer").html("<h1>Tutorial and Welcome Stuff will go here</h1>");
+        $("#contentContainer").html("<h1><br><b>Welcome to the University Survey System!<b></h1><br><br><p><h2>This is a free, easy-to-use survey system with:<br><br> ~ Multiple survey configurations<br> ~ Respondent anonymity<br> ~ A simple and efficient user interface<br> ~ The ability to export data for use with other software<br><br>We hope you enjoy using our product!</h2></p><br><br><a class= 'hyperlink' href= '../documentation/quickStart.htm'><h2><i>Quick Start Guide</i><h2></a><a class= 'hyperlink' href= '../documentation/userGuide.htm'><h2><i>User Guide</i><h2></a> ");
     }
 }
 
