@@ -40,6 +40,11 @@
             }
             elseif(isset($_POST['getNotificationCount'])){
                 PollsterDashboard::getNotificationCount($db);
+                exit();
+            }
+            elseif(isset($_POST['getNotifications'])){
+                PollsterDashboard::getNotifications($db);
+                exit();
             }
             elseif(isset($_POST['editSurvey'])){
                 $_SESSION['surName'] = $_POST['surName'];
