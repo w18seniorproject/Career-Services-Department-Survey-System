@@ -84,7 +84,7 @@
             $result = $conn->prepare($sql);
             $result->execute(array($notifObject, $acctName));
 
-            echo "<h3 style='text-align: center'>Thank you for your thoughts</h3>";
+            echo "<h3 style='text-align: center'>Thank you for your comments.</h3>";
         }
         
         public static function sendSurvey($db){ 

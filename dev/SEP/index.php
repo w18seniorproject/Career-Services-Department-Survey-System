@@ -59,7 +59,7 @@
             }
             elseif(isset($_POST['logout'])){
                 session_unset();
-                header("Location: ./user/uLogin.html");
+                header("Location: ./pollster/pLogin.html");
             }
             elseif(isset($_POST['newPassword']) && isset($_POST['confirmPassword']) && isset($_POST['token'])){
                 PasswordReset::pReset($db);

@@ -8,7 +8,7 @@ var qWeights;
 var questions
 
 function setupPage(){
-    $("#header").load("../header.html");
+    $("#header").load("../plainHeader.html");
     
     curSec = 0;
     showSurText();
