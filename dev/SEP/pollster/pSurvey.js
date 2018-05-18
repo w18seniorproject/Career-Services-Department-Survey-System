@@ -500,7 +500,7 @@ function fillSurveyFields(surveyName){
                 }else if(questions[i].qType === 'tf'){
                     if(questions[i].qAns == 't')
                         $(".qTable").eq(i).children().find(".ans")[0].checked = true;
-                    else
+                    else if(questions[i].qAns == 'f')
                         $(".qTable").eq(i).children().find(".ans")[1].checked = true;
                 }
             }
