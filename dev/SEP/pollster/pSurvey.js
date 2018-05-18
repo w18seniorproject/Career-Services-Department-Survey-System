@@ -478,7 +478,6 @@ function fillSurveyFields(surveyName){
                     
                     for(var j = 0; j < choiceArr.length; j++){
                         var choice = choiceArr[j].split("|`");
-                        
                         if(j > 0){
                             if(questions[i].qType === 'mc')
                                 addChoice($(".qTable")[i], 1);
@@ -486,9 +485,23 @@ function fillSurveyFields(surveyName){
                                 addChoice($(".qTable")[i], 2);
                         }
                         
+                       if(questions[i].qType !== 'chk' && questions[i].qAns === choice[0])
+                       {
+                           $(".qTable").eq(i).children().find(".ans")[j].checked = true;
+                       }
+                       else if(questions[i].qType === 'chk' && questions[i].qAns.includes(choice[0]))
+                       {
+                           $(".qTable").eq(i).children().find(".ans")[j].checked = true;
+                       }
+                        
                         $(".qTable").eq(i).children().find(".qChoice")[j].value = choice[0];
                         $(".qTable").eq(i).children().find(".qPoints")[j].value = choice[1];
                     }
+                }else if(questions[i].qType === 'tf'){
+                    if(questions[i].qAns == 't')
+                        $(".qTable").eq(i).children().find(".ans")[0].checked = true;
+                    else
+                        $(".qTable").eq(i).children().find(".ans")[1].checked = true;
                 }
             }
             $("#save").prop('onclick',null).off('click');
