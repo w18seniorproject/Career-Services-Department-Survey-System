@@ -9,7 +9,7 @@ function showNotifications(){
             var notifications = data.notifications.split("~`#");
             var count = data.count;
             var isNew = false;
-            for(var i = 1; i < notifications.length; i++){
+            for(var i = notifications.length-1; i >= 0; i--){
                 if(i <= count){
                     isNew = true;
                 }

@@ -21,16 +21,6 @@
           <a href="../pollster/pLogin.html">
             <span class="glyphicon glyphicon-log-in"></span> Login</a>
         </li>
-        <li class="navbar-item">
-          <div class="dropdown">
-                <button id="helpButton" onclick="changeMenu()" class="dropbtn">
-            <span id="helpMenu" class="glyphicon glyphicon-question-sign"></span> Help</button>
-            <div id="helpDropdown" class="dropdown-content">
-              <a href="../documentation/aboutUs.htm">About</a>
-              <a href="../documentation/contactInfo.htm">Contact</a>
-            </div>
-          </div>
-        </li>
       </ul>
     </div>
   </div>
@@ -47,34 +37,4 @@
       }
     }
   ).resize();
-</script>
-
-<script type="text/javascript">
-//Opens the help menu in a separate window, so that the mobile "hamburger" menu works.
-function changeMenu(){
-var w = $(window).width();
-if(w < 750){
-window.open("../documentation/smallHelpMenu.html");
-}else{
-showMenu();
-}
-}
-</script>
-
-<script>
-  /* When the user clicks on the button, 
-  toggle between hiding and showing the dropdown content */
-  function showMenu() {
-    document.getElementById("helpDropdown").classList.toggle("show");
-  }
-
-  // Close the dropdown if the user clicks outside of it
-  window.onclick = function (e) {
-    if (!e.target.matches('.dropbtn')) {
-      var helpDropdown = document.getElementById("helpDropdown");
-      if (helpDropdown.classList.contains('show')) {
-        helpDropdown.classList.remove('show');
-      }
-    }
-  }
 </script>

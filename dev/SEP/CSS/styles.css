@@ -602,6 +602,15 @@ html, body{
     font-weight: bolder;
     color: #000000;
 }
+.commentDisplay{
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 800px !important;
+    margin: 0 auto;
+    border-bottom: solid 1px #ececec;
+}
 
 /* Notifications Page */
 .notiDiv{

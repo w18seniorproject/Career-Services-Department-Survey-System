@@ -1,5 +1,5 @@
 
-var questions, secReqs, results, groupArr = Array();
+var questions, secReqs, results, comments, groupArr = Array();
 
 function showData(surveyName){
     $.ajax({
@@ -23,6 +23,10 @@ function showData(surveyName){
                 results = JSON.parse(data[2]);
                 displayAllGroups();
                 displayGroupButtons();
+                if(!data[3].includes("THERE ARE NO COMMENTS")){
+                    comments = JSON.parse(data[3]);
+                    displayComments();
+                }
             }
         },
         error: function(jxqr, status, exception){
@@ -344,5 +348,13 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response, qType){
     }
     toReturn += "</div></br>"
     return toReturn;
+}"alsdkjfldsajfadsf"
+
+function displayComments(){
+    for(var i = 0; i < comments.length; i++){
+        var comment = comments[i];
+        toDisplay = "<div class='commentDisplay'><h4>\"" + comment + "\"</h4></div>";
+        $("#commentsData").append(toDisplay);
+    }
 }
 
