@@ -130,8 +130,7 @@
             {
               $_SESSION['surName'] = $_POST['surName'];
               $_SESSION['acctName'] = $_SESSION['userName'];
-              $questions = Questions::getQuestions($db);
-              echo json_encode($questions);
+              $questions = Charts::GetQuestionsFromDB($db);
               exit();
             }
             else if(isset($_POST['getChartResults']))

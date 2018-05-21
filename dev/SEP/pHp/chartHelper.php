@@ -91,4 +91,33 @@
           }
         }
 
+        public static function GetQuestionsFromDB($db)
+        {
+          $conn = $db->getConnection("poll");
+        $acctName = $_SESSION['userName'];
+        $surName = $_SESSION['surName'];
+        $sql = "SELECT `qNum`, `qChoices` FROM `questions` WHERE `acctName`=? AND `surName`=?;";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(array($acctName, $surName));
+        $rNum = $stmt->rowCount();
+        if($rNum > 0){
+            $resultsArr = array();
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                extract($row);
+
+                $result = array(
+                  "qNum" => $qNum,
+                  "qChoices" => $qChoices,
+                );
+                $resultsArr[] = $result;
+            }
+            echo json_encode($resultsArr);
+        }
+        else{
+            echo "THERE ARE NO RESULTS TO BE HAD";
+        }
+      }
+
+
     }

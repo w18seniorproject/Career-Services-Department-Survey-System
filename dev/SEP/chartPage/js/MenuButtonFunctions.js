@@ -162,17 +162,6 @@ alert(surveyName)
     }
   });
 
-  $.ajax({
-
-    type: "POST",
-    url: "../index.php",
-    data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
-    success: function (json) {
-	alert(json);
-      questionJSON = JSON.parse(json);
-    }
-  });
-
   
   var x = document.getElementById("MenuButtons");
   if (x.style.display == "none") {
@@ -191,7 +180,48 @@ $('#indResultsButton').click(function () {
 
 function answerMenuReveal(){
 
-	var x = document.getElementById("AnswerDropdown");
+	
+
+  answersButtonFiller();
+	
+}
+function answersButtonFiller() {
+
+$.ajax({
+
+    type: "POST",
+    url: "../index.php",
+    data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
+    success: function (json) {
+	alert(json);
+      questionJSON = JSON.parse(json);
+    }
+  });
+alert(questionJSON);	
+var questionNumArray = [];
+  for(var i in questionJSON)
+{
+	alert(questionJSON[i].qNum);
+	questionNumArray.push(questionJSON[i].qNum);
+}
+  var sMI = document.getElementById("questionMenuItems");
+  for(var i = 0; i<questionNumArray.length; i++){
+
+    var element = document.createElement("button");
+	element.type="button";
+
+	element.name=questionNumArray[i].qNum;
+	var t = document.createTextNode(questionNumArray[i].qNum);
+	element.appendChild(t);
+	element.value=questionNumArray[i].qNum;
+	var qNum=questionNumArray[i].qNum;
+	alert(qNum);
+	element.onclick=function(){
+	pieChartMaker(qNum);	
+	}
+	sMI.appendChild(element);
+  };
+var x = document.getElementById("AnswerDropdown");
  if (x.style.display == "none") {
     x.style.display = "block";
   } else {
@@ -199,33 +229,11 @@ function answerMenuReveal(){
   }
 
 var y = document.getElementById("QuestionButton");
- if (x.style.display == "none") {
-    x.style.display = "block";
+ if (y.style.display == "none") {
+    y.style.display = "block";
   } else {
-    x.style.display = "none";
+    y.style.display = "none";
   }
-	
-}
-function answersButtonFiller(questionjson) {
-
-  var sMI = document.getElementById("questionMenuItems");
-  for(var i = 0; i<questionjson.length; i++){
-
-    var element = document.createElement("button");
-	element.type="button";
-
-	element.name=questionjson[i].qNum;
-	var t = document.createTextNode(questionjson[i].qNum);
-	element.appendChild(t);
-	element.value=questionjson[i].qNum;
-	var qNum=questionjson[i].qNum;
-	alert(qNum);
-	element.onclick=function(){
-	pieChartMaker(qNum);	
-	}
-	sMI.appendChild(element);
-  };
-
 
 }
 
