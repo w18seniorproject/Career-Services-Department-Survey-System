@@ -275,6 +275,47 @@ html, body{
     box-shadow: 0px 2px 5px 5px #cccccc;
     background-color: #fff1f1
 }
+.notifications{
+    height: 55px;
+    width: 55px;
+    opacity: 0.5;
+    background-color: #a10022;
+    color: #ffffff;
+    bottom: 50px;
+    left: 15px;
+    z-index: 3;
+    position: fixed;
+    border-radius: 50%;
+}
+.notifications:hover{
+    opacity: 1;
+}
+@keyframes pulsate {
+    0% {transform: scale(0.1, 0.1); opacity: 0.0; background-color: #6d6e71}
+    50% {opacity: 0.5;}
+    100% {transform: scale(1.0, 1.0); opacity: 1.0; background-color: #a10022}
+}
+.opaque{
+    opacity: 1;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: 3; 
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: 3;
+    -moz-animation: pulsate 1s ease-out;
+    -moz-animation-iteration-count: 3;
+}
+#logout{
+    opacity: 0.5;
+    background-color: #000000;
+    color: #ffffff;
+    bottom: 10px;
+    left: 10px;
+    z-index: 3;
+    position: fixed;
+}
+#logout:hover{
+    opacity: 1;
+}
 
 /*Survey Creation Page*/
 .center-th{
@@ -527,3 +568,60 @@ html, body{
 .dropdown a:hover {background-color: #ececec}
 
 .show {display:block;}
+
+/* Results Page */
+
+.solid-bar{
+    background-color: #006ea1;
+    border-radius: 1px;
+    display: inline-block;
+    line-height: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #ffffff;
+}
+.correctAnswer{
+    background-color: #029934;
+}
+.results-header{
+    margin-bottom: 20px; 
+    margin-top: 20px; 
+    text-align: center;
+    padding-bottom: 10px;
+}
+.gb{
+    display: inline-block;
+    margin: 0px; 
+    margin-right: 10px;
+}
+.empty-choice{
+    background-color: inherit;
+    display: inline-block;
+    line-height: 20px;
+    font-size: 18px;
+    font-weight: bolder;
+    color: #000000;
+}
+.commentDisplay{
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 800px !important;
+    margin: 0 auto;
+    border-bottom: solid 1px #ececec;
+}
+
+/* Notifications Page */
+.notiDiv{
+    padding-top: 3px;
+    border-bottom: solid 1px #ececec;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    height: 60px;
+}
+.notiDiv:hover{
+    box-shadow: 0px 2px 5px 5px #cccccc;
+    cursor: pointer;
+}

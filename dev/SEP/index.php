@@ -6,7 +6,7 @@
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
     $db = new Database();
-        
+
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType'])){
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pin.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pLogin.php';
@@ -20,6 +20,10 @@
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pDashboard.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/passwordReset.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/pActivate.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/results.php';
+        include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/chartHelper.php';
+
 
         if($_POST['aType'] === 'POLL'){
             /* POLLSTER HANDLING */
@@ -28,11 +32,22 @@
                 exit();
             }
             elseif(isset($_POST['getResults'])){
+                $_SESSION['surName'] = $_POST['surName'];
+                $_SESSION['acctName'] = $_SESSION['userName']; //Setting this variable for code reuse. I'm reusing a "taker" function which needs 'acctName' to be set.
                 Results::GetResults($db);
+                unset($_SESSION['acctName']);
+                exit();
+            }
+            elseif(isset($_POST['getNotificationCount'])){
+                PollsterDashboard::getNotificationCount($db);
+                exit();
+            }
+            elseif(isset($_POST['getNotifications'])){
+                PollsterDashboard::getNotifications($db);
                 exit();
             }
             elseif(isset($_POST['editSurvey'])){
-                $_SESSION['surName'] = $_POST['surName'];;
+                $_SESSION['surName'] = $_POST['surName'];
                 $_SESSION['acctName'] = $_SESSION['userName'];
                 Survey::sendSurvey($db);
                 unset($_SESSION['acctName']);
@@ -42,8 +57,16 @@
                 ForgotPassword::sendToken($db);
                 exit();
             }
-            elseif(isset($_POST['token'])){
+            elseif(isset($_POST['logout'])){
+                session_unset();
+                header("Location: ./pollster/pLogin.html");
+            }
+            elseif(isset($_POST['newPassword']) && isset($_POST['confirmPassword']) && isset($_POST['token'])){
                 PasswordReset::pReset($db);
+                exit();
+            }
+            elseif(!isset($_POST['newPassword']) && isset($_POST['token'])){
+                AccountActivate::pActivate($db);
                 exit();
             }
             elseif(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
@@ -54,8 +77,13 @@
                 PollsterDashboard::GetSurveys($db);
                 exit();
             }
-            elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray'])){
-                Survey::createSurvey($db);
+            elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray']) && isset($_POST['update'])){
+                if($_POST['update'] == true){
+                    Survey::updateSurvey ($db);
+                }
+                else{
+                    Survey::createSurvey($db);
+                }
                 exit();
             }
             elseif(isset($_POST['resources']) && isset($_POST['pins']) && isset($_POST['groups'])){
@@ -84,6 +112,32 @@
             }
             elseif(isset($_POST['password']) && isset($_POST['email']) && isset($_POST['password-confirm'])){
                 PollsterAccount::SetAccountInfo($db);
+                exit();
+            }
+
+            elseif(isset($_POST['getSurNames']))
+            {
+              Charts::GetSurNames($db);
+              exit();
+            }
+            elseif(isset($_POST['getAvgResults']))
+            {
+              $_SESSION['surName'] = $_POST['surName'];
+              Charts::GetAvgResults($db);
+              exit();
+            }
+            else if(isset($_POST['getQuestions']))
+            {
+              $_SESSION['surName'] = $_POST['surName'];
+              $_SESSION['acctName'] = $_SESSION['userName'];
+              $questions = Charts::GetQuestionsFromDB($db);
+              exit();
+            }
+            else if(isset($_POST['getChartResults']))
+            {
+              $_SESSION['surName'] = $_POST['surName'];
+              Charts::GetChartResults($db);
+              exit();
             }
             //otherwise throw error code Bad Request
             else{
@@ -110,9 +164,9 @@
                 Response::sendResponse($db, $_POST['response'], 0);
                 exit();
             }
-            //check if user has already entered a valid pin, gotten session variables; 
-            //if so, return questions. 
-            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['startTime'])){ 
+            //check if user has already entered a valid pin, gotten session variables;
+            //if so, return questions.
+            elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName']) && isset($_SESSION['startTime'])){
                 Survey::sendSurvey($db);
                 exit();
             }
@@ -122,7 +176,7 @@
                 echo "Bad Request: Taker";
                 exit();
             }
-        } 
+        }
     }
     else if($_SERVER['REQUEST_METHOD'] === 'GET'){
         if(isset($_GET['profpic'])){
@@ -132,7 +186,7 @@
         elseif(isset($_GET['accountInfo'])){
             PollsterAccount::GetAccountInfo($db);
         }
-        elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){      
+        elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
             header("Location: user/uSurvey.html");
             exit();
         }

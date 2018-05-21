@@ -33,12 +33,15 @@
                 <input type="hidden" value="POLL" name="aType">
             </form>
             <br>
-            <p id="errorMessage" style="text-align: center; color: #a10022"></p>
+            <p id="errorMessage" style="text-align: center; color: #a10022; font-size: 200%"></p>
             <script type="text/javascript">
                 var string = getUrlParameter("error");
                 var message = "";
-                if(string == "badEmail"){
-                    message = "Sorry. That's not an appropriate email"
+                if(string == "noError"){
+                    message = "Please check your email inbox for a link to activate your account.";
+                }
+                else if(string == "badEmail"){
+                    message = "Sorry. That's not an appropriate email";
                 }
                 else if(string == "badUsername"){
                     message = "Sorry. That's not an appropriate Username";

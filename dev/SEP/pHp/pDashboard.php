@@ -37,11 +37,45 @@
             $conn = $db->getConnection('poll');
             
             $acctName = $_SESSION['userName'];
-
-
         }
 
+        public static function getNotificationCount($db){
+            $conn = $db->getConnection('poll');
 
+            $acctName = $_SESSION['userName'];
+
+            $sql = "SELECT count FROM notifications WHERE acctName=?;";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($acctName));
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($row["count"] > 0){
+                echo "true";
+                die();
+            }
+            echo "false";
+            die();
+        }
+
+        public static function getNotifications($db){
+            $conn = $db->getConnection('poll');
+
+            $acctName = $_SESSION['userName'];
+
+            $sql = "SELECT `notifications`, `count` FROM notifications WHERE acctName=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($acctName));
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $sql = "UPDATE `notifications` SET count=0;";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+
+            echo json_encode($row);
+            die();
+        }
 
 
 

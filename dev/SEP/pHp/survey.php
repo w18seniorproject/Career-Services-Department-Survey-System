@@ -28,9 +28,43 @@
 
             $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`, `groupName`) VALUES (?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
-            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 0, "General"));
+            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 1, "General"));
 
             echo $pin;
+        }
+        
+        public static function updateSurvey($db){
+            $conn = $db->getConnection('poll');
+            
+            $postData = $_POST["dataArray"];
+            
+            $oldSur = "[" . date ('Y-m-d h:i:s') . "] " . $postData['title'];
+            
+            $sql = "UPDATE questions SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE comments SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE results SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE pins SET surName = '" . $oldSur . "', live='0' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            $sql = "UPDATE secReqs SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
+            
+            Survey::createSurvey($db);
+            
+            $sql = "UPDATE secReqs, (SELECT * FROM secReqs WHERE surName = '". $oldSur ."' AND acctName = '" . $_SESSION['userName'] . "') AS old SET secReqs.resources = old.resources, secReqs.resourceMarkup = old.resourceMarkup WHERE secReqs.surName = '" . $postData['title'] . "' AND secReqs.acctName = '" . $_SESSION['userName'] . "'";
+            $result = $conn->prepare($sql);
+            $result->execute();
         }
 
         public static function sendComment($db){
@@ -44,15 +78,38 @@
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName, $comment));
 
-            echo "<h3 style='text-align: center'>Thank you for your thoughts</h3>";
+            $notifObject = "~`#" . json_encode(array('nType' => 'comment', 'surName' => $_SESSION['surName'], 'time' => time()), JSON_FORCE_OBJECT);
+
+            $sql = "UPDATE `notifications` SET count=count+1, notifications=CONCAT(notifications, ?) WHERE acctName=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($notifObject, $acctName));
+
+            echo "<h3 style='text-align: center'>Thank you for your comments.</h3>";
         }
         
         public static function sendSurvey($db){ 
             $questions = Questions::getQuestions($db);
             $secReqs = SecReqs::getReqs($db);
-            $survey = json_encode(array($questions, $secReqs));
+            $surText = Survey::getSurText($db);
+            $survey = json_encode(array($questions, $secReqs, $surText));
             echo $survey;
         }
+
+        private static function getSurText($db){
+            $conn = $db->getConnection('taker');
+
+            $surName = $_SESSION['surName'];
+            $acctName = $_SESSION['acctName'];
+
+            $sql = 'SELECT `surText` FROM `pins` WHERE `acctName`=? AND `surName`=?;';
+            $result = $conn->prepare($sql);
+            $result->execute(array($acctName, $surName));
+
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            
+            return $row['surText'];
+        }
+
                
         private static function otherAddToDB($conn, $surName, $qNum, $qType, $qText, $qAns, $qWeight, $rLevel, $rName, $acctName){
             $sql = "INSERT INTO `questions` (`surName`, `qNum`, `qType`, `qText`, `qAns`, `qWeight`, `rLevel`, `rName`, `acctName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";

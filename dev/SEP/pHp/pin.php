@@ -45,7 +45,7 @@
             $query = "SELECT * FROM " . $this->table;
 
             if(isset($pin)){
-                $query = $query . " WHERE pin = ?";	
+                $query = $query . " WHERE pin = ? AND live = 1";	
 
                 $stmt = $this->conn->prepare($query);
 

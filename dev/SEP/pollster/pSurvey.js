@@ -1,3 +1,4 @@
+$(document).ready(setupPage);
 
 var surName;
 
@@ -51,7 +52,7 @@ function constructQuestionHTML(){
                             <th><h3 class='qLabel'></h3></th>\
                             <th><span class='close qClose'>&#10799</span></th>\
                         </tr></table>\
-                        <input class='form-control input' placeholder='Enter Question Text' type='text'></br>\
+                        <input class='form-control input qText' placeholder='Enter Question Text' type='text'></br>\
                         <input class='form-control qWeight' placeholder='Enter Weight' type='number' min='0'>\
                         <input class='form-control qNum' type='hidden'>\
                         </br>\
@@ -274,7 +275,7 @@ function checkChoices(){
     return value;
 }
 
-function submit(){
+function submit(update){
     var title = $("#surTitle").val();
     surName = title;
     var exit = false;
@@ -329,7 +330,8 @@ function submit(){
                 "type": qType,
                 "weight": qWeight
             };
-            if(qType === "mc" || qType === "chk"){
+            if(qType === "chk"){
+                var correctAnswers = Array();
                 $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
                     if(exit){
                         return;
@@ -341,16 +343,47 @@ function submit(){
                         exit = true;
                         return;
                     }
-                    if($(tr).find("th").find(".ans").prop("checked") && qType !== "chk"){
-                        survey.sections[i].questions[j].qAns = k;
+                    if($(tr).find("th").find(".ans").prop("checked")){
+                        correctAnswers.push(choiceText);
+                        survey.sections[i].questions[j].qAns = JSON.stringify(correctAnswers);
                     }
                     qChoices += (choiceText + "|`" + qPoints + "~$#");
                 });
                 
-                if(!survey.sections[i].questions[j].qAns)
+                if(!survey.sections[i].questions[j].qAns){
                     survey.sections[i].questions[j].qAns = null;
+                }
                 
-                qChoices = qChoices.substring(0, qChoices.length - 2);
+                qChoices = qChoices.substring(0, qChoices.length - 3);
+                survey.sections[i].questions[j].answers = qChoices;
+                
+                if(exit){
+                    return;
+                }
+            }
+            else if(qType == 'mc'){
+                $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
+                    if(exit){
+                        return;
+                    }
+                    var choiceText = $(tr).find('.qCell').find(".qChoice").val();
+                    var qPoints = $(tr).find('.qCell').find(".qPoints").val();
+                    if(!choiceText || !qPoints){
+                        promptCompletion();
+                        exit = true;
+                        return;
+                    }
+                    if($(tr).find("th").find(".ans").prop("checked")){
+                        survey.sections[i].questions[j].qAns = choiceText;
+                    }
+                    qChoices += (choiceText + "|`" + qPoints + "~$#");
+                });
+                
+                if(!survey.sections[i].questions[j].qAns){
+                    survey.sections[i].questions[j].qAns = null;
+                }
+                
+                qChoices = qChoices.substring(0, qChoices.length - 3);
                 survey.sections[i].questions[j].answers = qChoices;
                 
                 if(exit){
@@ -387,21 +420,21 @@ function submit(){
     if(exit){
         return;
     }
-    post(survey);
+    post(survey, update);
 }
 
 function promptCompletion(){
     alert("Please fill out all fields");
 }
 
-function post(toSend){
+function post(toSend, update){
     var instruc = $("#surText").val();
     $.ajax({
         url: "../index.php",
         type: "POST",
-        data: ({dataArray: toSend, surText: instruc, aType: "POLL"}),
+        data: ({dataArray: toSend, surText: instruc, aType: "POLL", update: update}),
         success: function(response){
-            window.location = "pDashboard.html?content=manage&surName=" + surName;
+            window.location = "pDashboard.html?content=manage&surName=" + surName;      
         },
         error: function(jqxr, status, exception){
             alert("Failing at post() ajax call in pSurvey.js");
@@ -416,50 +449,66 @@ function fillSurveyFields(surveyName){
         cache: false,
         data: {editSurvey: true, surName: surveyName, aType: "POLL"},
         success: function(data){
-            alert(data);
             var survey = JSON.parse(data);
             var questions = JSON.parse(survey[0]);
             var secReqs = JSON.parse(survey[1]);
-
-            //TODO get surText from pins table on backend.
-            // Also needed in taker survey page
-
             curSec = 0;
 
-            addSection();
-
             $("#surTitle").val(surveyName);
-            for(var i =0; i < questions.length; i++){
-                $(".minScore").get(i).val(secReqs[i].minScore);
-                $(".secName").get(i).val(questions[i].rName);
-                addQuestion($(".btn-secondary").get(i));
-
-                //TODO fill in qText, qType, and weight
-
-                switch(questions[i].qType){
-                    case 'mc':
-                        // Fill in mc data
-                        break;
-                    case 'chk':
-                        //Fill in chk data
-                        break;
-                    case 'tf':
-                        //Fill in tf data
-                        break;
-                    case 's':
-                        //Fill in s data
-                        break;
-                    default:
-                        break;
-                }
-
+            $("#surText").val(survey[2]);
+            
+            for(var i = 0; i < questions.length; i++){
+                
                 if(questions[i].rLevel > curSec){
                     addSection();
                     curSec = questions[i].rLevel;
+                    $(".minScore")[curSec - 1].value = secReqs[curSec - 1].minScore;
+                    $(".secName")[curSec - 1].value = questions[i].rName;
+                }
+                
+
+                addQuestion($(".btn-secondary")[curSec - 1]);
+                $(".qText")[i].value = questions[i].qText;
+                $(".qWeight")[i].value = questions[i].qWeight;
+                $(".select")[i].value = questions[i].qType;
+                selectType($(".select")[i]);
+                
+                if(questions[i].qType === 'mc' || questions[i].qType === 'chk'){
+                    var choiceArr = questions[i].qChoices.split("~$#");
+                    
+                    for(var j = 0; j < choiceArr.length; j++){
+                        var choice = choiceArr[j].split("|`");
+                        if(j > 0){
+                            if(questions[i].qType === 'mc')
+                                addChoice($(".qTable")[i], 1);
+                            else
+                                addChoice($(".qTable")[i], 2);
+                        }
+                        
+                       if(questions[i].qType !== 'chk' && questions[i].qAns === choice[0])
+                       {
+                           $(".qTable").eq(i).children().find(".ans")[j].checked = true;
+                       }
+                       else if(questions[i].qType === 'chk' && questions[i].qAns.includes(choice[0]))
+                       {
+                           $(".qTable").eq(i).children().find(".ans")[j].checked = true;
+                       }
+                        
+                        $(".qTable").eq(i).children().find(".qChoice")[j].value = choice[0];
+                        $(".qTable").eq(i).children().find(".qPoints")[j].value = choice[1];
+                    }
+                }else if(questions[i].qType === 'tf'){
+                    if(questions[i].qAns == 't')
+                        $(".qTable").eq(i).children().find(".ans")[0].checked = true;
+                    else if(questions[i].qAns == 'f')
+                        $(".qTable").eq(i).children().find(".ans")[1].checked = true;
                 }
             }
+            $("#save").prop('onclick',null).off('click');
 
-            //TODO change save button onclick handler to update, not create
+            $('#save').click(function() {
+                submit(true);
+            }); 
         },
         error: function(jqxr, status, exception){
             alert("Failing at fillSurveyFields() ajax call in pSurvey.js: " + exception);
@@ -467,3 +516,8 @@ function fillSurveyFields(surveyName){
     });
 }
 
+function setupPage(){
+    $('#save').click(function() {
+        submit(null);
+    }); 
+}

@@ -96,10 +96,10 @@ function displaySurveys(){
                     $(ele).on("click", function(){showEditSurvey($(ele).parent().parent().attr("surName"))});
                 });
                 $(".survey-left").each(function(i, ele){
-                    $(ele).on("click", function(){showResults($(ele).parent().parent().attr("surName"))});
+                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"))});
                 });
                 $(".survey-middle").each(function(i, ele){
-                    $(ele).on("click", function(){showResults($(ele).parent().parent().attr("surName"))});
+                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"))});
                 });
                 $(".surveyListItem").each(function(i, ele){
                     $(ele).on("click", function(){showSelectedItem(ele)});
@@ -208,10 +208,10 @@ function showMyAccount(){
 
 function showWelcome(){
     if(!mobile){
-        $("#rContainer").html("<h1>Tutorial and Welcome Stuff will go here</h1>");
+        $("#rContainer").html("<h1><br><b>Welcome to the University Survey System!<b></h1><br><br><p><h2>This is a free, easy-to-use survey system with:<br><br> ~ Multiple survey configurations<br> ~ Respondent anonymity<br> ~ A simple and efficient user interface<br> ~ The ability to export data for use with other software<br><br>We hope you enjoy using our product!</h2></p><br><br><a class= 'hyperlink' href= '../documentation/quickStart.htm'><h2><i>Quick Start Guide</i><h2></a><a class= 'hyperlink' href= '../documentation/userGuide.htm'><h2><i>User Guide</i><h2></a> ");
     }
     else{
-        $("#contentContainer").html("<h1>Tutorial and Welcome Stuff will go here</h1>");
+        $("#contentContainer").html("<h1><br><b>Welcome to the University Survey System!<b></h1><br><br><p><h2>This is a free, easy-to-use survey system with:<br><br> ~ Multiple survey configurations<br> ~ Respondent anonymity<br> ~ A simple and efficient user interface<br> ~ The ability to export data for use with other software<br><br>We hope you enjoy using our product!</h2></p><br><br><a class= 'hyperlink' href= '../documentation/quickStart.htm'><h2><i>Quick Start Guide</i><h2></a><a class= 'hyperlink' href= '../documentation/userGuide.htm'><h2><i>User Guide</i><h2></a> ");
     }
 }
 
@@ -258,6 +258,43 @@ function showResults(surName){
         $("#contentContainer").html("");
         $("#contentContainer").load("embed.results.html", function(){
             showData(surName);
+        });
+    }
+}
+
+function logout(){
+    $("#logoutForm").submit();   
+}
+
+function getNotifications(){
+    $.ajax({
+        url: "../index.php",
+        type: "POST",
+        cache: false,
+        data: {aType: "POLL", getNotificationCount: true},
+        success: function(response){
+            if(response.trim() == "true"){
+                $("#notification-bell").addClass("opaque");
+            }
+        },
+        error: function(jxqr, status, exception){
+            alert("Failure at getNotifications() ajax call in pDashboard.js: " + exception);
+        }
+    })
+}
+
+function openNotifications(){
+    $("#notification-bell").removeClass("opaque");
+    if(!mobile){
+        $("#rContainer").html("");
+        $("#rContainer").load("embed.notifications.html", function(){
+            showNotifications();
+        });
+    }
+    else{
+        $("#contentContainer").html("");
+        $("#contentContainer").load("embed.notifications.html", function(){
+            showNotifications();
         });
     }
 }

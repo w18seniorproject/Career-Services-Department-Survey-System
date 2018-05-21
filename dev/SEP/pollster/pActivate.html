@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang=e n>
+
+<head>
+    <title>Account Activation</title>
+    <meta charset="utf-8">
+    <script src="../JQuery/jquery-3.3.1.min.js"></script>
+    <script src="../Bootstrap/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../Bootstrap/bootstrap-3.3.7/dist/css/bootstrap.min.css">
+    <link href="../CSS/styles.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../scripts/utils.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("../header.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+    <div class="form-centered">
+        <legend class="legend">Survey Adminstrator Account Activation</legend>
+        <p>
+            <h2>Please wait...</h2>
+        </p>
+        <form id="acctActivate" action="../index.php" method="post">
+            <script>      
+                $("#acctActivate").prepend('<input value=' + getUrlParameter('token') + ' type="hidden" name="token">');
+                //alert(" Token: " + getUrlParameter('token'));
+            </script>
+            <input type="hidden" value="POLL" name="aType">
+        </form>
+        <!--submit form without a button being clicked:-->
+        <script>
+        if(getUrlParameter('token')!= ""){
+            document.forms["acctActivate"].submit();
+        }
+        </script>
+        <br/>
+        </br>
+        <p id="errorMessage" class="errorMessage">
+            <script type="text/javascript">
+                var string = getUrlParameter("error");
+
+                if (string == "tokenRemoved") {
+                    alert("The link used to access this page has either expired and been removed from our records, or it is otherwise invalid. Please try again.");
+                    window.location.href = 'pSignup.html';
+
+                } else if (string == "tokenExpired") {
+                    alert("The link used to access this page has expired. Please try again.");
+                    window.location.href = 'pSignup.html';
+
+                } else if (string == "tokenUsed") {
+                    alert("The link accessing this page has already been used. Please try again.");
+                    window.location.href = 'pSignup.html';
+                }
+            </script>
+        </p>
+
+    </div>
+</body>
+
+</html>

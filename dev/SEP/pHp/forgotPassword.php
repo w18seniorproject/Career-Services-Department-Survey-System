@@ -2,6 +2,8 @@
 class ForgotPassword{
     public static function sendToken($db){
 
+include_once "../pollster/forgotPassword.html";
+
 $conn = $db->getConnection('poll');
 
 //Either username or password entered by pollster
@@ -37,8 +39,9 @@ if(filter_var($known_value, FILTER_VALIDATE_EMAIL)){
         $expiration = date("Y-m-d H:i:s", strtotime("+ 30 minutes"));
 
         //Set linkUsed to false
-        $linkUsed = false;
-
+        //$linkUsed = false;
+        $linkUsed = 0;
+        
         //Save account and tokenHash info to token table
         $sql = "INSERT INTO tokens (acctName, tokenHash, tokenUsed, expiration) VALUES (?, ?, ?, ?)";
 
@@ -59,12 +62,12 @@ if(filter_var($known_value, FILTER_VALIDATE_EMAIL)){
         //"FROM" PARAM ISN'T A VALID EMAIL ADDRESS.
         mail( $email, "USS Password Reset", $msg, "From: webslave@notarealdomain.com" );
 
-        header("Location: ../pollster/pLogin.html?response=emailSent");
+        header("Location: ./pollster/pLogin.html?response=emailSent");
         die();
     }// end if(rows==1)
     else{
 
-     header("Location: ../pollster/forgotPassword.html?response=noAccount");
+     header("Location: ./pollster/forgotPassword.html?response=noAccount");
      die();
      }
     }

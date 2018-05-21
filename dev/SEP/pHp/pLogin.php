@@ -1,6 +1,9 @@
 <?php
     class PollsterLogin {
         public static function login($db){
+
+            include_once"./pollster/pLogin.html";
+
             $conn = $db->getConnection('poll');
 
             $username = $_POST["username"];
@@ -22,7 +25,6 @@
                     die("Username and/or password do not match.");
                 }
                 else{
-                    session_start();
                     session_destroy();
                     session_start();
                     $_SESSION["userName"] = $username;

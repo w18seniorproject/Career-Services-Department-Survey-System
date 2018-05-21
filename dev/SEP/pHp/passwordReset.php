@@ -5,7 +5,7 @@ class PasswordReset{
 
         error_reporting(E_ALL);
         
-        include_once "../pollster/passwordReset.html";
+        include_once "./pollster/passwordReset.html";
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
   
@@ -33,7 +33,7 @@ class PasswordReset{
                 $numRows = $result->rowCount();
 
                 if($numRows == 0){
-                 header("Location: ../pollster/passwordReset.html?error=tokenRemoved");
+                 header("Location: ./pollster/passwordReset.html?error=tokenRemoved");
                  die();
              }
 
@@ -45,7 +45,7 @@ class PasswordReset{
             
                     if($expiration < strtotime(date("Y-m-d H:i:s"))){
 
-                   header("Location: ../pollster/passwordReset.html?error=tokenExpired");
+                   header("Location: ./pollster/passwordReset.html?error=tokenExpired");
                    die();
                   }
 
@@ -53,7 +53,7 @@ class PasswordReset{
                    //Check to see if the token was used previously
                    if($used){
 
-                   header("Location: ../pollster/passwordReset.html?error=tokenUsed");
+                   header("Location: ./pollster/passwordReset.html?error=tokenUsed");
                    die();
                    }
 
@@ -97,7 +97,7 @@ class PasswordReset{
                     echo "Error. Token not updated to 'used'.";
                 }else{
 
-                header("Location: ../pollster/passwordReset.html?response=success");
+                header("Location: ./pollster/passwordReset.html?response=success");
                 }
               }
               $stmt = null;

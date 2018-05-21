@@ -3,54 +3,63 @@
     class Results{
         
         public static function GetResults($db){
-            $conn = $db->getConnection('taker');
+            $conn = $db->getConnection('poll');
 
             $acctName = $_SESSION['userName'];
-            $surName = $_POST['surName'];
+            $surName = $_SESSION['surName'];
+
+            $questions = Questions::getQuestions($db);
+            $secReqs = SecReqs::getReqs($db);
+            $comments = Results::getComments($conn, $acctName, $surName);
 
             $sql = "SELECT `groupName`, `surResults`, `rLevel`, `time` FROM `results` WHERE `acctName`=? AND `surName`=?;";
-            $resultsSTMT = $conn->prepare($sql);
-            $resultsSTMT->execute(array($acctName, $surName));
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($acctName, $surName));
 
-            $sql = "SELECT `qNum`, `qType`, `qText`, `qChoices`, `qAns`, `qWeight`, `rLevel` AS `qrLevel`, `rName` AS `qrName` FROM `questions` WHERE `acctName`=? AND `surName`=?;";
-            $questionsSTMT = $conn->prepare($sql);
-            $questionsSTMT->execute(array($acctName, $surName));
-
-
-
-            $rNum = $resultsSTMT->rowCount();
+            $rNum = $stmt->rowCount();
 
             if($rNum > 0){
-                $returnArr = array();
-                while($rRow = $resultsSTMT->fetch(PDO::FETCH_ASSOC)){
-                    extract($rRow);
+                $resultsArr = array();
 
-                    $qResults = parseResults($surResults);
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    extract($row);
 
                     $result = array(
+                        "surName" => $surName,
                         "groupName" => $groupName,
-                        "rName" => $rName,
-                        "rLevel" =>$rLevel,
-                        "time" => $time,
-                        "qPoints" => $qPoints,
-                        "surResults" => $surResultsJSON
+                        "surResults" => $surResults,
+                        "rLevel" => $rLevel,
+                        "time" => $time
                     );
-                    $returnArr[] = $result;
+                    $resultsArr[] = $result;
                 }
-                $rRow = $resultsSTMT->fetch(PDO::FETCH_ASSOC);
+                $resultsJSON = json_encode($resultsArr);
 
-
-
+                $toReturn = array($questions, $secReqs, $resultsJSON, $comments);
+                echo json_encode($toReturn);
             }
-
-            
             else{
                 echo "THERE ARE NO RESULTS TO BE HAD";
             }
         }
-
-        private static function parseResults($surResults){
-            
-        }
         
+        public static function getComments($conn, $acctName, $surName){
+            $sql = "SELECT `comment` FROM `comments` WHERE `acctName`=? AND `surName`=?;";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($acctName, $surName));
+
+            $rNum = $stmt->rowCount();
+
+            if($rNum > 0){
+                $commentsArray = array();
+
+                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $commentsArray[] = $row["comment"];
+                }
+                return json_encode($commentsArray);
+            }
+            else{
+                return "THERE ARE NO COMMENTS";
+            }
+        }
     }

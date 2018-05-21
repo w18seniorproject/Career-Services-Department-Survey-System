@@ -21,16 +21,6 @@
           <a href="../pollster/pLogin.html">
             <span class="glyphicon glyphicon-log-in"></span> Login</a>
         </li>
-        <li class="navbar-item">
-          <div class="dropdown">
-            <button onclick="showMenu()" class="dropbtn">
-            <span class="glyphicon glyphicon-menu-down"></span>Help</button>
-            <div id="helpDropdown" class="dropdown-content">
-              <a href="#about">About</a>
-              <a href="#contact">Contact</a>
-            </div>
-          </div>
-        </li>
       </ul>
     </div>
   </div>
@@ -47,21 +37,4 @@
       }
     }
   ).resize();
-</script>
-<script>
-  /* When the user clicks on the button, 
-  toggle between hiding and showing the dropdown content */
-  function showMenu() {
-    document.getElementById("helpDropdown").classList.toggle("show");
-  }
-
-  // Close the dropdown if the user clicks outside of it
-  window.onclick = function (e) {
-    if (!e.target.matches('.dropbtn')) {
-      var helpDropdown = document.getElementById("helpDropdown");
-      if (helpDropdown.classList.contains('show')) {
-        helpDropdown.classList.remove('show');
-      }
-    }
-  }
 </script>

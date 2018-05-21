@@ -266,7 +266,7 @@ function checkInputs(){
 }
 
 function resourceFormat(text){
-    var str = "<h3>Here are some further resources you can check out:</h3>" + text;
+    var str = "<h3>The survey is now complete.</h3>" + text;
     return str;
 }
 

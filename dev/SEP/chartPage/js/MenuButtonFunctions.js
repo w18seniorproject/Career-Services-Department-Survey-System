@@ -1,290 +1,287 @@
 
-var js_relationArrayJSON;
-var js_groupArrayJSON;
+var surNameJSON;
+var questionJSON;
+var resultJSON;
+var avgResultJSON;
+var groupArray;
+var avgArray;
+var surveyName;
 var temp;
 var ctx;
-var surveyName;
-var resultChart=null;
-$(document).ready(function(){
-  temp=document.getElementById("myCanvas");
-  ctx=temp.getContext("2d");
-});
-$.ajax({
+var resultChart = null;
 
-  type: "POST",
-  url: 'php/relationChartCreator.php',
-  dataType: 'json',
-  success: function(json){
-    var completedJSON=JSON.parse(json);
-    js_relationArrayJSON=completedJSON.rLA;
-    js_groupArrayJSON=completedJSON.gNA;
-  }
+$(document).ready(function () {
+  temp = document.getElementById("myCanvas");
+  ctx = temp.getContext("2d");
+  var topRelMenuButton = document.getElementById("curRelLevelButton");  // Nic did this. I guessed that this is what these variables are supposed to be.
+  var topAnsMenuButton = document.getElementById("answersMenuButton");
+  $.ajax({
 
-});
+    type: "POST",
+    url: "../index.php",                                               // Fixed this. you only need ../index.php, not ../../index.php
+    data: ({ getSurNames: "yes", aType: "POLL" }),
+    success: function (json) {
+	    alert(json);                                                    // Can see errors with this
+      var surNameJSON = JSON.parse(json);
 
+      //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
+      for(var i=0; i<surNameJSON.length; i++)
+	{
 
-function createMixedChart(){
-  if(resultChart!=null)
-  {
-       resultChart.destroy();
-  }
-  resultChart= new Chart(ctx, {
-  type: 'bar',
-  data: {
-    datasets: [{
+       	//var span = document.createElement('span');
+	//span.innerHTML +='<button id="but' + i +'" onclick="surButtonClick("'+surNameJSON[i].surName	//+'")">'+surNameJSON[i].surName+'</button>';
+	//sMI.appendChild(span);
 
-      label: 'Bar_Set',
-      data: js_relationArrayJSON
-    }, {
-    label:'Line_Set',
-    data: js_relationArrayJSON,
+	var element = document.createElement("button");
+	element.type="button";
 
-    type: 'line'
-  }],
-  labels:js_groupArrayJSON
-},
-options: {
-    scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero:true
-            }
-        }]
+	element.name=surNameJSON[i].surName;
+	var t = document.createTextNode(surNameJSON[i].surName);
+	element.appendChild(t);
+	element.value=surNameJSON[i].surName;
+	var surname=surNameJSON[i].surName;
+	alert(surname);
+	element.onclick=function(){
+	surButtonClick(surname);
+}
+	var sMI = document.getElementById("surveyMenuItems");
+	sMI.appendChild(element);
+      };
+    },
+
+    error: function (jqxr, status, exception) {
+      alert('Failure in ajax call to get Survey Names in MenuButtonFunctions.js: ' + exception);
+      topRelMenuButton.disabled = true;
+      topAnsMenuButton.disabled = true;
+      return false;
     }
-}
+  });
+
 });
-}
-
-function createLineChart(){
- if(resultChart!=null)
- {
-      resultChart.destroy();
- }
- resultChart= new Chart(ctx, {
- type: 'line',
- data: js_relationArrayJSON,
- labels:js_groupArrayJSON,
-options: {
-   scales: {
-       yAxes: [{
-           ticks: {
-               beginAtZero:true
-           }
-       }]
-   }
- }
-});
-}
-
-function createBarChart(){
- if(resultChart!=null)
- {
-      resultChart.destroy();
- }
- resultChart= new Chart(ctx, {
- type: 'bar',
- data: js_relationArrayJSON,
- labels:js_groupArrayJSON,
-options: {
-   scales: {
-       yAxes: [{
-           ticks: {
-               beginAtZero:true
-           }
-       }]
-   }
- }
-});
-}
-
-var js_questionJSON;
-var js_resultJSON;
-window.onload = function(){
 
 
 
-  var topRelMenuButton=document.getElementById("curRelLevelButton");
-  var topAnsMenuButton=document.getElementById('answersMenuButton');
-    $.ajax({
+function relationsButton() {
+  groupArray = [];
+  avgArray = [];
+  for (var i in avgResultJSON) {
+    groupArray.push(avgResultJSON[i].groupName);
+    avgArray.push(avgResultJSON[i].rLevel);
 
-      type: "POST",
-      url: 'include/SEP/pHp/questions.php',
-      dataType: 'json',
-      success: function(json){
-        js_questionJSON=JSON.parse(json);
-        if(js_questionJSON.hasOwnProperty('message'))
-        {
-          alert('No Questions Currently Exists In Database');
-          topRelMenuButton.disabled=true;
-          topAnsMenuButton.disabled=true;
-          return false;
-        }
-      },
-      error: function(){
-        alert('Error occurred while retrieving data.');
-        topRelMenuButton.disabled=true;
-        topAnsMenuButton.disabled=true;
-        return false;
-      }
-    });
-    $.ajax({
-
-      type: "POST",
-      url: 'include/SEP/pHp/results.php',
-      dataType: 'json',
-      success: function(json){
-        js_resultJSON=JSON.parse(json);
-        if(js_resultJSON.hasOwnProperty('message'))
-        {
-          alert('No Results Currently Exists In Database');
-          topRelMenuButton.disabled=true;
-          topAnsMenuButton.disabled=true;
-          return false;
-        }
-      },
-      error: function(){
-        alert('Error occurred while retrieving data.');
-        topRelMenuButton.disabled=true;
-        topAnsMenuButton.disabled=true;
-        return false;
-      }
-    });
-
-
-
-}
-
-$('#curRelLevelButton').click(function(){
-  relationsButton()
-});
-function relationsButton(){
-
-  var x=document.getElementById("surveyButtons");
-  if(x.style.display=="none"){
-    x.style.display="block";
-  }else {
-    x.style.display="none";
   }
+if (resultChart != null) {
+    resultChart.destroy();
+  }
+  resultChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      datasets: [{
+	label: 'Bar_Set',
+	backgroundColor: "rgba(250,0,0,0.5)",
+	borderColor: "rgba(250,0,0,0.75)",
+        data: avgArray
+      }, {
+        label: 'Line_Set',
+        data: avgArray,
+	borderColor: "rgba(0,250,0,0.8)",
+	backgroundColor: "rgba(250,0,0,0.0)",
+        type: 'line'
+      }],
+      labels: groupArray
+    },
+animation: {
+    onComplete: function () {
+        var ctx = this.chart.ctx;
+        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+        ctx.fillStyle = "black";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+
+        this.data.datasets.forEach(function (dataset)
+        {
+            for (var i = 0; i < dataset.data.length; i++) {
+                for(var key in dataset._meta)
+                {
+                    var model = dataset._meta[key].data[i]._model;
+                    ctx.fillText(dataset.data[i], model.x, model.y - 5);
+                }
+            }
+        });
+    }
+},
+    options: {
+
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
 
-$('#answersMenuButton').click(function(){
+function createBarChart() {
+  if (resultChart != null) {
+    resultChart.destroy();
+  }
+  resultChart = new Chart(ctx, {
+    type: 'bar',
+    data: avgArray,
+    labels: groupArray
 
-  surveyButtonFiller();
-});
-
-function surveyButtonFiller(){
-  var sMI=document.getElementById("surveyMenuItems");
-  sMI.innerHTML="";
-  //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
-  var groupBy = function(xs, key) {
-  return xs.reduce(function(rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
-var groupedBySurveyName=groupBy(js_questionJSON, 'surName');
-  Object.keys(groupedBySurveyName).forEach(function(category)
-  {
-      sMI.innerHTML+="<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>${category}</button>";
 
   });
-  var x=document.getElementById("AnswerDropdown");
-  if(x.style.display=="none"){
-    x.style.display="block";
-  }else {
-    x.style.display="none";
-  }
-  var y=document.getElementById("indResultsButton")
-  if(y.style.display=="none"){
-    y.style.display="block";
-  }else {
-    y.style.display="none";
-  }
-
 }
 
-$('.surButton').click(function(){
-surveyName=this.innerHTML;
-  answersButtonFiller(surveyName);
 
-});
-$('#indResultsButton').click(function(){
+
+
+function surButtonClick (x) {
+alert("we are in the surButton method");
+  surveyName = x;
+alert(surveyName)
+  $.ajax({
+
+    type: "POST",
+    url: "../index.php",
+    data: ({ getAvgResults: "yes", aType: "POLL", surName: surveyName }),
+    success: function (json) {
+	alert(json);
+      avgResultJSON = JSON.parse(json);
+    }
+  });
+
+
+  $.ajax({
+
+      type: "POST",
+      url: "../index.php",
+      data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
+      success: function (json) {
+  	alert(json);
+        questionJSON = JSON.parse(json);
+      }
+    });
+  var x = document.getElementById("MenuButtons");
+  if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+};
+$('#indResultsButton').click(function () {
 
   exportResponsesToCSV(surveyName);
 });
-function answersButtonFiller(surname)
+
+
+
+function answerMenuReveal(){
+
+
+
+  answersButtonFiller();
+
+}
+function answersButtonFiller() {
+
+
+alert(questionJSON[0]);
+var questionNumArray = [];
+  for(var i in questionJSON)
 {
+	alert(questionJSON[i].qNum);
+	questionNumArray.push(questionJSON[i].qNum);
+}
+alert(questionNumArray);
+  var sMI = document.getElementById("questionMenuItems");
+  for(var i = 0; i<questionNumArray.length; i++){
 
-    var sMI=document.getElementById("questionMenuItems");
+    var element = document.createElement("button");
+	element.type="button";
 
-    sMI.innerHTML="";
-    var filtered = js_questionJSON.filter(function(item){
+	element.name=questionNumArray[i];
+	var t = document.createTextNode(questionNumArray[i]);
+	element.appendChild(t);
+	element.value=questionNumArray[i];
+	var qNum=questionNumArray[i];
+	alert(qNum);
+	element.onclick=function(){
+	pieChartMaker(qNum);
+	}
+	sMI.appendChild(element);
+  };
+var x = document.getElementById("AnswerDropdown");
+ if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
 
-      return item.surName === surname;
-    });
-    var question=1;
-    filtered.forEach(function(item)
-    {
-
-        sMI.innerHTML+="<button class=\"dropdown-item question-button\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value="+surname+" on>"+item.qNum+"</button>";
-    });
-
+var y = document.getElementById("QuestionButton");
+ if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
 
 }
 
-$('.question-button').click(function(){
+function pieChartMaker(qNum) {
+  var qNumInt = parseInt(qNum);
+  var qNumIntMinus = qNumInt - 1;
+  var filteredQuestion = questionJSON[qNumInt];
 
-  pieChartMaker(this.innerHTML, $(this).val());
-});
-function pieChartMaker(qNum, SurName)
-{
-  var qNumInt= parseInt(qNum);
-  var filteredResults = js_resultJSON.filter(function(item){
+  var resultData = [];
+  alert(surveyName);
+  $.ajax({
 
-    return item.surName === SurName;
-  });
-  var filteredSurveyQuestionArray = js_questionJSON.filter(function(item){
+    type: "POST",
+    url: "../index.php",
+    data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
+    success: function (json) {
 
-    return item.surName === SurName;
-  });
-  var filteredQuestion = filteredSurveyQuestionArray.filter(function(item){
-
-    return item.qNum === qNumInt;
-  });
-
-
-  var resultData=[];
-  filteredResults.forEach(function (item)
-    {
-      var itemResponses=item.surResults;
-      var seperatedResponses=itemResponses.split("`|");
-      var qNumIntMinus=qNumInt-1;
-      var responses=seperatedResponses[qNumIntMinus];
-      var brokenUp = seperatedResponses.split("`~")
-      for(var i=0; i<brokenUp.length; i++)
-      {
-        resultData.push(brokenUp[i]);
-      }
+      resultsJSON = JSON.parse(json);
+      alert(resultJSON);
     }
-  );
+  });
+  alert(resultJSON);
+  for(var i=0; i<resultsJSON.length; i++)
+  {
+    var itemResponses = resultsJSON.surResults[qNumIntMinus];
+    var itemJSON=JSON.parse(itemResponses);
+    for (var j = 0; i < itemJSON.length; i++) {
+      var response=JSON.parse(itemJSON[i]);
+      var temp=response.value.indexOf(",");
+      resultData.push(response.value.substr(0,temp));
+    }
+  };
   resultData.sort();
-  var counts={};
-  var possibleResponses=filteredQuestion[0].qChoices.split("`|");
+  var counts = {};
+  var possibleResponses=filteredQuestion.qChoices.split("~$#");
+  for(var i = 0; i<possibleResponses.length;i++)
+  {
+    var temp=possibleResponses[i].indexOf("|`");
+    possibleResponses[i]=possibleResponses[i].substr(0,temp);
+  }
+
   for (var i = 0; i < possibleResponses.length; i++) {
-   var resp=person.possibleResponses[i];
-   counts[resp]=0;
+    var resp = possibleResponses[i];
+    counts[resp] = 0;
   };
   for (var i = 0; i < resultData.length; i++) {
     var resp = resultData[i];
 
-  counts[resp] = counts[resp] ? counts[resp] + 1 : 1;
+    counts[resp] = counts[resp]++;
   };
 
-  if(resultChart!=null)
-  {
-       resultChart.destroy();
+  if (resultChart != null) {
+    resultChart.destroy();
   }
-  resultChart=new Chart(ctx,{
+  resultChart = new Chart(ctx, {
     type: 'pie',
     data: Object.values(counts),
     labels: possibleResponses
@@ -293,31 +290,28 @@ function pieChartMaker(qNum, SurName)
 
 }
 
-function exportResponsesToCSV(SurName)
-{
+function exportResponsesToCSV(SurName) {
   let csvContent = "data:text/csv;charset=utf-8,";
-  var filtered = js_questionJSON.filter(function(item){
+  var filtered = js_questionJSON.filter(function (item) {
 
     return item.surName === SurName;
   });
-  var titleRowArray=["Record Number","Group Name","Relation Level"]
-  for(var i=0; i<filtered.length; i++)
-  {
-    titleRowArray.push("Question"+filtered[i].qNum);
+  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+  for (var i = 0; i < filtered.length; i++) {
+    titleRowArray.push("Question" + filtered[i].qNum);
   }
-  let titleRow=titleRowArray.join(",");
-  csvContent+= titleRow +"\r\n";
-  var filteredResults = js_resultJSON.filter(function(item){
+  let titleRow = titleRowArray.join(",");
+  csvContent += titleRow + "\r\n";
+  var filteredResults = js_resultJSON.filter(function (item) {
 
     return item.surName === SurName;
   });
-  for (var i=0; i<js_resultJSON.length; i++)
-  {
+  for (var i = 0; i < js_resultJSON.length; i++) {
     var answers = js_resultJSON[i].surResults.split("`|");
-    var rowArray=[js_resultJSON[i].recNum, js_resultJSON[i].groupName, js_resultJSON[i].rLevel];
+    var rowArray = [js_resultJSON[i].recNum, js_resultJSON[i].groupName, js_resultJSON[i].rLevel];
     rowArray.push.apply(answers);
-    let row=rowArray.join(",");
-    csvContent+= row +"\r\n";
+    let row = rowArray.join(",");
+    csvContent += row + "\r\n";
   }
   var encodedUri = encodeURI(csvContent);
   window.open(encodedUri);

@@ -100,8 +100,6 @@
             $sql = "DELETE FROM `results` WHERE `acctName`=? AND `surName`=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName));
-            
-            exit();
         }
 
         public static function GetSectionNum(){

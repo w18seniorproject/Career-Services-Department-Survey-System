@@ -20,6 +20,13 @@
         <div id='header'></div>              
         <script type='text/javascript'>
             determineLayout();
+            getNotifications();
         </script>
+        <input type="button" class="btn btn-sm" value="Log Out" id="logout" onclick="logout();">
+        <input type="button" class="notifications" value="&#x1f514;" id="notification-bell" onclick="openNotifications();">
+        <form id='logoutForm' action='../index.php' method='POST'>
+            <input type='hidden' value='logout' name='logout'>
+            <input type='hidden' value='POLL' name='aType'>
+        </form>
     </body>
 </html>
