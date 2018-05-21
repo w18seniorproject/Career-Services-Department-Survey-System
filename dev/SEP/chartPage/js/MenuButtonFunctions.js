@@ -5,6 +5,7 @@ var resultJSON;
 var avgResultJSON;
 var groupArray;
 var avgArray;
+var surveyName;
 var temp;
 var ctx;
 var resultChart = null;
@@ -22,11 +23,11 @@ $(document).ready(function () {
     success: function (json) {
 	    alert(json);                                                    // Can see errors with this
       var surNameJSON = JSON.parse(json);
-      
+
       //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
       for(var i=0; i<surNameJSON.length; i++)
 	{
-	
+
        	//var span = document.createElement('span');
 	//span.innerHTML +='<button id="but' + i +'" onclick="surButtonClick("'+surNameJSON[i].surName	//+'")">'+surNameJSON[i].surName+'</button>';
 	//sMI.appendChild(span);
@@ -41,7 +42,7 @@ $(document).ready(function () {
 	var surname=surNameJSON[i].surName;
 	alert(surname);
 	element.onclick=function(){
-	surButtonClick(surname);	
+	surButtonClick(surname);
 }
 	var sMI = document.getElementById("surveyMenuItems");
 	sMI.appendChild(element);
@@ -129,8 +130,8 @@ function createBarChart() {
     type: 'bar',
     data: avgArray,
     labels: groupArray
-    
-      
+
+
   });
 }
 
@@ -151,18 +152,18 @@ alert(surveyName)
       avgResultJSON = JSON.parse(json);
     }
   });
+
+
   $.ajax({
 
-    type: "POST",
-    url: "../index.php",
-    data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
-    success: function (json) {
-	alert(json);
-      resultsJSON = JSON.parse(json);
-    }
-  });
-
-  
+      type: "POST",
+      url: "../index.php",
+      data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
+      success: function (json) {
+  	alert(json);
+        questionJSON = JSON.parse(json);
+      }
+    });
   var x = document.getElementById("MenuButtons");
   if (x.style.display == "none") {
     x.style.display = "block";
@@ -180,44 +181,36 @@ $('#indResultsButton').click(function () {
 
 function answerMenuReveal(){
 
-	
+
 
   answersButtonFiller();
-	
+
 }
 function answersButtonFiller() {
 
-$.ajax({
 
-    type: "POST",
-    url: "../index.php",
-    data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
-    success: function (json) {
-	alert(json);
-      questionJSON = JSON.parse(json);
-    }
-  });
-alert(questionJSON);	
+alert(questionJSON[0]);
 var questionNumArray = [];
   for(var i in questionJSON)
 {
 	alert(questionJSON[i].qNum);
 	questionNumArray.push(questionJSON[i].qNum);
 }
+alert(questionNumArray);
   var sMI = document.getElementById("questionMenuItems");
   for(var i = 0; i<questionNumArray.length; i++){
 
     var element = document.createElement("button");
 	element.type="button";
 
-	element.name=questionNumArray[i].qNum;
-	var t = document.createTextNode(questionNumArray[i].qNum);
+	element.name=questionNumArray[i];
+	var t = document.createTextNode(questionNumArray[i]);
 	element.appendChild(t);
-	element.value=questionNumArray[i].qNum;
-	var qNum=questionNumArray[i].qNum;
+	element.value=questionNumArray[i];
+	var qNum=questionNumArray[i];
 	alert(qNum);
 	element.onclick=function(){
-	pieChartMaker(qNum);	
+	pieChartMaker(qNum);
 	}
 	sMI.appendChild(element);
   };
@@ -239,43 +232,50 @@ var y = document.getElementById("QuestionButton");
 
 function pieChartMaker(qNum) {
   var qNumInt = parseInt(qNum);
-  var filteredResults = js_resultJSON.filter(function (item) {
-
-    return item.surName === SurName;
-  });
-  var filteredSurveyQuestionArray = js_questionJSON.filter(function (item) {
-
-    return item.surName === SurName;
-  });
-  var filteredQuestion = filteredSurveyQuestionArray.filter(function (item) {
-
-    return item.qNum === qNumInt;
-  });
-
+  var qNumIntMinus = qNumInt - 1;
+  var filteredQuestion = questionJSON[qNumInt];
 
   var resultData = [];
-  filteredResults.forEach(function (item) {
-    var itemResponses = item.surResults;
-    var seperatedResponses = itemResponses.split("`|");
-    var qNumIntMinus = qNumInt - 1;
-    var responses = seperatedResponses[qNumIntMinus];
-    var brokenUp = seperatedResponses.split("`~")
-    for (var i = 0; i < brokenUp.length; i++) {
-      resultData.push(brokenUp[i]);
+  alert(surveyName);
+  $.ajax({
+
+    type: "POST",
+    url: "../index.php",
+    data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
+    success: function (json) {
+
+      resultsJSON = JSON.parse(json);
+      alert(resultJSON);
     }
-  }
-  );
+  });
+  alert(resultJSON);
+  for(var i=0; i<resultsJSON.length; i++)
+  {
+    var itemResponses = resultsJSON.surResults[qNumIntMinus];
+    var itemJSON=JSON.parse(itemResponses);
+    for (var j = 0; i < itemJSON.length; i++) {
+      var response=JSON.parse(itemJSON[i]);
+      var temp=response.value.indexOf(",");
+      resultData.push(response.value.substr(0,temp));
+    }
+  };
   resultData.sort();
   var counts = {};
-  var possibleResponses = filteredQuestion[0].qChoices.split("`|");
+  var possibleResponses=filteredQuestion.qChoices.split("~$#");
+  for(var i = 0; i<possibleResponses.length;i++)
+  {
+    var temp=possibleResponses[i].indexOf("|`");
+    possibleResponses[i]=possibleResponses[i].substr(0,temp);
+  }
+
   for (var i = 0; i < possibleResponses.length; i++) {
-    var resp = person.possibleResponses[i];
+    var resp = possibleResponses[i];
     counts[resp] = 0;
   };
   for (var i = 0; i < resultData.length; i++) {
     var resp = resultData[i];
 
-    counts[resp] = counts[resp] ? counts[resp] + 1 : 1;
+    counts[resp] = counts[resp]++;
   };
 
   if (resultChart != null) {
