@@ -129,6 +129,7 @@
             else if(isset($_POST['getQuestions']))
             {
               $_SESSION['surName'] = $_POST['surName'];
+              $_SESSION['acctName'] = $_SESSION['userName'];
               $questions = Questions::getQuestions($db);
               echo json_encode($questions);
               exit();

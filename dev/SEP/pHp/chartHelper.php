@@ -31,10 +31,11 @@
       }
         public static function GetAvgResults($db)
         {
+            $conn = $db->getConnection("poll");
           $acctName = $_SESSION['userName'];
           $surName = $_SESSION['surName'];
 
-          $sql = "SELECT `groupName`, ROUND(AVG(rLevel),1) AS average_relationship, FROM `results` WHERE `acctName`=? AND `surName`=? GROUP BY groupName ORDER BY groupName;";
+          $sql = "SELECT ROUND(AVG(`rLevel`),1) AS average_relationship, `groupName` FROM `results` WHERE `acctName`=? AND `surName`=? GROUP BY groupName ORDER BY groupName;";
           $stmt = $conn->prepare($sql);
           $stmt->execute(array($acctName, $surName));
 
@@ -61,6 +62,7 @@
 
         public static function GetChartResults($db)
         {
+            $conn = $db->getConnection("poll");
           $acctName = $_SESSION['userName'];
           $surName = $_SESSION['surName'];
           $sql = "SELECT `groupName`, `surResults`, `rLevel`, `time` FROM `results` WHERE `acctName`=? AND `surName`=?;";

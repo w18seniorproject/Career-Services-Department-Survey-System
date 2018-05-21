@@ -22,12 +22,29 @@ $(document).ready(function () {
     success: function (json) {
 	    alert(json);                                                    // Can see errors with this
       var surNameJSON = JSON.parse(json);
-      var sMI = document.getElementById("surveyMenuItems");
-      sMI.innerHTML = "";
+      
       //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
       for(var i=0; i<surNameJSON.length; i++)
 	{
-        sMI.innerHTML += "<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"surNameJSON[i].surName\" onclick=\"surButtonClick()\")>" + surNameJSON[i].surName + "</button>";
+	
+       	//var span = document.createElement('span');
+	//span.innerHTML +='<button id="but' + i +'" onclick="surButtonClick("'+surNameJSON[i].surName	//+'")">'+surNameJSON[i].surName+'</button>';
+	//sMI.appendChild(span);
+
+	var element = document.createElement("button");
+	element.type="button";
+
+	element.name=surNameJSON[i].surName;
+	var t = document.createTextNode(surNameJSON[i].surName);
+	element.appendChild(t);
+	element.value=surNameJSON[i].surName;
+	var surname=surNameJSON[i].surName;
+	alert(surname);
+	element.onclick=function(){
+	surButtonClick(surname);	
+}
+	var sMI = document.getElementById("surveyMenuItems");
+	sMI.appendChild(element);
       };
     },
 
@@ -42,66 +59,57 @@ $(document).ready(function () {
 });
 
 
-$('#curRelLevelButton').click(function () {
-  relationsButton()
-});
-function relationsButton() {
 
-  var x = document.getElementById("surveyButtons");
-  if (x.style.display == "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
+function relationsButton() {
   groupArray = [];
   avgArray = [];
   for (var i in avgResultJSON) {
     groupArray.push(avgResultJSON[i].groupName);
-    avgArray.push(avgResultJSON[i].average_relationship);
+    avgArray.push(avgResultJSON[i].rLevel);
 
   }
-}
-
-function createMixedChart() {
-  if (resultChart != null) {
+if (resultChart != null) {
     resultChart.destroy();
   }
   resultChart = new Chart(ctx, {
     type: 'bar',
     data: {
       datasets: [{
-
-        label: 'Bar_Set',
+	label: 'Bar_Set',
+	backgroundColor: "rgba(250,0,0,0.5)",
+	borderColor: "rgba(250,0,0,0.75)",
         data: avgArray
       }, {
         label: 'Line_Set',
         data: avgArray,
-
+	borderColor: "rgba(0,250,0,0.8)",
+	backgroundColor: "rgba(250,0,0,0.0)",
         type: 'line'
       }],
       labels: groupArray
     },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
-}
+animation: {
+    onComplete: function () {
+        var ctx = this.chart.ctx;
+        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+        ctx.fillStyle = "black";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
 
-function createLineChart() {
-  if (resultChart != null) {
-    resultChart.destroy();
-  }
-  resultChart = new Chart(ctx, {
-    type: 'line',
-    data: avgArray,
-    labels: groupArray,
+        this.data.datasets.forEach(function (dataset)
+        {
+            for (var i = 0; i < dataset.data.length; i++) {
+                for(var key in dataset._meta)
+                {
+                    var model = dataset._meta[key].data[i]._model;
+                    ctx.fillText(dataset.data[i], model.x, model.y - 5);
+                }
+            }
+        });
+    }
+},
     options: {
+
       scales: {
         yAxes: [{
           ticks: {
@@ -119,64 +127,24 @@ function createBarChart() {
   }
   resultChart = new Chart(ctx, {
     type: 'bar',
-    data: js_relationArrayJSON,
-    labels: groupArray,
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
+    data: avgArray,
+    labels: groupArray
+    
+      
   });
 }
 
 
 
-$('#answersMenuButton').click(function () {
 
-  surveyButtonFiller();
-});
-
-function surveyButtonFiller() {
-  var sMI = document.getElementById("surveyMenuItems");
-  sMI.innerHTML = "";
-  //Help for this part from https://stackoverflow.com/questions/38575721/grouping-json-by-values
-  var groupBy = function (xs, key) {
-    return xs.reduce(function (rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
-  };
-  var groupedBySurveyName = groupBy(js_questionJSON, 'surName');
-  Object.keys(groupedBySurveyName).forEach(function (category) {
-    sMI.innerHTML += "<button class=\"dropdown-item surButton\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=\"${category}\")>${category}</button>";
-
-  });
-  var x = document.getElementById("AnswerDropdown");
-  if (x.style.display == "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-  var y = document.getElementById("indResultsButton")
-  if (y.style.display == "none") {
-    y.style.display = "block";
-  } else {
-    y.style.display = "none";
-  }
-
-}
-
-function surButtonClick () {
+function surButtonClick (x) {
 alert("we are in the surButton method");
-  surveyName = this.innerHTML;
+  surveyName = x;
+alert(surveyName)
   $.ajax({
 
     type: "POST",
-    url: "../../index.php",
+    url: "../index.php",
     data: ({ getAvgResults: "yes", aType: "POLL", surName: surveyName }),
     success: function (json) {
 	alert(json);
@@ -186,7 +154,7 @@ alert("we are in the surButton method");
   $.ajax({
 
     type: "POST",
-    url: "../../index.php",
+    url: "../index.php",
     data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
     success: function (json) {
 	alert(json);
@@ -197,7 +165,7 @@ alert("we are in the surButton method");
   $.ajax({
 
     type: "POST",
-    url: "../../index.php",
+    url: "../index.php",
     data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
     success: function (json) {
 	alert(json);
@@ -205,7 +173,7 @@ alert("we are in the surButton method");
     }
   });
 
-  answersButtonFiller();
+  
   var x = document.getElementById("MenuButtons");
   if (x.style.display == "none") {
     x.style.display = "block";
@@ -218,24 +186,49 @@ $('#indResultsButton').click(function () {
 
   exportResponsesToCSV(surveyName);
 });
-function answersButtonFiller() {
+
+
+
+function answerMenuReveal(){
+
+	var x = document.getElementById("AnswerDropdown");
+ if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+var y = document.getElementById("QuestionButton");
+ if (x.style.display == "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+	
+}
+function answersButtonFiller(questionjson) {
 
   var sMI = document.getElementById("questionMenuItems");
+  for(var i = 0; i<questionjson.length; i++){
 
-  sMI.innerHTML = "";
-  var question = 1;
-  questionJSON.forEach(function (item) {
+    var element = document.createElement("button");
+	element.type="button";
 
-    sMI.innerHTML += "<button class=\"dropdown-item question-button\" type=\"button\" data-toggle=\"button\" aria-pressed=\"false\" value=" + surname + " on>" + item.qNum + "</button>";
-  });
+	element.name=questionjson[i].qNum;
+	var t = document.createTextNode(questionjson[i].qNum);
+	element.appendChild(t);
+	element.value=questionjson[i].qNum;
+	var qNum=questionjson[i].qNum;
+	alert(qNum);
+	element.onclick=function(){
+	pieChartMaker(qNum);	
+	}
+	sMI.appendChild(element);
+  };
 
 
 }
 
-$('.question-button').click(function () {
-
-  pieChartMaker(this.innerHTML, $(this).val());
-});
 function pieChartMaker(qNum) {
   var qNumInt = parseInt(qNum);
   var filteredResults = js_resultJSON.filter(function (item) {
