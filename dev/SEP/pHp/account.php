@@ -40,13 +40,13 @@
 
             $acctName = $_SESSION['userName'];
 
-            $sql = "SELECT `email` from `accounts` WHERE `acctName`=?;";
+            $sql = "SELECT `email`, `acctName` from `accounts` WHERE `acctName`=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName));
 
             $row = $result->fetch(PDO::FETCH_ASSOC);
 
-            echo $row['email'];
+            echo json_encode($row);
         }
 
         public static function SetAccountInfo($db){
