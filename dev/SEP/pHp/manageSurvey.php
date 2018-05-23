@@ -106,5 +106,17 @@
             $rLevel = $_SESSION['rLevel'];
             echo $rLevel;
         }
+
+        public static function setLive($db){
+            $conn = $db->getConnection("poll");
+
+            $surName = $_POST['surName'];
+            $acctName = $_SESSION['userName'];
+            $live = $_POST['isLive'];
+
+            $sql = "UPDATE `pins` SET live=? WHERE acctName=? AND surName=?;";
+            $result = $conn->prepare($sql);
+            $result->execute(array($live, $acctName, $surName));
+        }
     }
 ?>

@@ -21,14 +21,19 @@
         <div class="form-centered">
             <legend class="legend">Take the Survey</legend>
             <form action="../index.php" method="post">
-                <input class="form-control input-lg" placeholder="Pin" type="password" name="pin">
+                <input class="form-control input-lg" placeholder="Pin" type="password" name="pin" id="pin">
                 <br>
-                <input class="btn btn-primary btn-lg btn-block"  type="submit" value="Submit">
+                <input class="btn btn-primary btn-lg btn-block" id="submitButton" type="submit" value="Submit">
                 <input type="hidden" value="TAKE" name="aType">
             </form>
             <br>
             <p id="errorMessage" class="errorMessage"></p>
             <script type="text/javascript">
+                var pin = getUrlParameter("pin");
+                if(pin != ""){
+                    $("#pin").val(pin);
+                    $("#submitButton").trigger("click");
+                }
                 var string = getUrlParameter("error");
                 var message = "";
                 if(string == "wrongPin"){

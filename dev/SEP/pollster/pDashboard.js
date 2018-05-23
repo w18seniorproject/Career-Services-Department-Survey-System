@@ -142,7 +142,7 @@ function constructSurveyListHTML(surveyJSON){
                         " + surveyName+ "\
                     </div>\
                     <div class='survey-middle'>\
-                        <span class='" + liveIndicatorClass + "'>" + liveIndicator + "</span>\
+                        <span id='" + survey.surName.replace(/\s/g, '') + "' class='" + liveIndicatorClass + "'>" + liveIndicator + "</span>\
                     </div>\
                     <div class='survey-right'>\
                         <a class='manage shadow'>Manage</a>\
