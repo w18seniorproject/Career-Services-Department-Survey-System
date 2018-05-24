@@ -96,7 +96,7 @@
         $expiration = date("Y-m-d H:i:s", strtotime("+ 30 minutes"));
 
         //Set linkUsed to false
-        $linkUsed = false;
+        $linkUsed = 0;
 
         //Save account and tokenHash info to token table
         $sql = "INSERT INTO tokens (acctName, tokenHash, tokenUsed, expiration) VALUES (?, ?, ?, ?)";
@@ -112,8 +112,8 @@
 
         //CHANGE TO CORRECT EXTERNAL LINK (COMMENTED OUT) WHEN THIS GOES TO THE SERVER.
         //It won't capture the port number I'm using (10080) on XAMPP
-        $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
-        //$msg = "Please click on the link to activate your account:\n\n http://" .  $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+        //$msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
+        $msg = "Please click on the link to activate your account:\n\n http://" .  $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
 
 
         $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
@@ -121,7 +121,7 @@
         //"from" param is not a valid email address.
         if(!mail( $email, "USS Account Activation", $msg, "From: webslave@notarealdomain.com" )){
             echo "System failed to send activation email. Please try again.";
-            header("Location: ../pollster/pSignup.html?error=badEmail");
+            header("Location: ./pollster/pSignup.html?error=badEmail");
             die("mail function failure");
         }else{
             header("Location: ./pollster/pSignup.html?error=noError");
