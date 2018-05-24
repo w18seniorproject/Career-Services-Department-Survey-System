@@ -286,7 +286,7 @@ function toggleLive(){
     var live = 0;
     var liveIndicatorClass = "not-live";
     var liveIndicatorText = "not live";
-    var surveyName = getUrlParameter("surName");
+    var surveyName = surName;
     if(!($("#myonoffswitch").is(":checked"))){
         live = 1;
         liveIndicatorClass = "live";
@@ -298,10 +298,10 @@ function toggleLive(){
         type: "POST",
         data: {isLive: live, aType: "POLL", surName: surveyName},
         success: function(){
-            var surName = getUrlParameter("surName").replace(/\s/g, '');
-            $("#"+surName).removeClass();
-            $("#"+surName).addClass(liveIndicatorClass);
-            $("#"+surName).html(liveIndicatorText);
+            var surveyName = surName.replace(/\s/g, ''); //MARK HERE *****************************************
+            $("#"+surveyName).removeClass();
+            $("#"+surveyName).addClass(liveIndicatorClass);
+            $("#"+surveyName).html(liveIndicatorText);
         },
         error: function(jqxr, status, exception){
             alert("Failure at toggleLive() ajax call in manageSurvey.js: " + exception);

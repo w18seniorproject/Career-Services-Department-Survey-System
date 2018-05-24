@@ -1,5 +1,6 @@
 
 var mobile = false;
+var surName;
 
 function determineLayout(){
     if($(window).width() < 780){
@@ -215,7 +216,8 @@ function showWelcome(){
     }
 }
 
-function showManageSurvey(surName){
+function showManageSurvey(surveyName){
+    surName = surveyName;
     if(!mobile){
         $("#rContainer").html("");
         $("#rContainer").load("embed.manageSurvey.html", function(){
@@ -232,7 +234,8 @@ function showManageSurvey(surName){
     }
 }
 
-function showEditSurvey(surName){
+function showEditSurvey(surveyName){
+    surName = surveyName;
     if(!mobile){
         $("#rContainer").html("");
         $("#rContainer").load("embed.pSurvey.html", function(){
@@ -247,7 +250,8 @@ function showEditSurvey(surName){
     }
 }
 
-function showResults(surName){
+function showResults(surveyName){
+    surName = surveyName;
     if(!mobile){
         $("#rContainer").html("");
         $("#rContainer").load("embed.results.html", function(){
