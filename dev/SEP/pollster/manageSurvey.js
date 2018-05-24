@@ -86,7 +86,7 @@ function showPinsAndGroupsFilled(surveyName){
     });
 }
 
-function refreshPin(ele){
+function refreshPin(ele){           //Needs major security overhaul. Needs to work on backend
     $(ele).parent().parent().find(".pinHolder").html(Math.floor(Math.random()*(9999-1001)+1000));
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
@@ -108,7 +108,7 @@ function refreshPin(ele){
     });
 }
 
-function addGroup(ele){
+function addGroup(ele){             //Also needs major security overhaul and move to backend
     $(ele).parent().parent().parent().append(constructGroupPinHTML(Math.floor(Math.random()*(9999-1000+1)+1000), ""));
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
@@ -155,7 +155,7 @@ function showResourcesFilled(surveyName){
             for(var i = 0; i < resourceArray.length; i++){
                 $("#resources").append(constructResourceHTML(i+1, resourceArray[i].resourceMarkup));
                 var selector = ".mdhtmlform-md[data-mdhtmlform-group='" + i + "']";
-                new MdHtmlForm($(selector));
+                new MdHtmlForm($(selector));                                            // See ../scripts/mdhtmlform.js
                 $(".btn-bold").each(function(i, ele){
                     $(ele).unbind('click');
                     $(ele).on("click", function(){
@@ -298,7 +298,7 @@ function toggleLive(){
         type: "POST",
         data: {isLive: live, aType: "POLL", surName: surveyName},
         success: function(){
-            var surveyName = surName.replace(/\s/g, ''); //MARK HERE *****************************************
+            var surveyName = surName.replace(/\s/g, '');
             $("#"+surveyName).removeClass();
             $("#"+surveyName).addClass(liveIndicatorClass);
             $("#"+surveyName).html(liveIndicatorText);

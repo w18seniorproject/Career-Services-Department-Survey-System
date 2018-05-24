@@ -23,7 +23,7 @@ function getAccountInfo(){
     });
 }
 
-function getPP(){
+function getPP(){   //Gets the src location of the profile picture so that the img tag can find it
     $.ajax({
         url: "../index.php",
         cache: false,
@@ -75,7 +75,7 @@ function setPP(toSend){
     });
 }
 
-function save(){
+function save(){                    //Saving email address and password
     if($("#email").val() != ""){
         var email = $("#email").val();
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -94,7 +94,7 @@ function save(){
     return true;
 }
 
-function fixForEmbed(){
+function fixForEmbed(){                             //Can't just stick it in the html because it doesn't work when dynamically loaded
     $("#accountInfoForm").submit(function(){
         save();
     });
