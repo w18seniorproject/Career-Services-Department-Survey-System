@@ -15,13 +15,15 @@
 
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
                 header("Location: ./pollster/pSignup.html?error=badEmail");
-                die("Bad Email");
+                die("Invalid Email Address Entered");
             }
 
             //check for duplicate email
             $sql = "SELECT email FROM accounts WHERE active = '1';";
             $result = $conn->prepare($sql);
             $result->execute();
+
+            //THIS FOR LOOP, AND THE ONE A FEW LINES BELOW, ARE NOT DOING ANYTHING. i IS NOT USED.
             for($i = 0; $i < $result->rowCount(); $i++){
                 if($email == $result->fetchColumn(0)){
                     header("Location: ./pollster/pSignup.html?error=emailTaken");
@@ -29,15 +31,43 @@
                 }
             }
 
-            //check for duplicate username
-            $sql = "SELECT acctName FROM accounts WHERE active = '1';";
+            //check for duplicate username 
+            //WHERE active = '1'
+            $sql = "SELECT acctName, active FROM accounts;";
             $result = $conn->prepare($sql);
             $result->execute();
             for($i = 0; $i < $result->rowCount(); $i++){
+                //print( $result->fetchColumn(0));
+                
+                //print( $result->fetchColumn(1));
+                //If account is active, check to see if username is already in use elsewhere
                 if($username == $result->fetchColumn(0)){
+                    
+                    if($result->fetchColumn(1) == 1){
                     header("Location: ./pollster/pSignup.html?error=usernameTaken");
-                    die("Username Already in Use");
+                    die("Username Already Taken");
+                
+                //If account is inactive, remove it from the database, so that the new account can be created in its place.
+                    }else{
+                        $sql = "DELETE FROM accounts WHERE acctName = '$username' AND active = '0';";
+                        $del = $conn->prepare($sql);
+                        $del->execute();
+
+                        if(!$del){
+                            echo "Internal error. Inactive account with matching username was not deleted from accounts table.";
+                            }
+
+                        $sql = "DELETE FROM notifications WHERE acctName = '$username';";
+                        $del = $conn->prepare($sql);
+                        $del->execute();
+
+                        if(!$del){
+                        echo "Internal error. Inactive account with matching username was not deleted from notifications table.";
+                        }
+                    }
                 }
+
+            
             }
 
             //check for profane usernames or emails TODO
@@ -83,7 +113,6 @@
         //CHANGE TO CORRECT EXTERNAL LINK (COMMENTED OUT) WHEN THIS GOES TO THE SERVER.
         //It won't capture the port number I'm using (10080) on XAMPP
         $msg = "Please click on the link to activate your account:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
-
         //$msg = "Please click on the link to activate your account:\n\n http://" .  $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/pActivate.html?";
 
 

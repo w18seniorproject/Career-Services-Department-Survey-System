@@ -25,10 +25,13 @@
             }
 
             $_SESSION['rLevel'] = $secNum + 1;
+            
+            //Set the expiration time to 1 week from now
+            $expiration = date("Y-m-d H:i:s", strtotime("+1 week"));
 
-            $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`, `groupName`) VALUES (?, ?, ?, ?, ?, ?);";
+            $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `live`, `groupName`, `expiration`) VALUES (?, ?, ?, ?, ?, ?, ?);";
             $result = $conn->prepare($sql);
-            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 1, "General"));
+            $result->execute(array($pin, $_SESSION['surName'], $acctName, $_SESSION['surText'], 1, "General", $expiration));
 
             echo $pin;
         }

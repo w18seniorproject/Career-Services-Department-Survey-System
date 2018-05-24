@@ -70,7 +70,8 @@ CREATE TABLE `pins` (
   `groupName` varchar(20) DEFAULT NULL,
   `acctName` varchar(20) NOT NULL,
   `surText` varchar(256) DEFAULT NULL,
-  `live` int(11) NOT NULL
+  `live` int(11) NOT NULL,
+  `expiration` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -223,6 +224,9 @@ DELIMITER $$
 --
 CREATE EVENT `deleteExpired` ON SCHEDULE EVERY 1 DAY STARTS '2018-04-25 00:00:00.000000' ON COMPLETION PRESERVE ENABLE 
 DO DELETE FROM tokens WHERE expiration < NOW();
+
+CREATE EVENT `deleteOldPins` ON SCHEDULE EVERY 7 DAY STARTS '2018-05-25 00:00:00.000000' ON COMPLETION PRESERVE ENABLE
+DO DELETE FROM pins WHERE expiration < NOW();
 
 DELIMITER ;
 

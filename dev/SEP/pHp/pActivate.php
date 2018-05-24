@@ -103,9 +103,10 @@ class AccountActivate{
                     deleteInactive($db, $conn);
 
                   //Everything is ok, so redirect to dashboard:
-                  session_start();
+                  //session_start();
                   session_destroy();
                   session_start();
+                  
                   $_SESSION["userName"] = $acctName;
 
                  header("Location: ./pollster/pDashboard.html?view=first"); 
