@@ -67,9 +67,18 @@ function showPinsAndGroupsFilled(surveyName){
                     removeGroup(ele);
                 });
             });
+            $(".pinHolder").each(function(i, ele){
+                $(ele).unbind('click');
+                $(ele).on("click", function(){
+                    alert("localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html());
+                });
+            })
             if(pinGroupArray[0].live == 1){
                 $(".onoffswitch-label").trigger("click");
             }
+            $(".onoffswitch-label").on("click", function(){
+                toggleLive();
+            });
         },
         error: function(jqxr, status, exception){
             alert("Failing at showPinsAndGroupsFilled() ajax call in manageSurvey.js: " + exception);
@@ -234,6 +243,9 @@ function bullet(ele){
 }
 
 function constructResourceHTML(level, resourceText){
+    if(resourceText === null){
+        resourceText = "";
+    }
     var toReturn =  "<div>\
                         <h3>Section " + level + ":</h3>\
                         <div class='button-bar'>\
@@ -268,6 +280,33 @@ function checkInputs(){
 function resourceFormat(text){
     var str = "<h3>The survey is now complete.</h3>" + text;
     return str;
+}
+
+function toggleLive(){
+    var live = 0;
+    var liveIndicatorClass = "not-live";
+    var liveIndicatorText = "not live";
+    var surveyName = surName;
+    if(!($("#myonoffswitch").is(":checked"))){
+        live = 1;
+        liveIndicatorClass = "live";
+        liveIndicatorText = "live";
+    }
+    $.ajax({
+        url: "../index.php",
+        cache: false,
+        type: "POST",
+        data: {isLive: live, aType: "POLL", surName: surveyName},
+        success: function(){
+            var surveyName = surName.replace(/\s/g, ''); //MARK HERE *****************************************
+            $("#"+surveyName).removeClass();
+            $("#"+surveyName).addClass(liveIndicatorClass);
+            $("#"+surveyName).html(liveIndicatorText);
+        },
+        error: function(jqxr, status, exception){
+            alert("Failure at toggleLive() ajax call in manageSurvey.js: " + exception);
+        }
+    });
 }
 
 function save(){

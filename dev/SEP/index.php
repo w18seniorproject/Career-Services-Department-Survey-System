@@ -42,6 +42,10 @@
                 PollsterDashboard::getNotificationCount($db);
                 exit();
             }
+            elseif(isset($_POST['isLive'])){
+                ManageSurvey::setLive($db);
+                exit();
+            }
             elseif(isset($_POST['getNotifications'])){
                 PollsterDashboard::getNotifications($db);
                 exit();
