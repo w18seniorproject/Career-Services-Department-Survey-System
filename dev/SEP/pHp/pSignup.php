@@ -121,7 +121,7 @@
         //"from" param is not a valid email address.
         if(!mail( $email, "USS Account Activation", $msg, "From: webslave@notarealdomain.com" )){
             echo "System failed to send activation email. Please try again.";
-            header("Location: ./pollster/pSignup.html?error=badEmail");
+            header("Location: ./pollster/pSignup.html?error=mailFailed");
             die("mail function failure");
         }else{
             header("Location: ./pollster/pSignup.html?error=noError");
