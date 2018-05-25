@@ -3,8 +3,10 @@
         public static function createSurvey($db){
             $conn = $db->getConnection('poll');
 
-            //TO-DO: Check if pin is taken after generation
-            $pin = random_int(1000, 9999);
+            $sql = "SELECT * FROM `pins` WHERE `pin`=?";
+            $stmt = $conn->prepare($sql);
+            
+            $pin = Pin::getUniquePin($stmt);
 
             $postData = $_POST["dataArray"];
 

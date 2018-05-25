@@ -50,6 +50,10 @@
                 PollsterDashboard::getNotifications($db);
                 exit();
             }
+            elseif(isset($_POST['getUniquePin'])){
+                ManageSurvey::setNewGroupPin($db);
+                exit();
+            }
             elseif(isset($_POST['editSurvey'])){
                 $_SESSION['surName'] = $_POST['surName'];
                 $_SESSION['acctName'] = $_SESSION['userName'];
@@ -118,7 +122,6 @@
                 PollsterAccount::SetAccountInfo($db);
                 exit();
             }
-
             elseif(isset($_POST['getSurNames']))
             {
               Charts::GetSurNames($db);
