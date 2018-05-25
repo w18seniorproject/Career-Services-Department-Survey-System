@@ -18,57 +18,65 @@
                 die("Invalid Email Address Entered");
             }
 
-            //check for duplicate email
-            $sql = "SELECT email FROM accounts WHERE active = '1';";
+            //check for duplicate email among active accounts
+            $sql = "SELECT active FROM accounts WHERE email = ?;";
             $result = $conn->prepare($sql);
-            $result->execute();
+            $result->execute(array($email));
 
-            //THIS FOR LOOP, AND THE ONE A FEW LINES BELOW, ARE NOT DOING ANYTHING. i IS NOT USED.
-            for($i = 0; $i < $result->rowCount(); $i++){
-                if($email == $result->fetchColumn(0)){
+                while($isActive = $result->fetchColumn(0)){
+                   
+                if($isActive != 0){
                     header("Location: ./pollster/pSignup.html?error=emailTaken");
                     die("Email Address Already in Use");
+                }else{
+                    $sql = "DELETE FROM accounts WHERE email = ? AND active = ?;";
+                    $del = $conn->prepare($sql);
+                    $del->execute(array($email, 0));
+
+                    if(!$del){
+                        echo "Internal error. Inactive account with matching email address was not deleted from accounts table.";
+                        }
+
+                    $sql = "DELETE FROM notifications WHERE acctName = ?;";
+                    $del = $conn->prepare($sql);
+                    $del->execute(array($username));
+
+                    if(!$del){
+                    echo "Internal error. Inactive account with matching username was not deleted from notifications table.";
+                    }
                 }
             }
 
             //check for duplicate username 
-            //WHERE active = '1'
-            $sql = "SELECT acctName, active FROM accounts;";
+            $sql = "SELECT active FROM accounts WHERE acctName = ?;";
             $result = $conn->prepare($sql);
-            $result->execute();
-            for($i = 0; $i < $result->rowCount(); $i++){
-                //print( $result->fetchColumn(0));
-                
-                //print( $result->fetchColumn(1));
+            $result->execute(array($username));
+            
+            
+        while($isActive = $result->fetchColumn(0)){
                 //If account is active, check to see if username is already in use elsewhere
-                if($username == $result->fetchColumn(0)){
-                    
-                    if($result->fetchColumn(1) == 1){
+              if($isActive != 0){               
                     header("Location: ./pollster/pSignup.html?error=usernameTaken");
-                    die("Username Already Taken");
-                
+                    die("Username Already Taken");              
                 //If account is inactive, remove it from the database, so that the new account can be created in its place.
                     }else{
-                        $sql = "DELETE FROM accounts WHERE acctName = '$username' AND active = '0';";
+                        $sql = "DELETE FROM accounts WHERE acctName = ? AND active = ?;";
                         $del = $conn->prepare($sql);
-                        $del->execute();
+                        $del->execute(array($username, 0));
 
                         if(!$del){
                             echo "Internal error. Inactive account with matching username was not deleted from accounts table.";
                             }
 
-                        $sql = "DELETE FROM notifications WHERE acctName = '$username';";
+                        $sql = "DELETE FROM notifications WHERE acctName = ?;";
                         $del = $conn->prepare($sql);
-                        $del->execute();
+                        $del->execute(array($username));
 
                         if(!$del){
                         echo "Internal error. Inactive account with matching username was not deleted from notifications table.";
                         }
                     }
                 }
-
-            
-            }
 
             //check for profane usernames or emails TODO
 
@@ -127,5 +135,5 @@
             header("Location: ./pollster/pSignup.html?error=noError");
                     die();
         }
-        }
     }
+}

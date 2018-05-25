@@ -37,10 +37,10 @@
                 var string = getUrlParameter("error");
                 var message = "";
                 if(string == "wrongPin"){
-                    message = "Wrong PIN. Please try again."
+                    message = "Either the PIN entered is not associated with a survey, or the survey has been closed. Contact the survey administrator if you believe you've received this message in error."
                 }
                 else if(string == "notUnique"){
-                    message = "devteam messed up. PINS aren't unique";
+                    message = "Internal error. PINs aren't unique";
                 }
                 document.getElementById("errorMessage").innerText = message;
             </script>
