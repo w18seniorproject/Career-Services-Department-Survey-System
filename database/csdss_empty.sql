@@ -153,7 +153,11 @@ CREATE TABLE `notifications` (
 -- Indexes for dumped tables
 --
 
+-- Indexes for table `tokens`
 --
+ALTER TABLE `tokens`
+	ADD PRIMARY KEY (`tokenHash`);
+
 -- Indexes for table `accounts`
 --
 ALTER TABLE `accounts`
