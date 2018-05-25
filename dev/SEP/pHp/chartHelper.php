@@ -65,7 +65,7 @@
             $conn = $db->getConnection("poll");
           $acctName = $_SESSION['userName'];
           $surName = $_SESSION['surName'];
-          $sql = "SELECT `groupName`, `surResults`, `rLevel`, `time` FROM `results` WHERE `acctName`=? AND `surName`=?;";
+          $sql = "SELECT * FROM `results` WHERE `acctName`=? AND `surName`=?;";
           $stmt = $conn->prepare($sql);
           $stmt->execute(array($acctName, $surName));
           $rNum = $stmt->rowCount();
@@ -76,6 +76,7 @@
                   extract($row);
 
                   $result = array(
+                    "recNum" => $recNum,
                     "surName" => $surName,
                     "groupName" => $groupName,
                     "surResults" => $surResults,
@@ -107,8 +108,10 @@
                 extract($row);
 
                 $result = array(
+
+                  "sName" => $surName,
                   "qNum" => $qNum,
-                  "qChoices" => $qChoices,
+                  "qChoices" => $qChoices
                 );
                 $resultsArr[] = $result;
             }
