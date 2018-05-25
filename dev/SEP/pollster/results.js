@@ -140,7 +140,7 @@ function getResponsesAll(qNum, qType){
             break;
         case "mc":{
             var ans = questions[qNum].qChoices;
-            var choiceArr = ans.split("~$#");
+            var choiceArr = ans.split("~$#");                   //Split by arbitrary delimiter we chose
             for(var i = 0; i < choiceArr.length; i++){
                 toReturn[choiceArr[i].substr(0, choiceArr[i].length-3)] = 0;
             }
@@ -166,7 +166,7 @@ function getResponsesAll(qNum, qType){
 
 function getResponsesCHKAll(qNum){
     var ans = questions[qNum].qChoices;
-    var choiceArr = ans.split("~$#");
+    var choiceArr = ans.split("~$#");       // Splitting by arbitrary delimiter we chose
     var toReturn = {"total":0};
     for(var i = 0; i < choiceArr.length; i++){
         var choice = choiceArr[i].substr(0, choiceArr[i].length-3);
@@ -233,7 +233,7 @@ function getResponsesGroup(qNum, qType, groupNum){
             break;
         case "mc":{
             var ans = questions[qNum].qChoices;
-            var choiceArr = ans.split("~$#");
+            var choiceArr = ans.split("~$#");           //Split by arbitrary delimiter we chose
             for(var i = 0; i < choiceArr.length; i++){
                 toReturn[choiceArr[i].substr(0, choiceArr[i].length-3)] = 0;
             }}
@@ -245,7 +245,7 @@ function getResponsesGroup(qNum, qType, groupNum){
             rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
             try{
                 for(var key in toReturn){
-                    if(key == rAns.value.substr(0, rAns.value.length-2)){
+                    if(key == rAns.value.substr(0, rAns.value.length-2) || key == rAns.value){
                         toReturn[key]++;
                     }
                 }
@@ -259,7 +259,7 @@ function getResponsesGroup(qNum, qType, groupNum){
 
 function getResponsesCHKGroup(qNum, groupNum){
     var ans = questions[qNum].qChoices;
-    var choiceArr = ans.split("~$#");
+    var choiceArr = ans.split("~$#");           //Split by arbitrary delimiter we chose
     var toReturn = {"total":0};
     for(var i = 0; i < choiceArr.length; i++){
         var choice = choiceArr[i].substr(0, choiceArr[i].length-3);
@@ -348,7 +348,7 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response, qType){
     }
     toReturn += "</div></br>"
     return toReturn;
-}"alsdkjfldsajfadsf"
+}
 
 function displayComments(){
     for(var i = 0; i < comments.length; i++){
