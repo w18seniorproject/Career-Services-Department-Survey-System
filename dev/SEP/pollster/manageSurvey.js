@@ -131,6 +131,12 @@ function addGroup(ele){
             removeGroup(ele);
         });
     });
+    $(".pinHolder").each(function(i, ele){
+        $(ele).unbind('click');
+        $(ele).on("click", function(){
+            alert("localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html());
+        });
+    });
 }
 
 function getUniquePin(groupNameIn, ele){
@@ -344,7 +350,7 @@ function save(){
         });
         var pinArray = [];
         $(".pinHolder").each(function(i,ele){
-            pinArray.push($(ele).html());
+            pinArray.push($(ele).html().replace(/\s/g, ''));
         });
         var groupArray = [];
         $(".qChoice").each(function(i,ele){
