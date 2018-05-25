@@ -49,9 +49,9 @@
         <div id="graphContainer">
         <canvas id="myCanvas" width="400" height="400"></canvas>
         <div id="ExportDropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="ExportButtonMenu" style="display:none" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Export Data As</button>
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="ExportButtonMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">Export Data As</button>
           <div class="dropdown-menu" id="exportMenu" aria-labelledby="dropdownMenu2">
-        <button class="dropdown-item" id="indResultsButton" type="button">Export Individual Results And Choices As CSV</button>
+        <button class="dropdown-item" id="indResultsButton" type="button" onclick="exportResponsesToCSV()">Export Individual Results And Choices As CSV</button>
       </div>
         </div>
       </div>

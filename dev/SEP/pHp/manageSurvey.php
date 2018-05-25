@@ -67,13 +67,14 @@
             $_SESSION['surName'] = $surName;
             $acctName = $_SESSION['userName'];
 
-            $sql = "SELECT `pin`, `groupName`, `live` FROM `pins` WHERE `acctName`=? AND `surName`=?;";
+            $sql = "SELECT `pin`, `groupName`, `live`, `surText` FROM `pins` WHERE `acctName`=? AND `surName`=?;";
             $results = $conn->prepare($sql);
             $results->execute(array($acctName, $surName));
             $pins = array();
 
             while($row = $results->fetch(PDO::FETCH_ASSOC)){
                 $pins[] = $row;
+                $_SESSION['surText'] = $row['surText'];
             }
 
             echo json_encode($pins);
@@ -117,6 +118,41 @@
             $sql = "UPDATE `pins` SET live=? WHERE acctName=? AND surName=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($live, $acctName, $surName));
+        }
+
+        public static function setNewGroupPin($db){
+            $conn = $db->getConnection("poll");
+            $sql = "SELECT * FROM `pins` WHERE `pin`=?";
+            $stmt = $conn->prepare($sql);
+
+            if(isset($_POST['groupName'])){
+                $groupName = $_POST['groupName'];
+            }
+            else{
+                $groupName = "New Group";
+            }
+            $surName = $_SESSION['surName'];
+            $surText = $_SESSION['surText'];
+            $acctName = $_SESSION['userName'];
+            $live = $_POST['live'];
+
+            $newPin = Pin::getUniquePin($stmt);
+
+            $sql = "SELECT * FROM `pins` WHERE `groupName`=? AND surName=?;";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($groupName, $surName));
+
+            if($stmt->rowCount() > 0){
+                $sql = "UPDATE pins SET pin=? WHERE groupName=? AND surName=?;";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute(array($newPin, $groupName, $surName));
+            }
+            else{
+                $sql = "INSERT INTO `pins` (`pin`, `surName`, `acctName`, `surText`, `groupName`, `live`) VALUES (?, ?, ?, ?, ?, ?);";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute(array($newPin, $surName, $acctName, $surText, $groupName, $live));
+            }
+            echo $newPin;
         }
     }
 ?>

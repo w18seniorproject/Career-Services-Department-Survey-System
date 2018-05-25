@@ -170,12 +170,14 @@ alert(surveyName)
   } else {
     x.style.display = "none";
   }
-
+  var y = document.getElementById("ExportButtonMenu");
+  if (y.style.display == "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
 };
-$('#indResultsButton').click(function () {
 
-  exportResponsesToCSV(surveyName);
-});
 
 
 
@@ -290,30 +292,6 @@ function pieChartMaker(qNum) {
 
 }
 
-function exportResponsesToCSV(SurName) {
-  let csvContent = "data:text/csv;charset=utf-8,";
-  var filtered = js_questionJSON.filter(function (item) {
-
-    return item.surName === SurName;
-  });
-  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
-  for (var i = 0; i < filtered.length; i++) {
-    titleRowArray.push("Question" + filtered[i].qNum);
-  }
-  let titleRow = titleRowArray.join(",");
-  csvContent += titleRow + "\r\n";
-  var filteredResults = js_resultJSON.filter(function (item) {
-
-    return item.surName === SurName;
-  });
-  for (var i = 0; i < js_resultJSON.length; i++) {
-    var answers = js_resultJSON[i].surResults.split("`|");
-    var rowArray = [js_resultJSON[i].recNum, js_resultJSON[i].groupName, js_resultJSON[i].rLevel];
-    rowArray.push.apply(answers);
-    let row = rowArray.join(",");
-    csvContent += row + "\r\n";
-  }
-  var encodedUri = encodeURI(csvContent);
-  window.open(encodedUri);
+function exportResponsesToCSV() {
 
 }

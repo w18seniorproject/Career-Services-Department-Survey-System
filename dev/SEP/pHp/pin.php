@@ -7,6 +7,16 @@
             $this->conn = $conn;
         }
 
+        public function getUniquePin($stmt){
+            $checkPin = true;
+            while($checkPin){
+                $pin = random_int(1000, 9999);
+                $stmt->execute(array($pin));
+                $checkPin = ($stmt->rowCount() > 0);
+            }
+            return $pin;
+        }
+
         public function getPin($pin){
             try{
                 $stmt = $this->buildQuery($pin);

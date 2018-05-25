@@ -30,7 +30,7 @@ function constructInitialGroupPinHTML(pin, groupName){
                         <th class='center-th' style='padding-right: 10px'><input class='form-control qChoice' value='" + groupName + "' placeholder='Enter Group Name' type='text'></th>\
                         <th class='center-th pinHolder'>" + pin + "</th>\
                         <th class='center-th'><span class='refreshPin'>⟳</span></th>\
-                        <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice-disabled'>&#10799</span></th>\
+                        <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>\
                 </table>";
     return html;
@@ -86,8 +86,9 @@ function showPinsAndGroupsFilled(surveyName){
     });
 }
 
-function refreshPin(ele){           //Needs major security overhaul. Needs to work on backend
-    $(ele).parent().parent().find(".pinHolder").html(Math.floor(Math.random()*(9999-1001)+1000));
+function refreshPin(ele){
+    var groupName = $(ele).parent().parent().find("th").find(".qChoice").val();
+    getUniquePin(groupName, ele);
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on('click', function(){
@@ -108,8 +109,10 @@ function refreshPin(ele){           //Needs major security overhaul. Needs to wo
     });
 }
 
-function addGroup(ele){             //Also needs major security overhaul and move to backend
-    $(ele).parent().parent().parent().append(constructGroupPinHTML(Math.floor(Math.random()*(9999-1000+1)+1000), ""));
+function addGroup(ele){
+    var groupName="Group" + (Math.floor(Math.random()*90000) + 10000);
+    $(ele).parent().parent().parent().append(constructGroupPinHTML("", groupName));
+    getUniquePin(groupName, $(ele).parent().parent().parent().find("[value='" + groupName + "']"));
     $(".refreshPin").each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on('click', function(){
@@ -127,11 +130,41 @@ function addGroup(ele){             //Also needs major security overhaul and mov
         $(ele).on("click", function(){
             removeGroup(ele);
         });
+    });
+    $(".pinHolder").each(function(i, ele){
+        $(ele).unbind('click');
+        $(ele).on("click", function(){
+            alert("localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html());
+        });
+    });
+}
+
+function getUniquePin(groupNameIn, ele){
+    var liveIn = 0;
+    if($("#myonoffswitch").is(":checked")){
+        var liveIn = 1;
+    }
+    $.ajax({
+        type: "POST",
+        cache: false,
+        url: "../index.php",
+        data: {aType: "POLL", getUniquePin: "true", groupName: groupNameIn, live: liveIn},
+        success: function(response){
+            $(ele).parent().parent().find(".pinHolder").html(response);
+        },
+        error: function(jqxr, status, exception){
+            alert("Failure in getUniquePin() ajax call in manageSurvey.js: " + exception);
+        }
     });
 }
 
 function removeGroup(ele){
-    $(ele).parent().parent().remove();
+    if($(".remove-choice").length > 1){
+        $(ele).parent().parent().remove();
+    }
+    else{
+        alert("Can't remove only group");
+    }
 }
 
 function constructGroupPinHTML(pin, groupName){
@@ -317,7 +350,7 @@ function save(){
         });
         var pinArray = [];
         $(".pinHolder").each(function(i,ele){
-            pinArray.push($(ele).html());
+            pinArray.push($(ele).html().replace(/\s/g, ''));
         });
         var groupArray = [];
         $(".qChoice").each(function(i,ele){
