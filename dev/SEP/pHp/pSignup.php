@@ -1,4 +1,7 @@
 <?php
+//Checks new user information: valid email address, matching password entries, email (primary key) address already in database, username already in database.
+//If duplicate account info is "inactive", the inactive account is deleted and the new account info entered in its place.
+//Account info is inserted in db if not duplicate, email link is sent to new user's email address
     class PollsterSignup {
         public static function signup($db){
             $conn = $db->getConnection('poll');
