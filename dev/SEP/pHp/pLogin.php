@@ -10,7 +10,7 @@
             $username = $_POST["username"];
 
             $pass = $_POST["pword"];
-
+            
             $sql = "SELECT pass FROM accounts WHERE acctName= ? AND active = '1';";
 
             $result = $conn->prepare($sql);
@@ -43,4 +43,3 @@
             }     
         }
     }
-?>

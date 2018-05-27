@@ -1,3 +1,10 @@
+// Contains all client functions for taking a survey, including:
+// Getting and displaying survey instructions
+// Getting and displaying survey questions and sections
+// Collecting responses and sending to backend for saving
+// Getting and displaying resources based on section level attained
+// Collecting comment and sending to backend for saving
+
 $(document).ready(setupPage);
 
 var curSec;

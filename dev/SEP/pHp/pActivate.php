@@ -132,4 +132,3 @@ class AccountActivate{
             }//last else
          }//end pActivate
     }//end class
-?>

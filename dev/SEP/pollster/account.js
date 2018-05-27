@@ -1,3 +1,7 @@
+// Contains all client functions for managing user account, including:
+// Getting and displaying email, username, and profile pic
+// Editing email, profile pic, and password
+
 function changepic(){
     $("#ppUpload").click();
 }
@@ -49,6 +53,7 @@ function getPP(){   //Gets the src location of the profile picture so that the i
                 var toSend = new FormData();
                 toSend.append('profPic', base64ImageContent);
                 toSend.append('aType', "POLL");
+                toSend.append('pReqType', "MNGPRO");
                 setPP(toSend);
             }
             profPic.src = fr.result;
