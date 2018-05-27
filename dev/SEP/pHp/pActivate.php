@@ -1,10 +1,7 @@
 <?php
 
 class AccountActivate{
-    public static function pActivate($db){
-
-        error_reporting(E_ALL);
-        
+    public static function pActivate($db){   
         include_once "./pollster/pActivate.html";
         include_once "./pollster/pDashboard.html";
 
@@ -130,4 +127,3 @@ class AccountActivate{
             }//last else
          }//end pActivate
     }//end class
-?>
