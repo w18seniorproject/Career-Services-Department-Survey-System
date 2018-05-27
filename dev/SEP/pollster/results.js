@@ -6,7 +6,7 @@ function showData(surveyName){
         type: "POST",
         cache: false,
         url: "../index.php",
-        data: {aType: "POLL", getResults: "true", surName: surveyName},
+        data: {aType: "POLL", pReqType: "RESULT", getResults: "true", surName: surveyName},
         success: function(response){
             if(response.includes("THERE ARE NO RESULTS TO BE HAD")){
                 $("#overallData").removeClass("questions-wrapper");

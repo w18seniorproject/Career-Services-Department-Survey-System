@@ -73,7 +73,7 @@ function displaySurveys(){
     $.ajax({
         url: "../index.php",
         type: "POST",
-        data: ({pdd: "true", aType: "POLL"}),
+        data: ({aType: "POLL", pReqType: "DASH", pdd: "true"}),
         success: function(response){
             var container;
             if(mobile){
@@ -275,7 +275,7 @@ function getNotifications(){
         url: "../index.php",
         type: "POST",
         cache: false,
-        data: {aType: "POLL", getNotificationCount: true},
+        data: {aType: "POLL", pReqType: "DASH", getNotificationCount: true},
         success: function(response){
             if(response.trim() == "true"){
                 $("#notification-bell").addClass("opaque");

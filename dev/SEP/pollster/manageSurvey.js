@@ -6,7 +6,7 @@ function deleteSurvey(){
             url: "../index.php",
             cache: false,
             type: "POST",
-            data: ({deleteSurvey: "yes", aType: "POLL"}),
+            data: ({aType: "POLL", pReqType: "MNGSUR", deleteSurvey: "yes"}),
             success: function(response){
                 alert("Survey Deleted");
                 window.location = "pDashboard.html";
@@ -41,7 +41,7 @@ function showPinsAndGroupsFilled(surveyName){
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({manageSurveyEditPins: "true", surName: surveyName, aType: "POLL"}),
+        data: ({aType: "POLL", pReqType: "MNGSUR", manageSurveyEditPins: "true", surName: surveyName}),
         success: function(response){
             var pinGroupArray = JSON.parse(response);
             var html = constructInitialGroupPinHTML(pinGroupArray[0].pin, pinGroupArray[0].groupName);
@@ -148,7 +148,7 @@ function getUniquePin(groupNameIn, ele){
         type: "POST",
         cache: false,
         url: "../index.php",
-        data: {aType: "POLL", getUniquePin: "true", groupName: groupNameIn, live: liveIn},
+        data: {aType: "POLL", pReqType: "MNGSUR", getUniquePin: "true", groupName: groupNameIn, live: liveIn},
         success: function(response){
             $(ele).parent().parent().find(".pinHolder").html(response);
         },
@@ -182,7 +182,7 @@ function showResourcesFilled(surveyName){
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: ({manageSurveyEditResources: "showResources", surName: surveyName, aType: "POLL"}),
+        data: ({aType: "POLL", pReqType: "MNGSUR", manageSurveyEditResources: "showResources", surName: surveyName}),
         success: function(response){
             var resourceArray = JSON.parse(response);
             for(var i = 0; i < resourceArray.length; i++){
@@ -329,7 +329,7 @@ function toggleLive(){
         url: "../index.php",
         cache: false,
         type: "POST",
-        data: {isLive: live, aType: "POLL", surName: surveyName},
+        data: {aType: "POLL", pReqType: "MNGSUR", isLive: live, surName: surveyName},
         success: function(){
             var surveyName = surName.replace(/\s/g, '');
             $("#"+surveyName).removeClass();
@@ -379,7 +379,8 @@ function post(resourceArray, pinArray, groupArray, resourceMarkupArray, live){
                         <input type='hidden' name='groups' value='" + groups + "'>\
                         <input type='hidden' name='resourceMarkup' value='" + resourceMarkup + "'>\
                         <input type='hidden' name='liveornot' value='" + live + "'>\
-                        <input type='hidden' value='POLL' name='aType'>\
+                        <input type='hidden' value='POLL' name='aType'>\\n\
+                        <input type='hidden' value='MNGSUR' name='pReqType'>\
                     </form>");
     $("body").append(form);
     $(form).submit();

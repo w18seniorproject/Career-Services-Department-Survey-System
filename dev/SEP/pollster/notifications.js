@@ -3,7 +3,7 @@ function showNotifications(){
         url: "../index.php",
         type: 'POST',
         cache: false,
-        data: { aType:'POLL', getNotifications: 'true'},
+        data: { aType:'POLL', pReqType: 'DASH', getNotifications: 'true'},
         success: function(response){
             var data = JSON.parse(response);
             var notifications = data.notifications.split("~`#");

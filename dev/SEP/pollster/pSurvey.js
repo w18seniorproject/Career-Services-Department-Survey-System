@@ -432,7 +432,7 @@ function post(toSend, update){
     $.ajax({
         url: "../index.php",
         type: "POST",
-        data: ({dataArray: toSend, surText: instruc, aType: "POLL", update: update}),
+        data: ({aType: "POLL", pReqType: "EDTSUR", dataArray: toSend, surText: instruc, update: update}),
         success: function(response){
             window.location = "pDashboard.html?content=manage&surName=" + surName;      
         },
@@ -447,7 +447,7 @@ function fillSurveyFields(surveyName){
         type: 'POST',
         url: '../index.php',
         cache: false,
-        data: {editSurvey: true, surName: surveyName, aType: "POLL"},
+        data: {aType: "POLL", pReqType: "EDTSUR", editSurvey: true, surName: surveyName},
         success: function(data){
             var survey = JSON.parse(data);
             var questions = JSON.parse(survey[0]);
