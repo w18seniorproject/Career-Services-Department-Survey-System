@@ -1,3 +1,4 @@
+// Contains all client functions specific to grabbing and displaying survey results
 
 var questions, secReqs, results, comments, groupArr = Array();
 

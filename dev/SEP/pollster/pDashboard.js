@@ -1,3 +1,7 @@
+// Contains all functions for the dashboard, including:
+// Getting and displaying names of surveys
+// A switchboard-like functionality for dynamically displaying other pages based on query strings
+// User selection and navigation between other pages without page refresh
 
 var mobile = false;
 var surName;

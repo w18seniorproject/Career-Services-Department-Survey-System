@@ -1,3 +1,5 @@
+// Contains all functions specific to grabbing and displaying notifications
+
 function showNotifications(){
     $.ajax({
         url: "../index.php",

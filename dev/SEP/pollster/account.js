@@ -1,3 +1,7 @@
+// Contains all client functions for managing user account, including:
+// Getting and displaying email, username, and profile pic
+// Editing email, profile pic, and password
+
 function changepic(){
     $("#ppUpload").click();
 }

@@ -1,3 +1,10 @@
+// Contains all client functions for creating/editing a survey, including:
+// adding and removing sections, questions, and choices
+// Sending the survey to the backend for saving to the database
+// getting and displaying an existing survey
+// Editing an existing survey
+// Sending an existing survey to the backend modified for saving
+
 $(document).ready(setupPage);
 
 var surName;

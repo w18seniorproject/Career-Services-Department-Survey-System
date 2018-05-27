@@ -1,3 +1,4 @@
+// Contains all client functions specific to managing groups, pins, and resources for a survey
 
 function deleteSurvey(){
     var shouldDelete = confirm("Are you sure you want to Delete this survey?\nThis action cannot be undone");
