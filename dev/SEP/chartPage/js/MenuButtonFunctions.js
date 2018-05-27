@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     type: "POST",
     url: "../index.php",                                               // Fixed this. you only need ../index.php, not ../../index.php
-    data: ({ getSurNames: "yes", aType: "POLL" }),
+    data: ({aType: "POLL", pReqType:"RESULT", getSurNames: "yes"}),
     success: function (json) {
 	    alert(json);                                                    // Can see errors with this
       var surNameJSON = JSON.parse(json);
@@ -146,7 +146,7 @@ alert(surveyName)
 
     type: "POST",
     url: "../index.php",
-    data: ({ getAvgResults: "yes", aType: "POLL", surName: surveyName }),
+    data: ({aType: "POLL", pReqType: "RESULT", getAvgResults: "yes", surName: surveyName }),
     success: function (json) {
 	alert(json);
       avgResultJSON = JSON.parse(json);
@@ -158,7 +158,7 @@ alert(surveyName)
 
       type: "POST",
       url: "../index.php",
-      data: ({ getQuestions: "yes", aType: "POLL", surName: surveyName }),
+      data: ({aType: "POLL", pReqType: "RESULT", getQuestions: "yes", surName: surveyName }),
       success: function (json) {
   	alert(json);
         questionJSON = JSON.parse(json);
@@ -253,6 +253,22 @@ function pieChartMaker(qNum) {
   alert(qNumInt);
   alert(resultsJSON);
   var resultData = [];
+<<<<<<< HEAD
+=======
+  alert(surveyName);
+  $.ajax({
+
+    type: "POST",
+    url: "../index.php",
+    data: ({aType: "POLL", pReqType: "RESULT", getChartResults: "yes", surName: surveyName }),
+    success: function (json) {
+
+      resultsJSON = JSON.parse(json);
+      alert(resultJSON);
+    }
+  });
+  alert(resultJSON);
+>>>>>>> origin/master
   for(var i=0; i<resultsJSON.length; i++)
   {
     var itemResponses = JSON.parse(resultsJSON[i].surResults);

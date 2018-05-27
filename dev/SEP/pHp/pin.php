@@ -7,7 +7,7 @@
             $this->conn = $conn;
         }
 
-        public function getUniquePin($stmt){
+        public static function getUniquePin($stmt){
             $checkPin = true;
             while($checkPin){
                 $pin = random_int(1000, 9999);

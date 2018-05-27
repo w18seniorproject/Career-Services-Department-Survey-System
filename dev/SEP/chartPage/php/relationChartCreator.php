@@ -21,5 +21,4 @@
       'rLA' => $relationLevelArray
     );
 
-    echo json_encode($response)
- ?>
+    echo json_encode($response);

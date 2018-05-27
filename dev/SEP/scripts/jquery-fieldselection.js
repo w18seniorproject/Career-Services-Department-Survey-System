@@ -1,3 +1,5 @@
+// jQuery plugin containing functions for the reading and selection of text in <textarea> tags
+
 /*
  * jQuery plugin: fieldSelection - v0.1.1 - last change: 2006-12-16
  * (c) 2006 Alex Brem <alex@0xab.cd> - http://blog.0xab.cd

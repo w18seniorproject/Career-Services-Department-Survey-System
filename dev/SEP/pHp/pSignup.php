@@ -2,98 +2,71 @@
 //Checks new user information: valid email address, matching password entries, email (primary key) address already in database, username already in database.
 //If duplicate account info is "inactive", the inactive account is deleted and the new account info entered in its place.
 //Account info is inserted in db if not duplicate, email link is sent to new user's email address
-    class PollsterSignup {
-        public static function signup($db){
-            $conn = $db->getConnection('poll');
+class PollsterSignup {
+    public static function signup($db){
+        $conn = $db->getConnection('poll');
 
-            $username = $_POST["username"];
-            $pass = $_POST["password"];
-            $passConfirm = $_POST["password-confirm"];
-            $email = $_POST["email"];
+        $username = $_POST["username"];
+        $pass = $_POST["password"];
+        $passConfirm = $_POST["password-confirm"];
+        $email = $_POST["email"];
 
-            if($pass != $passConfirm){
-                header("Location: ./pollster/pSignup.html?error=noMatch");
-                die("Passwords Don't Match");
+        if($pass != $passConfirm){
+            header("Location: ./pollster/pSignup.html?error=noMatch");
+            die("Passwords Don't Match");
+        }
+
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            header("Location: ./pollster/pSignup.html?error=badEmail");
+            die("Invalid Email Address Entered");
+        }
+
+        //check for duplicate username 
+        $sql = "SELECT active FROM accounts WHERE acctName = ?;";
+        $result = $conn->prepare($sql);
+        $result->execute(array($username));
+
+        if($result->rowCount() > 0){ // if there is a duplicate account
+        
+            $isActive = $result->fetchColumn(0);
+
+            //If account is active
+            if($isActive != 0){               
+                header("Location: ./pollster/pSignup.html?error=usernameTaken");
+                die("Username Already Taken");              
             }
+            else{   //If account is inactive, remove it from the database, so that the new account can be created in its place.
+                $sql = "DELETE FROM accounts WHERE acctName = ?;";
+                $del = $conn->prepare($sql);
+                $del->execute(array($username));
 
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                header("Location: ./pollster/pSignup.html?error=badEmail");
-                die("Invalid Email Address Entered");
-            }
+                if(!$del){
+                    echo "Internal error. Inactive account with matching username was not deleted from accounts table.";
+                    die();
+                }
 
-            //check for duplicate email among active accounts
-            $sql = "SELECT active FROM accounts WHERE email = ?;";
-            $result = $conn->prepare($sql);
-            $result->execute(array($email));
+                $sql = "DELETE FROM notifications WHERE acctName = ?;";
+                $del = $conn->prepare($sql);
+                $del->execute(array($username));
 
-                while($isActive = $result->fetchColumn(0)){
-                   
-                if($isActive != 0){
-                    header("Location: ./pollster/pSignup.html?error=emailTaken");
-                    die("Email Address Already in Use");
-                }else{
-                    $sql = "DELETE FROM accounts WHERE email = ? AND active = ?;";
-                    $del = $conn->prepare($sql);
-                    $del->execute(array($email, 0));
-
-                    if(!$del){
-                        echo "Internal error. Inactive account with matching email address was not deleted from accounts table.";
-                        }
-
-                    $sql = "DELETE FROM notifications WHERE acctName = ?;";
-                    $del = $conn->prepare($sql);
-                    $del->execute(array($username));
-
-                    if(!$del){
+                if(!$del){
                     echo "Internal error. Inactive account with matching username was not deleted from notifications table.";
-                    }
+                    die();
                 }
             }
+        }
+        
+        $hashedPass = password_hash($pass, PASSWORD_BCRYPT);
 
-            //check for duplicate username 
-            $sql = "SELECT active FROM accounts WHERE acctName = ?;";
-            $result = $conn->prepare($sql);
-            $result->execute(array($username));
-            
-            
-        while($isActive = $result->fetchColumn(0)){
-                //If account is active, check to see if username is already in use elsewhere
-              if($isActive != 0){               
-                    header("Location: ./pollster/pSignup.html?error=usernameTaken");
-                    die("Username Already Taken");              
-                //If account is inactive, remove it from the database, so that the new account can be created in its place.
-                    }else{
-                        $sql = "DELETE FROM accounts WHERE acctName = ? AND active = ?;";
-                        $del = $conn->prepare($sql);
-                        $del->execute(array($username, 0));
+        $ppLocation = '../graphics/profpicgeneric.jpg';
 
-                        if(!$del){
-                            echo "Internal error. Inactive account with matching username was not deleted from accounts table.";
-                            }
+        $sql = "INSERT INTO `accounts` (`pass`, `email`, `acctName`, `profpic`) VALUES (?, ?, ?, ?);";
+        $result = $conn->prepare($sql);
+        $result->execute(array($hashedPass, $email, $username, $ppLocation));
 
-                        $sql = "DELETE FROM notifications WHERE acctName = ?;";
-                        $del = $conn->prepare($sql);
-                        $del->execute(array($username));
-
-                        if(!$del){
-                        echo "Internal error. Inactive account with matching username was not deleted from notifications table.";
-                        }
-                    }
-                }
-
-            //check for profane usernames or emails TODO
-
-            $hashedPass = password_hash($pass, PASSWORD_BCRYPT);
-
-            $ppLocation = '../graphics/profpicgeneric.jpg';
-
-            $sql = "INSERT INTO `accounts` (`pass`, `email`, `acctName`, `profpic`) VALUES (?, ?, ?, ?);";
-            $result = $conn->prepare($sql);
-            $result->execute(array($hashedPass, $email, $username, $ppLocation));
-
-            $sql = "INSERT INTO `notifications` (`acctName`, `count`, `notifications`) VALUES (?, 0, '');";
-            $result = $conn->prepare($sql);
-            $result->execute(array($username));
+        $sql = "INSERT INTO `notifications` (`acctName`, `count`, `notifications`) VALUES (?, 0, '');";
+        $result = $conn->prepare($sql);
+        $result->execute(array($username));
 
         //-------vvv----account activation via email----vvv----------------------------------
 
