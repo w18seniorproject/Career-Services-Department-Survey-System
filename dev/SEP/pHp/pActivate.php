@@ -6,9 +6,6 @@ class AccountActivate{
     public static function pActivate($db){
 
         error_reporting(E_ALL);
-        
-        //include_once "./pollster/pActivate.html";
-        //include_once "./pollster/pDashboard.html";
 
          //Deletes accounts when activation fails, to prevent primary key error from being thrown by the database.
          function deleteInactive($db, $conn){

@@ -22,11 +22,12 @@
 
     <div class="form-centered">
         <legend class="legend">Survey Administrator Login</legend>
-        <form action="../index.php" method="post">
+        <!--<form id="submitInput" action="../index.php" method="post" onsubmit="numericHash()"> -->
+            <form action="../index.php" method="post">
 
             <input class="form-control input-lg" placeholder="Username" type="text" name="username">
             <br>
-            <input class="form-control input-lg" placeholder="Password" type="password" name="pword">
+            <input id="password" class="form-control input-lg" placeholder="Password" type="password" name="pword">
             <br>
             <input class="btn btn-primary btn-lg btn-block" type="submit" value="Submit">
             <input type="hidden" value="POLL" name="aType">

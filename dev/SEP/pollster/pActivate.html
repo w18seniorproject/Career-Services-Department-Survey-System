@@ -26,12 +26,11 @@
         <form id="acctActivate" action="../index.php" method="post">
             <script>      
                 $("#acctActivate").prepend('<input value=' + getUrlParameter('token') + ' type="hidden" name="token">');
-                //alert(" Token: " + getUrlParameter('token'));
             </script>
             <input type="hidden" value="POLL" name="aType">
             <input type="hidden" value="MNGACT" name="pReqType">
         </form>
-        <!--submit form without a button being clicked:-->
+        <!--submits form without a button being clicked if the token is set:-->
         <script>
         if(getUrlParameter('token')!= ""){
             document.forms["acctActivate"].submit();

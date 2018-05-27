@@ -19,3 +19,20 @@ function getBase64Image(img) {
 
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
+
+function numericHash() {
+    var str = document.getElementById("password").value;
+    alert(str.toString());
+    var hash = 5381;
+    if (str.length == 0) {
+        return hash;
+    }
+    for (i = 0; i < str.length; i++) {
+        char = str.charCodeAt(i);
+        hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
+    }
+    alert(hash);
+    document.getElementById("password").value = hash;
+    document.getElementById("submitInput").submit();
+    //return hash;
+}

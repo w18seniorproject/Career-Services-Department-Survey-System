@@ -3,7 +3,6 @@
 authenticated. The pollster is then allowed to reset the password for the account, and is notified of success or failure.*/
 class PasswordReset{
     public static function pReset($db){
-            //include_once "./pollster/passwordReset.html";
 
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
 

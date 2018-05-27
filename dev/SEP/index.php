@@ -10,7 +10,7 @@
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
     $db = new Database();
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType'])){
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType']) && isset($_POST['pReqType'])){
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/chartHelper.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
