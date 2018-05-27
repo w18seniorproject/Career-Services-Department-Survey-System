@@ -26,17 +26,24 @@
                 $results = $conn->prepare($sql);
                 $results->execute(array($pins[$i], $surName, $acctName, $surText, $groups[$i], $liveornot));
             }
+
+            $sql = "SELECT minScore, rLevel FROM secReqs WHERE surName=? AND acctName=?;";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($surName, $acctName));
+            $minScores = array();
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $minScores[$row['rLevel']] = $row['minScore'];
+            }
             
             $sql = "DELETE FROM `secReqs` WHERE `acctName`=? AND `surName`=?;";
             $result = $conn->prepare($sql);
             $result->execute(array($acctName, $surName));
 
-            //TODO Fix minScore stuff. Just temporary filler for now
             $length = count($resources);
             for($i=0; $i < $length; $i++){
                 $sql = "INSERT INTO `secReqs` (`acctName`, `surName`, `rLevel`, `resources`, `minScore`, `resourceMarkup`) VALUES (?, ?, ?, ?, ?, ?);";
                 $results = $conn->prepare($sql);
-                $results->execute(array($acctName, $surName, $i+1, $resources[$i], 0, $resourceMarkup[$i]));
+                $results->execute(array($acctName, $surName, $i+1, $resources[$i], $minScores[$i+1], $resourceMarkup[$i]));
             }
             header("Location: pollster/pDashboard.html");
             die("Success");
