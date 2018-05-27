@@ -1,5 +1,7 @@
 <?php
     //TO-DO: Possible security before starting session
+
+    //Single entry point for the whole system. All .html files are directed here, and redirected appropriately.
     session_start();
 
     $root = $_SERVER['DOCUMENT_ROOT'];

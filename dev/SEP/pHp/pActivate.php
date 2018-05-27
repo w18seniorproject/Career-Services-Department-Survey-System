@@ -1,12 +1,14 @@
 <?php
-
+/* When a new account is created, a link must be clicked by the creator, which directs them to this page.
+The token is authenticated, and the account changed to "active". Inactive accounts are deleted if anything goes wrong
+with activation.*/
 class AccountActivate{
     public static function pActivate($db){
 
         error_reporting(E_ALL);
         
-        include_once "./pollster/pActivate.html";
-        include_once "./pollster/pDashboard.html";
+        //include_once "./pollster/pActivate.html";
+        //include_once "./pollster/pDashboard.html";
 
          //Deletes accounts when activation fails, to prevent primary key error from being thrown by the database.
          function deleteInactive($db, $conn){

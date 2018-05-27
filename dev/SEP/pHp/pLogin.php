@@ -1,4 +1,5 @@
 <?php
+/*Validates pollster (survey administrator) login information, and redirects to their dashboard if ok.*/
     class PollsterLogin {
         public static function login($db){
 

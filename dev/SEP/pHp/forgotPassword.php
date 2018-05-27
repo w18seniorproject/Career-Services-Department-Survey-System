@@ -1,4 +1,6 @@
 <?php
+/*called from forgotPassword.html. User name or email address entered is checked against accounts table. If valid, a random token is created,
+converted to hexadecimal, hashed, stored, and sent to the user via email in a link back to the password reset page*/ 
 class ForgotPassword{
     public static function sendToken($db){
 

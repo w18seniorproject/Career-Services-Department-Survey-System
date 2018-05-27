@@ -1,5 +1,6 @@
 <?php
-
+/*Pollster resetting password is directed here by a link sent to them from forgotPassword.php. The link contains a token, which is
+authenticated. The pollster is then allowed to reset the password for the account, and is notified of success or failure.*/
 class PasswordReset{
     public static function pReset($db){
 
