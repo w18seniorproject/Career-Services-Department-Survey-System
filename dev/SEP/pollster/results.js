@@ -84,7 +84,7 @@ function displayGroup(groupNum){
             num++;
             timeSum += results[i].time;
             rSum += results[i].rLevel;
-            timeSumofSquares += results[i].time*results[i].time;    
+            timeSumofSquares += results[i].time*results[i].time;
         }
     }
     timeVar = (num * timeSumofSquares - timeSum*timeSum)/(num*num);
@@ -92,7 +92,7 @@ function displayGroup(groupNum){
     rAvg = rSum/num;
     timeAvg = timeSum/num;
     $("#overallData").html(constructDashDataHTML(rAvg, timeAvg, num, timeSD));
-    displayQuestionDataGroup(groupNum);  
+    displayQuestionDataGroup(groupNum);
 }
 
 function constructDashDataHTML(rAvg, timeAvg, num, timeSD){
@@ -356,5 +356,50 @@ function displayComments(){
         toDisplay = "<div class='commentDisplay'><h4>\"" + comment + "\"</h4></div>";
         $("#commentsData").append(toDisplay);
     }
+
+
 }
 
+function exportResponsesToCSV() {
+  let csvContent = "data:text/csv;charset=utf-8,";
+  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+  for (var i = 0; i < questions.length; i++) {
+    titleRowArray.push("Question " + questions[i].qNum);
+  }
+  let titleRow = titleRowArray.join(",");
+  csvContent += titleRow + "\r\n";
+  for(var i=0; i<results.length; i++)
+  {
+    var row=[];
+    row.push(results[i].recNum);
+    row.push(results[i].groupName);
+    row.push(results[i].rLevel);
+
+    var resultJSON= JSON.parse(resultsJSON[i].surResults);
+    for(var j=0; j<resultJSON.length; j++)
+    {
+      var resultForQuestion=JSON.parse(resultJSON[j]);
+      var itemResponses=[];
+      for(var k=0; k<resultForQuestion.length; k++)
+      {
+          var response=JSON.parse(resultForQuestion[k]).value;
+          var tempIndex=response.indexOf(",");
+          var newString=response.substr(0,tempIndex);
+          itemResponses.push(newString);
+      }
+      row.push(itemResponses);
+    }
+    let resultRow=row.join(",")
+
+    csvContent += resultRow + "\r\n";
+  }
+  var encodedUri = encodeURI(csvContent);
+  alert(encodedUri);
+  var link = document.createElement("a");
+link.setAttribute("href", encodedUri);
+link.setAttribute("download", "my_data.csv");
+link.innerHTML= "Click Here to download";
+document.body.appendChild(link); // Required for FF
+
+link.click(); // This will download the data file named "my_data.csv".
+}

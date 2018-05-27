@@ -33,6 +33,7 @@
 
         <div id="MenuButtons" style="display:none">
           <button type="button" class="btn btn-primary" id="curRelLevelButton" onclick="relationsButton()">Current Relation Levels</button>
+					<button id="indResultsButton" type="button" onclick="exportResponsesToCSV()">Export Individual Results And Choices As CSV</button>
           <button type="button" class="btn btn-primary" id="answersMenuButton" onclick="answerMenuReveal()">Answers For Each Question</button>
         </div>
         <br/>
@@ -47,7 +48,7 @@
         </div>
       </div>
         <div id="graphContainer">
-        <canvas id="myCanvas" width="400" height="400"></canvas>
+        <canvas id="myCanvas"></canvas>
         <div id="ExportDropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="ExportButtonMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">Export Data As</button>
           <div class="dropdown-menu" id="exportMenu" aria-labelledby="dropdownMenu2">

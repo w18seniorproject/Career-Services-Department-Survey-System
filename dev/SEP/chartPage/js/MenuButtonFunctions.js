@@ -1,7 +1,7 @@
 
 var surNameJSON;
 var questionJSON;
-var resultJSON;
+var resultsJSON;
 var avgResultJSON;
 var groupArray;
 var avgArray;
@@ -164,6 +164,20 @@ alert(surveyName)
         questionJSON = JSON.parse(json);
       }
     });
+
+    $.ajax({
+
+      type: "POST",
+      url: "../index.php",
+      data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
+      success: function (json) {
+
+        resultsJSON = JSON.parse(json);
+      },
+      error: function(){
+        alert("Something went wrong");
+      }
+    });
   var x = document.getElementById("MenuButtons");
   if (x.style.display == "none") {
     x.style.display = "block";
@@ -212,7 +226,7 @@ alert(questionNumArray);
 	var qNum=questionNumArray[i];
 	alert(qNum);
 	element.onclick=function(){
-	pieChartMaker(qNum);
+	   pieChartMaker(qNum);
 	}
 	sMI.appendChild(element);
   };
@@ -235,63 +249,119 @@ var y = document.getElementById("QuestionButton");
 function pieChartMaker(qNum) {
   var qNumInt = parseInt(qNum);
   var qNumIntMinus = qNumInt - 1;
-  var filteredQuestion = questionJSON[qNumInt];
-
+  var filteredQuestion = questionJSON[qNumIntMinus];
+  alert(qNumInt);
+  alert(resultsJSON);
   var resultData = [];
-  alert(surveyName);
-  $.ajax({
-
-    type: "POST",
-    url: "../index.php",
-    data: ({ getChartResults: "yes", aType: "POLL", surName: surveyName }),
-    success: function (json) {
-
-      resultsJSON = JSON.parse(json);
-      alert(resultJSON);
-    }
-  });
-  alert(resultJSON);
   for(var i=0; i<resultsJSON.length; i++)
   {
-    var itemResponses = resultsJSON.surResults[qNumIntMinus];
-    var itemJSON=JSON.parse(itemResponses);
+    var itemResponses = JSON.parse(resultsJSON[i].surResults);
+    var itemJSON=JSON.parse(itemResponses[qNumIntMinus]);
     for (var j = 0; i < itemJSON.length; i++) {
       var response=JSON.parse(itemJSON[i]);
       var temp=response.value.indexOf(",");
       resultData.push(response.value.substr(0,temp));
     }
   };
+  alert(resultData);
   resultData.sort();
+
   var counts = {};
   var possibleResponses=filteredQuestion.qChoices.split("~$#");
   for(var i = 0; i<possibleResponses.length;i++)
   {
     var temp=possibleResponses[i].indexOf("|`");
     possibleResponses[i]=possibleResponses[i].substr(0,temp);
+    counts
   }
-
+  alert(possibleResponses);
   for (var i = 0; i < possibleResponses.length; i++) {
     var resp = possibleResponses[i];
-    counts[resp] = 0;
+
+    counts[resp]=0;
+    alert(counts[resp]);
   };
+
   for (var i = 0; i < resultData.length; i++) {
+    alert(resultData[i]);
     var resp = resultData[i];
 
-    counts[resp] = counts[resp]++;
+    counts[resp] = counts[resp]+1;
   };
-
+  alert(Object.values(counts));
   if (resultChart != null) {
     resultChart.destroy();
   }
+
+  var dataformArray=[];
+  var dataResponseArray=[];
+  for(var i=0; i<Object.values(counts); i++ )
+  {
+    if((Object.values(counts)[i])>0)
+    {
+      dataResponseArray.push(Object.keys(counts)[i]);
+    dataformArray.push(Object.values(counts)[i]);
+    }
+  }
+
+  var data={
+    labels: dataResponseArray,
+    datasets:[
+      {
+        fill:true,
+        data:dataformArray,
+        backgroundColor: ["#878BB6"]
+      }
+    ]
+  };
   resultChart = new Chart(ctx, {
     type: 'pie',
-    data: Object.values(counts),
-    labels: possibleResponses
+    data: data
   });
 
 
 }
 
 function exportResponsesToCSV() {
+  let csvContent = "data:text/csv;charset=utf-8,";
+  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+  for (var i = 0; i < questionJSON.length; i++) {
+    titleRowArray.push("Question " + questionJSON[i].qNum);
+  }
+  let titleRow = titleRowArray.join(",");
+  csvContent += titleRow + "\r\n";
+  for(var i=0; i<resultsJSON.length; i++)
+  {
+    var row=[];
+    row.push(resultsJSON[i].recNum);
+    row.push(resultsJSON[i].groupName);
+    row.push(resultsJSON[i].rLevel);
 
+    var results= JSON.parse(resultsJSON[i].surResults);
+    for(var j=0; j<results.length; j++)
+    {
+      var resultForQuestion=JSON.parse(results[j]);
+      var itemResponses=[];
+      for(var k=0; k<resultForQuestion.length; k++)
+      {
+          var response=JSON.parse(resultForQuestion[k]).value;
+          var tempIndex=response.indexOf(",");
+          var newString=response.substr(0,tempIndex);
+          itemResponses.push(newString);
+      }
+      row.push(itemResponses);
+    }
+    let resultRow=row.join(",")
+
+    csvContent += resultRow + "\r\n";
+  }
+  var encodedUri = encodeURI(csvContent);
+  alert(encodedUri);
+  var link = document.createElement("a");
+link.setAttribute("href", encodedUri);
+link.setAttribute("download", "my_data.csv");
+link.innerHTML= "Click Here to download";
+document.body.appendChild(link); // Required for FF
+
+link.click(); // This will download the data file named "my_data.csv".
 }
