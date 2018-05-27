@@ -1,5 +1,5 @@
 // Contains all client functions specific to grabbing and displaying survey results
-// Also contains data collection code for exporting as CSV. Actual export is in utils.js
+// Also contains export to CSV functionality
 
 var questions, secReqs, results, comments, groupArr = Array();
 var curGroupName = "ALL_OF_THE_GROUPS";
@@ -80,7 +80,7 @@ function displayGroupButtons() {
 }
 
 function displayGroup(groupNum) {
-    curGroupName = groupArr[groupNum-1];
+    curGroupName = groupArr[groupNum - 1];
     if (groupNum == 0) {
         displayAllGroups();
         return;
@@ -91,11 +91,7 @@ function displayGroup(groupNum) {
             num++;
             timeSum += results[i].time;
             rSum += results[i].rLevel;
-<<<<<<< HEAD
-            timeSumofSquares += results[i].time*results[i].time;
-=======
             timeSumofSquares += results[i].time * results[i].time;
->>>>>>> origin/master
         }
     }
     timeVar = (num * timeSumofSquares - timeSum * timeSum) / (num * num);
@@ -371,109 +367,46 @@ function displayComments() {
 
 }
 
-<<<<<<< HEAD
 function exportResponsesToCSV() {
-  let csvContent = "data:text/csv;charset=utf-8,";
-  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
-  for (var i = 0; i < questions.length; i++) {
-    titleRowArray.push("Question " + questions[i].qNum);
-  }
-  let titleRow = titleRowArray.join(",");
-  csvContent += titleRow + "\r\n";
-  for(var i=0; i<results.length; i++)
-  {
-    var row=[];
-    row.push(results[i].recNum);
-    row.push(results[i].groupName);
-    row.push(results[i].rLevel);
-
-    var resultJSON= JSON.parse(resultsJSON[i].surResults);
-    for(var j=0; j<resultJSON.length; j++)
-    {
-      var resultForQuestion=JSON.parse(resultJSON[j]);
-      var itemResponses=[];
-      for(var k=0; k<resultForQuestion.length; k++)
-      {
-          var response=JSON.parse(resultForQuestion[k]).value;
-          var tempIndex=response.indexOf(",");
-          var newString=response.substr(0,tempIndex);
-          itemResponses.push(newString);
-      }
-      row.push(itemResponses);
+    let csvContent = "data:text/csv;charset=utf-8,";
+    var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+    for (var i = 0; i < questions.length; i++) {
+        titleRowArray.push(questions[i].qText);
     }
-    let resultRow=row.join(",")
+    let titleRow = titleRowArray.join(";");
+    csvContent += titleRow + "\r\n";
+    for (var i = 0; i < results.length; i++) {
+        var row = [];
+        row.push(i+1);
+        row.push(results[i].groupName);
+        row.push(results[i].rLevel+1);
 
-    csvContent += resultRow + "\r\n";
-  }
-  var encodedUri = encodeURI(csvContent);
-  alert(encodedUri);
-  var link = document.createElement("a");
-link.setAttribute("href", encodedUri);
-link.setAttribute("download", "my_data.csv");
-link.innerHTML= "Click Here to download";
-document.body.appendChild(link); // Required for FF
-
-link.click(); // This will download the data file named "my_data.csv".
-}
-=======
-function exportData() {
-    var columnNames = Array();
-    var fileName = surName.replace(" ", "_") + new Date().toLocaleDateString().replace("/", "-");
-    if(curGroupName == "ALL_OF_THE_GROUPS"){
-        fileName += "all";
-        var data = Array();
-        for(var i = 0; i < results.length; i++){
-            var row = Array();
-            var surResults = results[i].surResults;
-            rArr = JSON.parse(surResults);
-            for(var j = 0; j < rArr.length; j++){
-                var ans;
-                var qType = questions[j].qType;
-                var ans;
-                if(qType == "chk"){
-                    //get checkmark answer
+        var resultJSON = JSON.parse(results[i].surResults);
+        for (var j = 0; j < resultJSON.length; j++) {
+            var resultForQuestion = JSON.parse(resultJSON[j]);
+            var itemResponses = [];
+            for (var k = 0; k < resultForQuestion.length; k++) {
+                var response = JSON.parse(resultForQuestion[k]).value;
+                var tempIndex = response.indexOf(",");
+                var newString = response.substr(0, tempIndex);
+                if(newString == ""){
+                    newString = response.split(" ")[0];
                 }
-                else if(qType == "s"){
-                    //get scale answer
-                }
-                else{
-                    //get mc and tf answers
-                }
-                row.push(ans);
+                itemResponses.push(newString);
             }
-            data.push(row);
+            row.push(itemResponses);
         }
+        let resultRow = row.join(";")
+
+        csvContent += resultRow + "\r\n";
     }
-    else{
-        fileName += curGroupName;
-        var data = Array();
-        for(var i = 0; i < results.length; i++){
-            if(results[i].groupName == curGroupName){
-                var row = Array();
-                var surResults = results[i].surResults;
-                rArr = JSON.parse(surResults);
-                for(var j = 0; j < rArr.length; j++){
-                    var qType = questions[j].qType;
-                    var ans;
-                    if(qType == "chk"){
-                        //get checkmark answer
-                    }
-                    else if(qType == "s"){
-                        //get scale answer
-                    }
-                    else{
-                        //get mc and tf answers
-                    }
-                    row.push(ans);
-                }
-                data.push(row);
-            }
-        }
-    }
-    for(var i = 0; i < questions.length; i++){
-        columnNames.push(questions[i].qText);
-    }
-    
-    downloadCSV(data, columnNames, fileName);
->>>>>>> origin/master
+    var encodedUri = encodeURI(csvContent);
+    alert(encodedUri);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "my_data.csv");
+    link.innerHTML = "Click Here to download";
+    document.body.appendChild(link); // Required for FF
+
+    link.click(); // This will download the data file named "my_data.csv".
 }
