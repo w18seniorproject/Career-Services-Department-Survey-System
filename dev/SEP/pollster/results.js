@@ -414,6 +414,7 @@ link.innerHTML= "Click Here to download";
 document.body.appendChild(link); // Required for FF
 
 link.click(); // This will download the data file named "my_data.csv".
+}
 =======
 function exportData() {
     var columnNames = Array();
