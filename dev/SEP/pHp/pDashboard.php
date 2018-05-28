@@ -1,4 +1,7 @@
 <?php
+    // Contains all server functions needed in the survey dashboard page, including:
+    // Getting a list of surveys for display
+    // Getting notification status
     class PollsterDashboard {
         public static function GetSurveys($db){
 
@@ -31,12 +34,6 @@
             else{
                 echo "NONE";
             }
-        }
-
-        public static function GetSurveyQuestions($db){
-            $conn = $db->getConnection('poll');
-            
-            $acctName = $_SESSION['userName'];
         }
 
         public static function getNotificationCount($db){

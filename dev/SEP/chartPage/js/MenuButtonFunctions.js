@@ -253,8 +253,6 @@ function pieChartMaker(qNum) {
   alert(qNumInt);
   alert(resultsJSON);
   var resultData = [];
-<<<<<<< HEAD
-=======
   alert(surveyName);
   $.ajax({
 
@@ -268,7 +266,6 @@ function pieChartMaker(qNum) {
     }
   });
   alert(resultJSON);
->>>>>>> origin/master
   for(var i=0; i<resultsJSON.length; i++)
   {
     var itemResponses = JSON.parse(resultsJSON[i].surResults);

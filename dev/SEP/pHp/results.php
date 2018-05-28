@@ -1,5 +1,5 @@
 <?php
-
+    // gets and returns survey results, secreqs, and questions in one object
     class Results{
         
         public static function GetResults($db){

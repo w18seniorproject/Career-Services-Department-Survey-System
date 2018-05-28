@@ -1,4 +1,5 @@
 <?php
+    // Contains login and verification for pollster
     class PollsterLogin {
         public static function login($db){
 

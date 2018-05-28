@@ -1,4 +1,6 @@
 <?php
+    // Contains all server functions for creating and editing surveys
+    // Also includes server function for storing comments
     class Survey {        
         public static function createSurvey($db){
             $conn = $db->getConnection('poll');

@@ -1,4 +1,10 @@
 <?php
+    // Contains all server functions for managing surveys and groups, including:
+    // Adding, removing, and changing groups
+    // Adding, removing, and changing pins
+    // Editing survey section resources
+    // Making a survey live or not live
+    // Deleting a survey
     class ManageSurvey{
         public static function SetSurveyData($db){
             $conn = $db->getConnection('poll');

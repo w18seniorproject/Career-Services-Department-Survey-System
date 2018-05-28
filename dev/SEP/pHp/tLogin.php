@@ -1,4 +1,5 @@
 <?php
+    // Provides surveyTaker login and verification
     class TakerLogin{
         public static function login($db){
             $conn = $db->getConnection('taker');

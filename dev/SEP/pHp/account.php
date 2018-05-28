@@ -1,4 +1,6 @@
 <?php
+    // Contains all server functions for interacting with db
+    // so far as it concerns Pollster Accounts
     class PollsterAccount{
         public static function GetProfilePic($db){
             $conn = $db->getConnection('poll');

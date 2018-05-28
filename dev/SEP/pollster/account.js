@@ -13,12 +13,9 @@ function getAccountInfo(){
         type: "GET",
         data: ({accountInfo: "yes"}),
         success: function(response){
-            alert(response);
             var acctName = JSON.parse(response).acctName;
-            alert(acctName);
             $(".legend").html(acctName);
             var email = JSON.parse(response).email;
-            alert(email);
             $("#email").val(email);
         },
         error: function(jqxr, status, exception){
