@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=e n>
+<html lang=en>
 
 <head>
     <title>Administrator Login</title>
@@ -18,6 +18,23 @@
 </head>
 
 <body>
+    <script type="text/javascript">
+        $.ajax({
+            url: "../index.php",
+            cache: false,
+            data: {pReqType: "getLoginStatus"},
+            type: "POST",
+            success: function(response){
+                if(response.includes("TRUE")){
+                    window.location = "pDashboard.html";
+                }
+            },
+            error: function(jqxr, status, exception){
+                alert("Failure in getLoginStatus ajax call in pLogin.html: " + exception);
+            }
+        });
+    </script>
+        
     <div id="header"></div>
 
     <div class="form-centered">

@@ -1,9 +1,21 @@
 <?php
-    //TO-DO: Possible security before starting session
-
     //Single entry point for the whole system. All .html files are directed here, and redirected appropriately.
     error_reporting(E_ALL);
     session_start();
+
+    if(!isset($_SESSION['userName']) && $_POST['pReqType'] === 'DASH'){
+        echo("NOT LOGGED IN");
+        exit();
+    }
+    if($_POST['pReqType'] === "getLoginStatus"){
+        if(isset($_SESSION['userName'])){
+            echo "TRUE";
+        }
+        else{
+            echo "FALSE";
+        }
+        exit();
+    }
     
     $root = $_SERVER['DOCUMENT_ROOT'];
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
