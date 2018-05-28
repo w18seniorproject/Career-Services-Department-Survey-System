@@ -71,9 +71,14 @@ function showPinsAndGroupsFilled(surveyName){
             $(".pinHolder").each(function(i, ele){
                 $(ele).unbind('click');
                 $(ele).on("click", function(){
-                    alert("localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html());
+                    alert(
+                        "Automatic PIN Entry Link:\n" +
+                        "   localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html() + "\n" +
+                        "Pure Link to login page:\n" +
+                        "   localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html"
+                    );
                 });
-            })
+            });
             if(pinGroupArray[0].live == 1){
                 $(".onoffswitch-label").trigger("click");
             }
@@ -135,7 +140,12 @@ function addGroup(ele){
     $(".pinHolder").each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on("click", function(){
-            alert("localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html());
+            alert(
+                "Automatic PIN Entry Link:\n" +
+                "   localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html?pin=" + $(ele).html() + "\n" +
+                "Pure Link to login page:\n" +
+                "   localhost/Career-Services-Department-Survey-System/dev/SEP/user/uLogin.html"
+            );
         });
     });
 }

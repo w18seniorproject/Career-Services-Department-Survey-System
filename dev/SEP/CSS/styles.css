@@ -627,6 +627,10 @@ html, body{
 }
 
 /* Manage Survey Page */
+.pinHolder{
+    color: #a10022;
+}
 .pinHolder:hover{
     cursor: pointer;
+    text-decoration: underline;
 }
