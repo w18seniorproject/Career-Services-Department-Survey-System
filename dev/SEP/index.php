@@ -3,6 +3,7 @@
     error_reporting(E_ALL);
     session_start();
 
+    if(isset($_POST['pReqType'])){
     if(!isset($_SESSION['userName']) && $_POST['pReqType'] === 'DASH'){
         echo("NOT LOGGED IN");
         exit();
@@ -16,7 +17,7 @@
         }
         exit();
     }
-    
+}
     $root = $_SERVER['DOCUMENT_ROOT'];
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
