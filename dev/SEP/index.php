@@ -4,26 +4,27 @@
     session_start();
 
     if(isset($_POST['pReqType'])){
-    if(!isset($_SESSION['userName']) && $_POST['pReqType'] === 'DASH'){
-        echo("NOT LOGGED IN");
-        exit();
-    }
-    if($_POST['pReqType'] === "getLoginStatus"){
-        if(isset($_SESSION['userName'])){
-            echo "TRUE";
+        if(!isset($_SESSION['userName']) && $_POST['pReqType'] === 'DASH'){
+            echo("NOT LOGGED IN");
+            exit();
         }
-        else{
-            echo "FALSE";
+    
+        if($_POST['pReqType'] === "getLoginStatus"){
+            if(isset($_SESSION['userName'])){
+                echo "TRUE";
+            }
+            else{
+                echo "FALSE";
+            }
+            exit();
         }
-        exit();
     }
-}
     $root = $_SERVER['DOCUMENT_ROOT'];
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
     $db = new Database();
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType']) && isset($_POST['pReqType'])){
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType'])){
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/chartHelper.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
