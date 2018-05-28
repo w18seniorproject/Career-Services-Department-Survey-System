@@ -1,8 +1,8 @@
 <?php
+/*called from forgotPassword.html. User name or email address entered is checked against accounts table. If valid, a random token is created,
+converted to hexadecimal, hashed, stored, and sent to the user via email in a link back to the password reset page*/ 
     class ForgotPassword{
         public static function sendToken($db){
-
-    include_once "../pollster/forgotPassword.html";
 
     $conn = $db->getConnection('poll');
 
@@ -55,8 +55,8 @@
             $stmt->execute();
 
             //CHANGE TO CORRECT EXTERNAL LINK
-            //$msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/passwordReset.html?";
-            $msg = "Please click on the link to activate your account:\n\n http://" .  $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/passwordReset.html?";
+            $msg = "Please click on the link to retrieve your username or reset your password:\n\n http://localhost:10080/Career-Services-Department-Survey-System/dev/SEP/pollster/passwordReset.html?";
+            //$msg = "Please click on the link to activate your account:\n\n http://" .  $_SERVER['SERVER_NAME'] . "/Career-Services-Department-Survey-System/dev/SEP/pollster/passwordReset.html?";
 
             $msg .= "token=". $bytes . "\n\nDo not reply to this email.";     
 

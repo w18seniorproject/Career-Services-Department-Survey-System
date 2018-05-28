@@ -1,16 +1,14 @@
 <?php
-    // Contains login and verification for pollster
+/*Validates pollster (survey administrator) login information, and redirects to their dashboard if ok.*/
     class PollsterLogin {
         public static function login($db){
-
-            include_once"./pollster/pLogin.html";
 
             $conn = $db->getConnection('poll');
 
             $username = $_POST["username"];
 
             $pass = $_POST["pword"];
-            
+          
             $sql = "SELECT pass FROM accounts WHERE acctName= ? AND active = '1';";
 
             $result = $conn->prepare($sql);

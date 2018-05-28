@@ -1,4 +1,7 @@
 <?php
+    //TO-DO: Possible security before starting session
+
+    //Single entry point for the whole system. All .html files are directed here, and redirected appropriately.
     error_reporting(E_ALL);
     session_start();
     
@@ -7,7 +10,7 @@
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
     $db = new Database();
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType'])){
+    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aType']) && isset($_POST['pReqType'])){
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/chartHelper.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/forgotPassword.php';
         include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/manageSurvey.php';
