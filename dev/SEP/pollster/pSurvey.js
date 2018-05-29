@@ -400,7 +400,7 @@ function submit(update){
             else if(qType === "tf"){
                 var val = 'none';
                 $(qWrapper).find(".qTable").find("tr").find("th").each(function(k,th){
-                    var choiceChecked = $(th).find("input").attr("checked");
+                    var choiceChecked = $(th).find("input").attr("on");
                     if(choiceChecked === "true"){
                         val = $(th).find("input").attr('value');
                     }
@@ -506,9 +506,15 @@ function fillSurveyFields(surveyName){
                     }
                 }else if(questions[i].qType === 'tf'){
                     if(questions[i].qAns == 't')
+                    {
+                        $(".qTable").eq(i).children().find(".ans")[0].setAttribute("on", true);
                         $(".qTable").eq(i).children().find(".ans")[0].checked = true;
+                    }
                     else if(questions[i].qAns == 'f')
+                    {
+                        $(".qTable").eq(i).children().find(".ans")[1].setAttribute("on", true);
                         $(".qTable").eq(i).children().find(".ans")[1].checked = true;
+                    }
                 }
             }
             $("#save").prop('onclick',null).off('click');
