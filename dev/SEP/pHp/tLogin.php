@@ -14,16 +14,16 @@
             elseif(isset($survey['message'])){
                 if($survey['message'] === 'notUni'){
                     header("Location: user/uLogin.html?error=notUnique");
-                    exit("We messed up. Pins aren't unique");
+                    return;
                     //THIS SHOULD NEVER HAPPEN
                 }elseif($survey['message'] === 'badPin'){
                     header("Location: user/uLogin.html?error=wrongPin");
-                    exit();
+                    return;
                 }
             }
             else{
                 http_response_code(500);
-                exit();
+                return;
                 //THIS SHOULD NEVER HAPPEN
             }
 

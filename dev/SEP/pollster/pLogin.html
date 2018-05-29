@@ -22,13 +22,7 @@
         $.ajax({
             url: "../index.php",
             cache: false,
-            data: {pReqType: "getLoginStatus"},
-            type: "POST",
-            success: function(response){
-                if(response.includes("TRUE")){
-                    window.location = "pDashboard.html";
-                }
-            },
+            type: "GET",
             error: function(jqxr, status, exception){
                 alert("Failure in getLoginStatus ajax call in pLogin.html: " + exception);
             }

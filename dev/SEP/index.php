@@ -3,22 +3,6 @@
     error_reporting(E_ALL);
     session_start();
 
-    if(isset($_POST['pReqType'])){
-        if(!isset($_SESSION['userName']) && $_POST['pReqType'] === 'DASH'){
-            echo("NOT LOGGED IN");
-            exit();
-        }
-    
-        if($_POST['pReqType'] === "getLoginStatus"){
-            if(isset($_SESSION['userName'])){
-                echo "TRUE";
-            }
-            else{
-                echo "FALSE";
-            }
-            exit();
-        }
-    }
     $root = $_SERVER['DOCUMENT_ROOT'];
     include_once $root . '/Career-Services-Department-Survey-System/dev/config/database.php';
     include_once $root . '/Career-Services-Department-Survey-System/dev/SEP/pHp/account.php';
@@ -51,7 +35,7 @@
                         PollsterLogin::login($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error with Pollster Login\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error with Pollster Login\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -60,7 +44,7 @@
                         session_unset();
                         header("Location: ./pollster/pLogin.html");
                     } catch (Exception $e){
-                        echo 'Error with Pollster Logout\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error with Pollster Logout\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -72,7 +56,7 @@
                         ForgotPassword::sendToken($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error with Forgot Password (sendToken)\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error with Forgot Password (sendToken)\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -81,7 +65,7 @@
                         PasswordReset::pReset($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error with Password Reset\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error with Password Reset\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -90,7 +74,7 @@
                         PollsterSignup::signup($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error with Pollster Signup\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error with Pollster Signup\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }   
@@ -99,7 +83,7 @@
                         AccountActivate::pActivate($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error with Account Activation\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error with Account Activation\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -111,7 +95,7 @@
                         PollsterAccount::SetProfilePic($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error setting profile pic\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error setting profile pic\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -120,7 +104,7 @@
                         PollsterAccount::SetAccountInfo($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error setting account info\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error setting account info\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -132,7 +116,7 @@
                         PollsterDashboard::getNotificationCount($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting notifcation count\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting notifcation count\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -141,7 +125,7 @@
                         PollsterDashboard::getNotifications($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting notifications\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting notifications\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -150,7 +134,7 @@
                         PollsterDashboard::GetSurveys($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting surveys\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting surveys\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -162,7 +146,7 @@
                         ManageSurvey::setLive($db);
                     exit();
                     } catch (Exception $e){
-                        echo 'Error setting live/dead\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error setting live/dead\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -171,7 +155,7 @@
                         ManageSurvey::setNewGroupPin($db);
                     exit();
                     } catch (Exception $e){
-                        echo 'Error setting new pin\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error setting new pin\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -180,7 +164,7 @@
                         ManageSurvey::SetSurveyData($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error setting resources\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error setting resources\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -189,7 +173,7 @@
                         ManageSurvey::GetResources($db);
                     exit();
                     } catch (Exception $e){
-                        echo 'Error getting resources\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting resources\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -198,7 +182,7 @@
                         ManageSurvey::GetPins($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting pins/groups\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting pins/groups\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -207,7 +191,7 @@
                         ManageSurvey::DeleteSurvey($db);
                     exit();
                     } catch (Exception $e){
-                        echo 'Error deleting survey\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error deleting survey\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -222,7 +206,7 @@
                         unset($_SESSION['acctName']);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting survey\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting survey\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -231,7 +215,7 @@
                         try{    
                             Survey::updateSurvey ($db);
                         } catch (Exception $e){
-                            echo 'Error updating survey\nError: ',  $e->getMessage(), "\n";
+                            json_encode(array( 'error'  => 'Error updating survey\nError: ' .  $e->getMessage() . "\n"));
                             exit();
                         }
                     }
@@ -239,7 +223,7 @@
                         try{
                             Survey::createSurvey($db);
                         } catch (Exception $e){
-                            echo 'Error creating survey\nError: ',  $e->getMessage(), "\n";
+                            json_encode(array( 'error'  => 'Error creating survey\nError: ' .  $e->getMessage() . "\n"));
                             exit();
                         }
                     }
@@ -256,7 +240,7 @@
                         unset($_SESSION['acctName']);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting results\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting results\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -266,7 +250,7 @@
                         Charts::GetSurNames($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting survey names\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting survey names\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -277,7 +261,7 @@
                         Charts::GetAvgResults($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting average results\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting average results\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -289,7 +273,7 @@
                         $questions = Charts::GetQuestionsFromDB($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting questions\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting questions\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -300,7 +284,7 @@
                         Charts::GetChartResults($db);
                         exit();
                     } catch (Exception $e){
-                        echo 'Error getting chart results\nError: ',  $e->getMessage(), "\n";
+                        json_encode(array( 'error'  => 'Error getting chart results\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
                 }
@@ -320,7 +304,7 @@
                     TakerLogin::login($db);
                     exit();
                 } catch (Exception $e){
-                    echo 'Error logging into survey\nError: ',  $e->getMessage(), "\n";
+                    json_encode(array( 'error'  => 'Error logging into survey\nError: ' .  $e->getMessage() . "\n"));
                     exit();
                 }
             }
@@ -330,7 +314,7 @@
                     Survey::sendComment($db);
                     exit();
                 } catch (Exception $e){
-                    echo 'Error posting comment\nError: ',  $e->getMessage(), "\n";
+                    json_encode(array( 'error'  => 'Error posting comment\nError: ' .  $e->getMessage() . "\n"));
                     exit();
                 }
             }
@@ -341,7 +325,7 @@
                     Response::sendResponse($db, $_POST['response'], 0);
                     exit();
                 } catch (Exception $e){
-                    echo 'Error posting response\nError: ',  $e->getMessage(), "\n";
+                    json_encode(array( 'error'  => 'Error posting response\nError: ' .  $e->getMessage() . "\n"));
                     exit();
                 }
             }
@@ -352,7 +336,7 @@
                     Survey::sendSurvey($db);
                     exit();
                 } catch (Exception $e){
-                    echo 'Error getting survey\nError: ',  $e->getMessage(), "\n";
+                    json_encode(array( 'error'  => 'Error getting survey\nError: ' .  $e->getMessage() . "\n"));
                     exit();
                 }
             }
@@ -370,7 +354,7 @@
                 PollsterAccount::GetProfilePic($db);
                 exit();
             } catch (Exception $e){
-                echo 'Error getting profile pic\nError: ',  $e->getMessage(), "\n";
+                json_encode(array( 'error'  => 'Error getting profile pic\nError: ' .  $e->getMessage() . "\n"));
                 exit();
             }
         }
@@ -378,12 +362,16 @@
             try{
                 PollsterAccount::GetAccountInfo($db);
             } catch (Exception $e){
-                echo 'Error getting account info\nError: ',  $e->getMessage(), "\n";
+                json_encode(array( 'error'  => 'Error getting account info\nError: ' .  $e->getMessage() . "\n"));
                 exit();
             }
         }
         elseif(isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
             header("Location: user/uSurvey.html");
+            exit();
+        }
+        elseif(isset($_SESSION['userName'])){
+            header("Location: pollster/pDashboard.html");
             exit();
         }
         else{

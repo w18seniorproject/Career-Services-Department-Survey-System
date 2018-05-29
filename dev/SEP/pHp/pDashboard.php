@@ -49,10 +49,10 @@
 
             if($row["count"] > 0){
                 echo "true";
-                die();
+                return;
             }
             echo "false";
-            die();
+            return;
         }
 
         public static function getNotifications($db){
@@ -71,9 +71,6 @@
             $stmt->execute();
 
             echo json_encode($row);
-            die();
+            return;
         }
-
-
-
     }

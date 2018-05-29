@@ -13,12 +13,12 @@ class PollsterSignup {
 
         if($pass != $passConfirm){
             header("Location: ./pollster/pSignup.html?error=noMatch");
-            die("Passwords Don't Match");
+            return;
         }
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             header("Location: ./pollster/pSignup.html?error=badEmail");
-            die("Invalid Email Address Entered");
+            return;
         }
 
         //check for duplicate username 
@@ -33,7 +33,7 @@ class PollsterSignup {
             //If account is active
             if($isActive != 0){               
                 header("Location: ./pollster/pSignup.html?error=usernameTaken");
-                die("Username Already Taken");              
+                return;              
             }
             else{   //If account is inactive, remove it from the database, so that the new account can be created in its place.
                 $sql = "DELETE FROM accounts WHERE acctName = ?;";
@@ -42,7 +42,7 @@ class PollsterSignup {
 
                 if(!$del){
                     echo "Internal error. Inactive account with matching username was not deleted from accounts table.";
-                    die();
+                    return;
                 }
 
                 $sql = "DELETE FROM notifications WHERE acctName = ?;";
@@ -51,7 +51,7 @@ class PollsterSignup {
 
                 if(!$del){
                     echo "Internal error. Inactive account with matching username was not deleted from notifications table.";
-                    die();
+                    return;
                 }
             }
         }
@@ -106,10 +106,10 @@ class PollsterSignup {
         if(!mail( $email, "USS Account Activation", $msg, "From: webslave@notarealdomain.com" )){
             echo "System failed to send activation email. Please try again.";
             header("Location: ./pollster/pSignup.html?error=mailFailed");
-            die("mail function failure");
+            return;
         }else{
             header("Location: ./pollster/pSignup.html?error=noError");
-                    die();
+            return;
         }
     }
 }

@@ -61,17 +61,17 @@
 
             if($pass != $passConfirm){
                 header("Location: ./pollster/account.html?error=noMatch");
-                die("passwords don't match");
+                return;
             }
 
             if($email == "" && $pass == ""){
-                exit();
+                return;
             }
 
             if($email != ""){
                 if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
                     header("Location: ./pollster/account.html?error=badEmail");
-                    die("bad email");
+                    return;
                 }
                 //check for duplicate email
                 $sql = "SELECT email FROM accounts WHERE acctName <> ?;";
@@ -80,7 +80,7 @@
                 for($i = 0; $i < $result->rowCount(); $i++){
                     if($email == $result->fetchColumn(0)){
                         header("Location: ./pollster/account.html?error=emailTaken");
-                        die("Email Already in Use");
+                        return;
                     }
                 }
             }
@@ -96,7 +96,7 @@
                 $result->execute(array($hashedPass, $email, $acctName));
 
                 header("Location: ./pollster/pDashboard.html?page=accountboth");
-                exit();
+                return;
             }
 
             elseif($pass != ""){
@@ -106,7 +106,7 @@
                 $result->execute(array($hashedPass, $acctName));
 
                 header("Location: ./pollster/pDashboard.html?page=accountpass");
-                exit();
+                return;
             }
 
             elseif($email != ""){
@@ -116,7 +116,7 @@
                 $result->execute(array($email, $acctName));
 
                 header("Location: ./pollster/pDashboard.html?page=accountemail");
-                exit();
+                return;
             }
         }
     }

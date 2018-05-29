@@ -51,8 +51,9 @@
                 $results = $conn->prepare($sql);
                 $results->execute(array($acctName, $surName, $i+1, $resources[$i], $minScores[$i+1], $resourceMarkup[$i]));
             }
+            
             header("Location: pollster/pDashboard.html");
-            die("Success");
+            return;
         }
 
         public static function GetResources($db){

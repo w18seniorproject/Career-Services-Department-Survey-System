@@ -21,23 +21,23 @@
 
                 if(!password_verify($pass, $hash)){
                     header("Location: ./pollster/pLogin.html?error=wrongAuth");
-                    die("Username and/or password do not match.");
+                    return;
                 }
                 else{
                     session_destroy();
                     session_start();
                     $_SESSION["userName"] = $username;
                     header("Location: ./pollster/pDashboard.html");
+                    return;
                 }
-
             }
             else if($result->rowCount() > 0){
                 header("Location: ./pollster/pLogin.html?error=notUnique");
-                die("Internal error. Multiple matches for username/password.");
+                return;
             }
             else{
                 header("Location: ./pollster/pLogin.html?error=wrongAuth");
-                die("Username and/or password do not match."); 
+                return; 
             }     
         }
     }
