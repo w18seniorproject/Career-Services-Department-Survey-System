@@ -1,10 +1,17 @@
 // Contains all client functions specific to grabbing and displaying survey results
 // Also contains export to CSV functionality
 
-var questions, secReqs, results, comments, groupArr = Array();
+var questions, secReqs, results, comments, avgResultJSON, groupArr = Array();
+
+var ctx;
+var resultChart = null;
 var curGroupName = "ALL_OF_THE_GROUPS";
 var surName;
 
+$(document).ready(function () {
+  temp = document.getElementById("chart");
+  ctx = temp.getContext("2d");
+});
 function showData(surveyName) {
     surName = surveyName;
     $.ajax({
@@ -37,7 +44,24 @@ function showData(surveyName) {
         error: function (jxqr, status, exception) {
             alert("Failing at showData() ajax call in results.js");
         }
+
     });
+
+    $.ajax({
+
+    type: "POST",
+    url: "../index.php",
+    data: ({aType: "POLL", pReqType: "RESULT", getAvgResults: "yes", surName: surveyName }),
+    success: function (json) {
+      if(!json.includes("THERE ARE NO RESULTS TO BE HAD"))
+      {
+      avgResultJSON = JSON.parse(json);
+    }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+     alert("some error");
+    }
+  });
 }
 
 function displayAllGroups() {
@@ -367,13 +391,74 @@ function displayComments() {
 
 }
 
+function relationsButton() {
+  groupArray = [];
+  avgArray = [];
+  for (var i in avgResultJSON) {
+    groupArray.push(avgResultJSON[i].groupName);
+    avgArray.push(avgResultJSON[i].rLevel);
+
+  }
+if (resultChart != null) {
+    resultChart.destroy();
+  }
+  resultChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      datasets: [{
+	label: 'Bar_Set',
+	backgroundColor: "rgba(250,0,0,0.5)",
+	borderColor: "rgba(250,0,0,0.75)",
+        data: avgArray
+      }, {
+        label: 'Line_Set',
+        data: avgArray,
+	borderColor: "rgba(0,250,0,0.8)",
+	backgroundColor: "rgba(250,0,0,0.0)",
+        type: 'line'
+      }],
+      labels: groupArray
+    },
+animation: {
+    onComplete: function () {
+        var ctx = this.chart.ctx;
+        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+        ctx.fillStyle = "black";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+
+        this.data.datasets.forEach(function (dataset)
+        {
+            for (var i = 0; i < dataset.data.length; i++) {
+                for(var key in dataset._meta)
+                {
+                    var model = dataset._meta[key].data[i]._model;
+                    ctx.fillText(dataset.data[i], model.x, model.y - 5);
+                }
+            }
+        });
+    }
+},
+    options: {
+
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+}
+
 function exportResponsesToCSV() {
     let csvContent = "data:text/csv;charset=utf-8,";
     var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
     for (var i = 0; i < questions.length; i++) {
-        titleRowArray.push(questions[i].qText);
+        titleRowArray.push("Question "+(i+1)+": "+questions[i].qText);
     }
-    let titleRow = titleRowArray.join(";");
+    let titleRow = titleRowArray.join(",");
     csvContent += titleRow + "\r\n";
     for (var i = 0; i < results.length; i++) {
         var row = [];
@@ -394,17 +479,18 @@ function exportResponsesToCSV() {
                 }
                 itemResponses.push(newString);
             }
+		itemResponses=itemResponses.join(";");
             row.push(itemResponses);
         }
-        let resultRow = row.join(";")
+        let resultRow = row.join(",")
 
         csvContent += resultRow + "\r\n";
     }
     var encodedUri = encodeURI(csvContent);
-    alert(encodedUri);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "my_data.csv");
+	var filename=surveyName+".csv"
+    link.setAttribute("download", filename);
     link.innerHTML = "Click Here to download";
     document.body.appendChild(link); // Required for FF
 
