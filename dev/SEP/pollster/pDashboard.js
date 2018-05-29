@@ -79,10 +79,6 @@ function displaySurveys(){
         type: "POST",
         data: ({aType: "POLL", pReqType: "DASH", pdd: "true"}),
         success: function(response){
-            if(response.includes("NOT LOGGED IN")){
-                window.location = "pLogin.html";
-                return;
-            }
             var container;
             if(mobile){
                 container = $("#contentContainer");

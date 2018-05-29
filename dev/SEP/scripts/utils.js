@@ -36,3 +36,23 @@ function numericHash() {
     document.getElementById("submitInput").submit();
     //return hash;
 }
+
+function checkLogin(){
+    $.ajax({
+        url: "../index.php",
+        cache: false,
+        type: "POST",
+        data: ({aType: "POLL", pReqType: "LOGIN"}),
+        success: function(response){
+            if(response.includes("NOT LOGGED IN")){
+                alert();
+                window.location = "pLogin.html";
+                return;
+            }
+        },
+        error: function(jqxr, status, exception){
+            alert("Failing at checkLogin() ajax call in utils.js: " + exception);
+        }
+    });
+     
+}
