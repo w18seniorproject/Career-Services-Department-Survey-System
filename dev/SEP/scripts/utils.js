@@ -21,8 +21,10 @@ function getBase64Image(img) {
 }
 
 function numericHash() {
+    //Prevent form from submitting before javascript has finished running
+    document.getElementById('submitInput').preventDefault();
+    //Create a numeric hash of the entered password
     var str = document.getElementById("password").value;
-    alert(str.toString());
     var hash = 5381;
     if (str.length == 0) {
         return hash;
@@ -31,8 +33,9 @@ function numericHash() {
         char = str.charCodeAt(i);
         hash = ((hash << 5) + hash) + char; /* hash * 33 + c */
     }
-    alert(hash);
+    //Save the hash as the password value
     document.getElementById("password").value = hash;
+    //Submit the form
     document.getElementById("submitInput").submit();
     //return hash;
 }
