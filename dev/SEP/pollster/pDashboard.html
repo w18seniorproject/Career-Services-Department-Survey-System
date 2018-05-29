@@ -13,13 +13,13 @@
         <script>
             $(function(){
                 $("#header").load("../headerLoggedIn.html");
-                checkLogin();
             });
         </script>
     </head>
     <body>
         <div id='header'></div>              
         <script type='text/javascript'>
+            checkLogin(true);
             determineLayout();
             getNotifications();
         </script>

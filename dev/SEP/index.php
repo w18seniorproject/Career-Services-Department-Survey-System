@@ -47,7 +47,7 @@
                         json_encode(array( 'error'  => 'Error with Pollster Logout\nError: ' .  $e->getMessage() . "\n"));
                         exit();
                     }
-                }elseif(!isset($_SESSION['username'])){
+                }elseif(!isset($_SESSION['userName'])){
                     echo "NOT LOGGED IN";
                     exit();
                 }

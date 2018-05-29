@@ -37,16 +37,19 @@ function numericHash() {
     //return hash;
 }
 
-function checkLogin(){
+function checkLogin(dash){
     $.ajax({
         url: "../index.php",
         cache: false,
         type: "POST",
         data: ({aType: "POLL", pReqType: "LOGIN"}),
         success: function(response){
-            if(response.includes("NOT LOGGED IN")){
+            if(response.includes("NOT LOGGED IN") && dash === true){
                 window.location = "pLogin.html";
                 return;
+            }else if(!response.includes("NOT LOGGED IN") && dash === false)
+            {
+                window.location = "pDashboard.html";
             }
         },
         error: function(jqxr, status, exception){
