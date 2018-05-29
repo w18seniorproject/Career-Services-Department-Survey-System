@@ -45,7 +45,6 @@ function checkLogin(){
         data: ({aType: "POLL", pReqType: "LOGIN"}),
         success: function(response){
             if(response.includes("NOT LOGGED IN")){
-                alert();
                 window.location = "pLogin.html";
                 return;
             }
