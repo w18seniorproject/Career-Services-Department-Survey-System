@@ -400,7 +400,7 @@ function submit(update){
             else if(qType === "tf"){
                 var val = 'none';
                 $(qWrapper).find(".qTable").find("tr").find("th").each(function(k,th){
-                    var choiceChecked = $(th).find("input").attr("on");
+                    var choiceChecked = $(th).find("input").attr("checked");
                     if(choiceChecked === "true"){
                         val = $(th).find("input").attr('value');
                     }

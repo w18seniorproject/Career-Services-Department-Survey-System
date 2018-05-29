@@ -66,7 +66,7 @@
             
             Survey::createSurvey($db);
             
-            $sql = "UPDATE secReqs, (SELECT * FROM secReqs WHERE surName = '". $oldSur ."' AND acctName = '" . $_SESSION['userName'] . "') AS old SET secReqs.resources = old.resources, secReqs.resourceMarkup = old.resourceMarkup WHERE secReqs.surName = '" . $postData['title'] . "' AND secReqs.acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE secReqs, (SELECT * FROM secReqs WHERE surName = '". $oldSur ."' AND acctName = '" . $_SESSION['userName'] . "') AS old SET secReqs.resources = old.resources, secReqs.resourceMarkup = old.resourceMarkup WHERE secReqs.surName = '" . $postData['title'] . "' AND secReqs.acctName = '" . $_SESSION['userName'] . "' AND secReqs.rLevel = old.rLevel";
             $result = $conn->prepare($sql);
             $result->execute();
         }
