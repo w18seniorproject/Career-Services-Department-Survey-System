@@ -472,7 +472,7 @@ if (resultChart != null) {
           labelString: "Average Relation Level"
         },
           ticks: {
-            startAtZero: true;
+            beginAtZero: true
           }
         }]
       }
@@ -517,7 +517,7 @@ function exportResponsesToCSV() {
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    var filename=surName.replace(" ", "_") + "_" + new Date().toLocaleDateString() + ".csv"
+    var filename=surName.replace(" ", "_") + "_" + new Date().toLocaleDateString() + ".csv";
     link.setAttribute("download", filename);
     link.innerHTML = "Click Here to download";
     document.body.appendChild(link); // Required for FF
