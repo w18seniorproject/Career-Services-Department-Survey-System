@@ -72,7 +72,7 @@ function displayAllGroups() {
             groupArr.push(results[num].groupName);
         }
         timeSum += results[num].time;
-        rSum += results[num].rLevel;
+        rSum += results[num].rLevel+1;
         timeSumofSquares += results[num].time * results[num].time;
     }
     timeVar = (num * timeSumofSquares - timeSum * timeSum) / (num * num);
@@ -114,7 +114,7 @@ function displayGroup(groupNum) {
         if (groupArr.indexOf(results[i].groupName) === groupNum - 1) {
             num++;
             timeSum += results[i].time;
-            rSum += results[i].rLevel;
+            rSum += results[i].rLevel+1;
             timeSumofSquares += results[i].time * results[i].time;
         }
     }
@@ -130,7 +130,7 @@ function constructDashDataHTML(rAvg, timeAvg, num, timeSD) {
     var toReturn = "<h4>TOTAL RESPONSES</h4><h3>" + num + "</h3></br>\
                     <h4>TIME</h4><h3>Average: " + Math.round(timeAvg) + " Seconds</h3>\
                     <h3>Standard Deviation: " + Math.round(timeSD) + " Seconds</h3></br>\
-                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg + 1) + "</h3>";
+                    <h4>AVERAGE RLEVEL</h4><h3>" + (rAvg) + "</h3>";
 
     return toReturn;
 }
@@ -393,12 +393,28 @@ function displayComments() {
 
 function relationsButton() {
   groupArray = [];
-  avgArray = [];
-  for (var i in avgResultJSON) {
-    groupArray.push(avgResultJSON[i].groupName);
-    avgArray.push(avgResultJSON[i].rLevel);
-
+  tempArray = [];
+  avgArray=[];
+  groupArray.push("Overall");
+  tempArray["Overall"]={"count":0, "total":0};
+  for(var i=0; i<results.length; i++)
+  {
+    if (!groupArray.includes(results[i].groupName)) {
+        var gN=results[i].groupName;
+        groupArray.push(gN);
+        tempArray[gN]= {"count":0, "total":0}
+    }
+    tempArray["Overall"].total=tempArray["Overall"].total+(results[i].rLevel+1);
+    tempArray["Overall"].count=tempArray["Overall"].count + 1;
+    tempArray[gN].total=tempArray[gN].total+(results[i].rLevel+1);
+    tempArray[gN].count=tempArray[gN].count+1;
   }
+  for(var i=0; i<Object.values(tempArray).length; i++)
+  {
+    var avg=+(((Object.values(tempArray)[i].total)/(Object.values(tempArray)[i].count)).toFixed(2));
+    avgArray.push(avg)
+  }
+
 if (resultChart != null) {
     resultChart.destroy();
   }
@@ -419,30 +435,42 @@ if (resultChart != null) {
       }],
       labels: groupArray
     },
-animation: {
-    onComplete: function () {
-        var ctx = this.chart.ctx;
-        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-        ctx.fillStyle = "black";
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
 
-        this.data.datasets.forEach(function (dataset)
-        {
-            for (var i = 0; i < dataset.data.length; i++) {
-                for(var key in dataset._meta)
-                {
-                    var model = dataset._meta[key].data[i]._model;
-                    ctx.fillText(dataset.data[i], model.x, model.y - 5);
-                }
-            }
-        });
-    }
-},
     options: {
+      animation: {
+          onComplete: function () {
+              var ctx = this.chart.ctx;
+              ctx.font = "10pt Arial";
+              ctx.fillStyle = "black";
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
 
+              this.data.datasets.forEach(function (dataset)
+              {
+                  for (var i = 0; i < dataset.data.length; i++) {
+                      for(var key in dataset._meta)
+                      {
+                          var model = dataset._meta[key].data[i]._model;
+                          ctx.fillText(dataset.data[i], model.x, model.y);
+                      }
+                  }
+              });
+          }
+      },
+      title: {
+
+        display: true,
+        fontStyle:'bold',
+        fontSize: 20,
+        padding:10,
+        text: "Average Relation Level For Each Department"
+      },
       scales: {
         yAxes: [{
+          scaleLabel: {
+          display:true,
+          labelString: "Average Relation Level"
+        },
           ticks: {
             beginAtZero: true
           }
@@ -489,7 +517,7 @@ function exportResponsesToCSV() {
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-	var filename=surveyName+".csv"
+    var filename=surName.replace(" ", "_") + "_" + new Date().toLocaleDateString() + ".csv";
     link.setAttribute("download", filename);
     link.innerHTML = "Click Here to download";
     document.body.appendChild(link); // Required for FF
