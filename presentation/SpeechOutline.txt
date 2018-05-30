@@ -1,0 +1,25 @@
+So you've seen how it works and what makes it stand out:
+- Tailoring to EWU purposes
+- Features specially made for the continuum
+
+But you can't get wrapped up in that.
+Its uses extend far beyond the singular purpose originally intended.
+
+I can imagine the entirety of the EWU faculty using it for things.
+Canvas is big and clunky, and though it does what it's supposed to well, it's not designed for opinion interactions with students.
+Instructors could use this to quickly get a group response from their class.
+
+EWU staff could use it to get campus-wide polling results easily, and without turning to a third party
+
+Not only that, but we've got it all packaged nicely in one archive, with an install script for easy deployment.
+That, coupled with the modularity of the system, means you can go in, change some colors and logos, and boom, you've got yourself a web-based survey system even outside the university.
+
+It's not using any weird esoteric frameworks or anything that's difficult to set up.
+Just a pure LAMP stack and a couple jQuery plugins, so it can run on ANY linux server.
+
+As we noted, it works well on mobile, both on the pollster and the taker side, so there's an appeal to the general public there.
+
+Most of all, because of the simplicity of our design approach, it would be one of the easiest projects in the world to jump into and add functionality to if you felt the need.
+
+All in all, the goal was to create a survey system tailored to the needs of our client and the university, without sacrificing extendability or usability elsewhere, and I think we achieved that.
+Thank you.
