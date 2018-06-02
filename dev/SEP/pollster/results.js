@@ -470,6 +470,7 @@ if (resultChart != null) {
   });
 }
 
+//Exports All Responses To Questions Of Survey In A CSV File
 function exportResponsesToCSV() {
     let csvContent = "data:text/csv;charset=utf-8,";
     var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
@@ -512,10 +513,10 @@ function exportResponsesToCSV() {
     link.innerHTML = "Click Here to download";
     document.body.appendChild(link); // Required for FF
 
-    link.click(); // This will download the data file named "my_data.csv".
+    link.click(); // This will download the data file named "surName.csv".
 }
 
-
+//Gets Average Rel Levels For Every Group In An Array Format
 function getAverageRelLevels()
 {
   groupArray = [];
@@ -547,6 +548,7 @@ function getAverageRelLevels()
   return overallArray;
 }
 
+//Parses Results Into A Workable Array Format
 function getAndParseResults()
 {
   var normalContent = [];
@@ -583,6 +585,7 @@ function getAndParseResults()
   }
   return normalContent;
 }
+//Creates And Exports A PDF Report Containing Average Relation Levels, and Complete Results From The Survey
 function exportDataToPDF()
 {
 
@@ -664,7 +667,7 @@ function exportDataToPDF()
   pdfMake.createPdf(dd).download(surName+"Results.pdf");
 
 }
-
+//Creates And Exports A PDF Report Containing The Currently Displayed Chart, Average Results, and Complete Results From The Survey
 function pdfReport()
 {
   var overallArray=getAverageRelLevels();
