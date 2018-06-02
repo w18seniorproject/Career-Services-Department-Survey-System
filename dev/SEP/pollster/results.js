@@ -659,11 +659,11 @@ function pdfReport()
   var dd={
     content:[
 
-      {text: surName+" Report", fontSize: 18, bold: true, margin: [0, 0, 0, 10]},
+      {text: surName+" Report", fontSize: 24, bold: true, margin: [0, 0, 0, 10]},
       {
         image: url_base64,
-        width: 550,
-			  height: 300,
+        width: 500,
+	height: 300,
       },
       {text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
       {
