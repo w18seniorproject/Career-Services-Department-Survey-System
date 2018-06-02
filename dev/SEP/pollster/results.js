@@ -589,14 +589,12 @@ function exportDataToPDF()
   var overallArray=getAverageRelLevels();
   var normalContent=getAndParseResults();
 
-  	alert(overallArray[0].length);
     var length=100.0/overallArray[0].length;
     var colWidthsOverall=[];
     for(var i=0; i<overallArray[0].length; i++)
     {
       colWidthsOverall.push(length+"%");
     }
-  	alert(normalContent[0].length);
     length=100.0/normalContent[0].length;
     var colWidthsNormal=[];
     for(var i=0; i<normalContent[0].length; i++)
@@ -672,14 +670,12 @@ function pdfReport()
   var overallArray=getAverageRelLevels();
   var normalContent=getAndParseResults();
 
-	alert(overallArray[0].length);
   var length=100.0/overallArray[0].length;
   var colWidthsOverall=[];
   for(var i=0; i<overallArray[0].length; i++)
   {
     colWidthsOverall.push(length+"%");
   }
-	alert(normalContent[0].length);
   length=100.0/normalContent[0].length;
   var colWidthsNormal=[];
   for(var i=0; i<normalContent[0].length; i++)
