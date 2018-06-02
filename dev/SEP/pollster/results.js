@@ -7,7 +7,6 @@ var ctx;
 var resultChart = null;
 var curGroupName = "ALL_OF_THE_GROUPS";
 var surName;
-
 $(document).ready(function () {
   temp = document.getElementById("chart");
   ctx = temp.getContext("2d");
@@ -27,6 +26,7 @@ function showData(surveyName) {
                                         </div>");
                 $("#showChartsButton").remove();
                 $("#exportDataButton").remove();
+                $("#exportDataPDFButton").remove();
             }
             else {
                 var data = JSON.parse(response);
@@ -46,22 +46,6 @@ function showData(surveyName) {
         }
 
     });
-
-    $.ajax({
-
-    type: "POST",
-    url: "../index.php",
-    data: ({aType: "POLL", pReqType: "RESULT", getAvgResults: "yes", surName: surveyName }),
-    success: function (json) {
-      if(!json.includes("THERE ARE NO RESULTS TO BE HAD"))
-      {
-      avgResultJSON = JSON.parse(json);
-    }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-     alert("some error");
-    }
-  });
 }
 
 function displayAllGroups() {
@@ -390,7 +374,7 @@ function displayComments() {
 
 
 }
-
+//Creates Chart On Canvas After Parsing
 function relationsButton() {
   groupArray = [];
   tempArray = [];
@@ -455,6 +439,12 @@ if (resultChart != null) {
                       }
                   }
               });
+
+              var base64Chart=resultChart.toBase64Image();
+                document.getElementById("exportChartButton").download=surName+".jpeg";
+              document.getElementById("exportChartButton").href=base64Chart;
+              document.getElementById("exportChartButton").style.display="block";
+              document.getElementById("pdfReportButton").style.display="block";
           }
       },
       title: {
@@ -523,4 +513,212 @@ function exportResponsesToCSV() {
     document.body.appendChild(link); // Required for FF
 
     link.click(); // This will download the data file named "my_data.csv".
+}
+
+
+function getAverageRelLevels()
+{
+  groupArray = [];
+  tempArray = [];
+  avgArray=[];
+  groupArray.push("Overall");
+  tempArray["Overall"]={"count":0, "total":0};
+  for(var i=0; i<results.length; i++)
+  {
+    if (!groupArray.includes(results[i].groupName)) {
+        var gN=results[i].groupName;
+        groupArray.push(gN);
+        tempArray[gN]= {"count":0, "total":0}
+    }
+    tempArray["Overall"].total=tempArray["Overall"].total+(results[i].rLevel+1);
+    tempArray["Overall"].count=tempArray["Overall"].count + 1;
+    tempArray[gN].total=tempArray[gN].total+(results[i].rLevel+1);
+    tempArray[gN].count=tempArray[gN].count+1;
+  }
+
+  for(var i=0; i<Object.values(tempArray).length; i++)
+  {
+    var avg=+(((Object.values(tempArray)[i].total)/(Object.values(tempArray)[i].count)).toFixed(2));
+    avgArray.push(avg.toString());
+  }
+  overallArray=[];
+  overallArray.push(groupArray);
+  overallArray.push(avgArray);
+  return overallArray;
+}
+
+function getAndParseResults()
+{
+  var normalContent = [];
+  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+  for (var i = 0; i < questions.length; i++) {
+      titleRowArray.push("Question "+(i+1)+": "+questions[i].qText);
+  }
+  normalContent.push(titleRowArray);
+  for (var i = 0; i < results.length; i++) {
+      var row = [];
+      row.push(i+1);
+      row.push(results[i].groupName);
+      row.push(results[i].rLevel+1);
+
+      var resultJSON = JSON.parse(results[i].surResults);
+      for (var j = 0; j < resultJSON.length; j++) {
+          var resultForQuestion = JSON.parse(resultJSON[j]);
+          var itemResponses = [];
+          for (var k = 0; k < resultForQuestion.length; k++) {
+              var response = JSON.parse(resultForQuestion[k]).value;
+              var tempIndex = response.indexOf(",");
+              var newString = response.substr(0, tempIndex);
+              if(newString == ""){
+                  newString = response.split(" ")[0];
+              }
+              itemResponses.push(newString);
+          }
+  itemResponses=itemResponses.join(";");
+          row.push(itemResponses);
+      }
+
+      normalContent.push(row);
+
+  }
+  return normalContent;
+}
+function exportDataToPDF()
+{
+
+  var overallArray=getAverageRelLevels();
+  var normalContent=getAndParseResults();
+
+  var dd={
+    content:[
+
+      {text: surName+" Results", fontSize: 18, bold: true, margin: [0, 0, 0, 10]},
+      {text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+      {
+        table:{
+          headerRows: 1,
+          body: overallArray
+        },
+        layout: {
+				      hLineWidth: function (i, node) {
+					           return (i === 0 || i === node.table.body.length) ? 2 : 1;
+				    },
+				    vLineWidth: function (i, node) {
+					     return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+				    },
+				    hLineColor: function (i, node) {
+					         return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+				    },
+				    vLineColor: function (i, node) {
+					         return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+				    },
+          fillColor: function (i, node) {
+					       return (i % 2 === 0) ? '#CCCCCC' : null;
+				    }
+			   }
+      },
+      {text: "Complete Results", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+      {
+          table:{
+            headerRows:1,
+            body: normalContent
+          },
+          layout: {
+  				      hLineWidth: function (i, node) {
+  					           return (i === 0 || i === node.table.body.length) ? 2 : 1;
+  				    },
+  				    vLineWidth: function (i, node) {
+  					     return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+  				    },
+  				    hLineColor: function (i, node) {
+  					         return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+  				    },
+  				    vLineColor: function (i, node) {
+  					         return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+  				    },
+            fillColor: function (i, node) {
+  					       return (i % 2 === 0) ? '#CCCCCC' : null;
+  				    }
+  			   }
+
+      }
+
+
+    ]
+  };
+
+  pdfMake.createPdf(dd).download(surName+"Results.pdf");
+
+}
+
+function pdfReport()
+{
+  var overallArray=getAverageRelLevels();
+  var normalContent=getAndParseResults();
+  var url_base64 = resultChart.toBase64Image();
+  var dd={
+    content:[
+
+      {text: surName+" Report", fontSize: 18, bold: true, margin: [0, 0, 0, 10]},
+      {
+        image: url_base64,
+        width: 550,
+			  height: 300,
+      },
+      {text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+      {
+        table:{
+          headerRows: 1,
+          body: overallArray
+        },
+        layout: {
+              hLineWidth: function (i, node) {
+                     return (i === 0 || i === node.table.body.length) ? 2 : 1;
+            },
+            vLineWidth: function (i, node) {
+               return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+            },
+            hLineColor: function (i, node) {
+                   return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+            },
+            vLineColor: function (i, node) {
+                   return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+            },
+          fillColor: function (i, node) {
+                 return (i % 2 === 0) ? '#CCCCCC' : null;
+            }
+         }
+      },
+      {text: "Complete Results", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+      {
+          table:{
+            headerRows:1,
+            body: normalContent
+          },
+          layout: {
+                hLineWidth: function (i, node) {
+                       return (i === 0 || i === node.table.body.length) ? 2 : 1;
+              },
+              vLineWidth: function (i, node) {
+                 return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+              },
+              hLineColor: function (i, node) {
+                     return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+              },
+              vLineColor: function (i, node) {
+                     return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+              },
+            fillColor: function (i, node) {
+                   return (i % 2 === 0) ? '#CCCCCC' : null;
+              }
+           }
+
+      }
+
+
+    ]
+  };
+
+  pdfMake.createPdf(dd).download(surName+"Report.pdf");
+
 }
