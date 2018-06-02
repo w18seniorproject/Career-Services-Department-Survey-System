@@ -51,6 +51,10 @@
                     echo "NOT LOGGED IN";
                     exit();
                 }
+                elseif(isset($_SESSION['userName'])){
+                    echo "TRUE";
+                    exit();
+                }
             }
             //Account management handling
             elseif($_POST['pReqType'] === 'MNGACT'){
@@ -213,22 +217,21 @@
                         exit();
                     }
                 }
-                elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray']) && isset($_POST['update'])){
-                    if($_POST['update'] == true){
-                        try{    
-                            Survey::updateSurvey ($db);
-                        } catch (Exception $e){
-                            json_encode(array( 'error'  => 'Error updating survey\nError: ' .  $e->getMessage() . "\n"));
-                            exit();
-                        }
+                elseif(isset($_POST['update'])){
+                    try{    
+                        Survey::updateSurvey ($db);
+                    } catch (Exception $e){
+                        json_encode(array( 'error'  => 'Error updating survey\nError: ' .  $e->getMessage() . "\n"));
+                        exit();
                     }
-                    else{
-                        try{
-                            Survey::createSurvey($db);
-                        } catch (Exception $e){
-                            json_encode(array( 'error'  => 'Error creating survey\nError: ' .  $e->getMessage() . "\n"));
-                            exit();
-                        }
+                    exit();
+                }
+                elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray'])){
+                    try{
+                        Survey::createSurvey($db);
+                    } catch (Exception $e){
+                        json_encode(array( 'error'  => 'Error creating survey\nError: ' .  $e->getMessage() . "\n"));
+                        exit();
                     }
                     exit();
                 }
