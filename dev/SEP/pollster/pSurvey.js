@@ -482,6 +482,7 @@ function post(toSend, update){
 }
 
 function fillSurveyFields(surveyName){
+    $(".legend").html("Edit Survey");
     $.ajax({
         type: 'POST',
         url: '../index.php',
