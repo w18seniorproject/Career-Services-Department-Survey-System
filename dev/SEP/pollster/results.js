@@ -589,6 +589,20 @@ function exportDataToPDF()
   var overallArray=getAverageRelLevels();
   var normalContent=getAndParseResults();
 
+  	alert(overallArray[0].length);
+    var length=100.0/overallArray[0].length;
+    var colWidthsOverall=[];
+    for(var i=0; i<overallArray[0].length; i++)
+    {
+      colWidthsOverall.push(length+"%");
+    }
+  	alert(normalContent[0].length);
+    length=100.0/normalContent[0].length;
+    var colWidthsNormal=[];
+    for(var i=0; i<normalContent[0].length; i++)
+    {
+      colWidthsNormal.push(length+"%");
+    }
   var dd={
     content:[
 
@@ -597,7 +611,8 @@ function exportDataToPDF()
       {
         table:{
           headerRows: 1,
-          body: overallArray
+          body: overallArray,
+          widths:colWidthsOverall
         },
         layout: {
 				      hLineWidth: function (i, node) {
@@ -621,7 +636,8 @@ function exportDataToPDF()
       {
           table:{
             headerRows:1,
-            body: normalContent
+            body: normalContent,
+            widths:colWidthsNormal
           },
           layout: {
   				      hLineWidth: function (i, node) {
@@ -655,6 +671,21 @@ function pdfReport()
 {
   var overallArray=getAverageRelLevels();
   var normalContent=getAndParseResults();
+
+	alert(overallArray[0].length);
+  var length=100.0/overallArray[0].length;
+  var colWidthsOverall=[];
+  for(var i=0; i<overallArray[0].length; i++)
+  {
+    colWidthsOverall.push(length+"%");
+  }
+	alert(normalContent[0].length);
+  length=100.0/normalContent[0].length;
+  var colWidthsNormal=[];
+  for(var i=0; i<normalContent[0].length; i++)
+  {
+    colWidthsNormal.push(length+"%");
+  }
   var url_base64 = resultChart.toBase64Image();
   var dd={
     content:[
@@ -669,7 +700,8 @@ function pdfReport()
       {
         table:{
           headerRows: 1,
-          body: overallArray
+          body: overallArray,
+          widths:colWidthsOverall
         },
         layout: {
               hLineWidth: function (i, node) {
@@ -693,7 +725,8 @@ function pdfReport()
       {
           table:{
             headerRows:1,
-            body: normalContent
+            body: normalContent,
+            widths:colWidthsNormal
           },
           layout: {
                 hLineWidth: function (i, node) {
