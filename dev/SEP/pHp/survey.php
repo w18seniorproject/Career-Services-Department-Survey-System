@@ -18,7 +18,7 @@
 
             foreach($postData['sections'] as $section){  
                 foreach($section['questions'] as $question){
-                    if($question['type'] == "mc" || $question['type'] == "chk"){
+                    if($question['type'] == "mc" || $question['type'] == "chk" || $question['type'] == "s"){
                         Survey::choiceAddToDB($conn, $_SESSION['surName'], $question['num'], $question['type'], $question['text'], $question['answers'], $question['qAns'], $question['weight'], $section['secNum'], $section['secName'], $acctName);
                     }else{
                         Survey::otherAddToDB($conn, $_SESSION['surName'], $question['num'], $question['type'], $question['text'], $question['qAns'], $question['weight'], $section['secNum'], $section['secName'], $acctName);

@@ -60,7 +60,7 @@ function constructQuestionHTML(){
                             <th><span class='close qClose'>&#10799</span></th>\
                         </tr></table>\
                         <input class='form-control input qText' placeholder='Enter Question Text' type='text'></br>\
-                        <input class='form-control qWeight' placeholder='Enter Weight' type='number' min='0'>\
+                        <input class='form-control qWeight' value='0' type='number' min='0'>\
                         <input class='form-control qNum' type='hidden'>\
                         </br>\
                         <select class='form-control select'>\
@@ -83,7 +83,7 @@ function constructSectionHTML(){
                                 <th><span class='close sClose'>&#10799</span></th>\
                             </tr></table>" +
                             "<input class='form-control input secName' placeholder='Enter a Section Title' type='text'></br>" +
-                            "<input class='form-control minScore' placeholder='Enter Minimum Section Score' type='number' min='0'>" +
+                            "<input class='form-control minScore' value='0' type='number' min='0'>" +
                         "</div>\
                         </br>\
                         <hr>\
@@ -186,7 +186,7 @@ function constructRadioHTML(tableAncestor){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' on='false' type='radio' name='r" + identifier + "'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
-                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number' min='0'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' value='0' type='number' min='0'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -196,7 +196,7 @@ function constructCheckboxHTML(){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' type='checkbox'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
-                        <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='number' min='0'></th>\
+                        <th class='qCell center-th'><input class='form-control qPoints' value='0' type='number' min='0'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
                     </tr>";
     return toReturn;
@@ -220,27 +220,39 @@ function constructScaleHTML(tableAncestor){
     var identifier = $(tableAncestor).attr('id');
     var toReturn = "<tr>\
                         <th>\
-                            <input class='ans' on='false' value='std' type='radio' name='r" + identifier + "'><label>Strongly Disagree</label>\
-                        </th>\
-                        <th>\
                             <input class='ans' on='false' value='sta' type='radio' name='r" + identifier + "'><label>Strongly Agree</label>\
+                            <input class='form-control qPoints' value='0' type='number' min='0'>\
                         </th>\
                     </tr>\
                     <tr>\
                         <th>\
-                            <input class='ans' on='false' value='d' type='radio' name='r" + identifier + "'><label>Disagree</label>\
-                        </th>\
-                        <th>\
                             <input class='ans' on='false' value='a' type='radio' name='r" + identifier + "'><label>Agree</label>\
+                            <input class='form-control qPoints' value='0' type='number' min='0'>\
+                        </th>\
+                    </tr>\
+                    <tr>\
+                        <th>\
+                            <input class='ans' on='false' value='sla' type='radio' name='r" + identifier + "'><label>Slightly Agree</label>\
+                            <input class='form-control qPoints' value='0' type='number' min='0'>\
+                        </th>\
+                    </tr>\\n\
+                    <tr>\
+                        <th>\
+                            <input class='ans' on='false' value='d' type='radio' name='r" + identifier + "'><label>Disagree</label>\
+                            <input class='form-control qPoints' value='0' type='number' min='0'>\
                         </th>\
                     </tr>\
                     <tr>\
                         <th>\
                             <input class='ans' on='false' value='sld' type='radio' name='r" + identifier + "'><label>Slightly Disagree</label>\
+                            <input class='form-control qPoints' value='0' type='number' min='0'>\
                         </th>\
+                    </tr>\
+                    <tr>\
                         <th>\
-                            <input class='ans' on='false' value='sla' type='radio' name='r" + identifier + "'><label>Slightly Agree</label>\
-                        </th>\
+                            <input class='ans' on='false' value='std' type='radio' name='r" + identifier + "'><label>Strongly Disagree</label>\n\
+                            <input class='form-control qPoints' value='0' type='number' min='0'>\
+                        </th>\\n\
                     </tr>";
     return toReturn;
 }
@@ -407,17 +419,22 @@ function submit(update){
                 });
                 survey.sections[i].questions[j].qAns = val;
             }
-            else{
+            else if(qType === "s"){
                 var val = 'none';
+                var scores = '';
                 $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
                     $(tr).find("th").each(function(l, th){
                         var choiceChecked = $(th).find("input").attr("on");
+                        var qPoints = $(th).find(".qPoints").val();
                         if(choiceChecked === "true"){
                             val = $(th).find("input").attr('value');
                         }
+                        scores += (" " + qPoints);
                     });
                 });
+                scores = scores.substring(1);
                 survey.sections[i].questions[j].qAns = val;
+                survey.sections[i].questions[j].answers = scores;
             }
         });
         if(exit){
@@ -515,6 +532,15 @@ function fillSurveyFields(surveyName){
                         $(".qTable").eq(i).children().find(".ans")[1].setAttribute("on", true);
                         $(".qTable").eq(i).children().find(".ans")[1].checked = true;
                     }
+                }else if(questions[i].qType === 's'){
+                    var points = questions[i].qChoices.split(" ");
+                    $(".qTable").eq(i).children().find(".qPoints").each(function(k, qPoints){
+                        qPoints.value = points[k];
+                    });
+                    $(".qTable").eq(i).children().find(".ans").each(function(k, ans){
+                        if(questions[i].qAns === ans.value)
+                            ans.checked = true;
+                    });
                 }
             }
             $("#save").prop('onclick',null).off('click');

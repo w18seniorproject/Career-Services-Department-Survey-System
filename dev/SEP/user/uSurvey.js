@@ -57,12 +57,13 @@ function getMCAns(quest){
 }
 
 function getSCAns(quest){
-    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sta">Strongly Agree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' + quest.qNum + '" value="a">Agree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sla">Slightly Agree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sld">Slightly Disagree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="d">Disagree</label>' +
-                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="std">Strongly Disagree</label>';
+    var scores = quest.qChoices.split(" ");
+    var toReturn =  '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sta ' + scores[0] +'">Strongly Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' + quest.qNum + '" value="a ' + scores[1] +'">Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sla ' + scores[2] +'">Slightly Agree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="sld ' + scores[3] +'">Slightly Disagree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="d ' + scores[4] +'">Disagree</label>' +
+                    '<label class="quest s'+ quest.rLevel + '"><input class="ans SC n' + quest.qNum + ' s' + quest.rLevel + '" type="radio" name="' +quest.qNum + '" value="std ' + scores[5] +'">Strongly Disagree</label>';
     return toReturn;
 }
 
@@ -224,7 +225,7 @@ function checkAns(){
 
 function checkScore(){
     var answers, lastQ;
-    var score = 0;
+    var score = 0, minScore = 0;
     
     lastQ = secBound[curSec];
     
@@ -237,11 +238,17 @@ function checkScore(){
                 }
                 else if(answers[i].classList.contains('TF')){
                     score += parseInt(answers[i].value.split(' ')[1]) * qWeights[curQ - 1];
+                }else if(answers[i].classList.contains('SC')){
+                    score += parseInt(answers[i].value.split(' ')[1]) * qWeights[curQ - 1];
                 }
             }
         }    
     }
-    if(score >= secReqs[curSec - 1].minScore)
+    
+    for(var j = 0; j < curSec; j++)
+        minScore = minScore + secReqs[j].minScore;
+    
+    if(score >= minScore)
         return true;
     else
         return false;
