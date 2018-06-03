@@ -22,7 +22,6 @@ function showNotifications(){
         error: function(jqxr, status, exception){
             alert("Failure at showNotifications() ajax call in notifications.js: " + exception);
         }
-
     });
 }
 

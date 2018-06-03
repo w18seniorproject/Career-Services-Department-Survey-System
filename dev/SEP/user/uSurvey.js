@@ -282,7 +282,7 @@ function sendResults(){
     $.ajax({
         url: '../index.php',
         type: 'post',
-        data: {response : results, aType: 'TAKE'},
+        data: {response: results, rLevel: curSec - 1, aType: 'TAKE'},
         success: function (data) {
             $("#survey-wrapper").html(" <form class='form-centered'>\
                                             <legend class='legend'>Thank You</legend>" +

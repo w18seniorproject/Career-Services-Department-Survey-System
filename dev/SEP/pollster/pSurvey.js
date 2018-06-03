@@ -235,12 +235,6 @@ function constructScaleHTML(tableAncestor){
     <input class='ans' on='false' value='sla' type='radio' name='r" + identifier + "'><label>Slightly Agree</label>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
-    </tr>\\n\
-    <tr>\
-    <th>\
-    <input class='ans' on='false' value='d' type='radio' name='r" + identifier + "'><label>Disagree</label>\
-    <input class='form-control qPoints' value='0' type='number' min='0'>\
-    </th>\
     </tr>\
     <tr>\
     <th>\
@@ -250,9 +244,15 @@ function constructScaleHTML(tableAncestor){
     </tr>\
     <tr>\
     <th>\
+    <input class='ans' on='false' value='d' type='radio' name='r" + identifier + "'><label>Disagree</label>\
+    <input class='form-control qPoints' value='0' type='number' min='0'>\
+    </th>\
+    </tr>\
+    <tr>\
+    <th>\
     <input class='ans' on='false' value='std' type='radio' name='r" + identifier + "'><label>Strongly Disagree</label>\n\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
-    </th>\\n\
+    </th>\
     </tr>";
     return toReturn;
 }
@@ -555,7 +555,10 @@ function fillSurveyFields(surveyName){
                     });
                     $(".qTable").eq(i).children().find(".ans").each(function(k, ans){
                         if(questions[i].qAns === ans.value)
-                            ans.checked = true;
+                        {
+                            $(".qTable").eq(i).children().find(".ans")[k].setAttribute("on", true);
+                            $(".qTable").eq(i).children().find(".ans")[k].checked = true;
+                        }
                     });
                 }
             }

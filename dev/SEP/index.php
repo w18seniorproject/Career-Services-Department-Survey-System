@@ -325,9 +325,9 @@
             }
             //check if taker is posting a response to a survey; if so, send
             //results and unset session variables
-            elseif(isset($_POST['response']) && isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
+            elseif(isset($_POST['response']) && isset($_POST['rLevel']) && isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
                 try{
-                    Response::sendResponse($db, $_POST['response'], 0);
+                    Response::sendResponse($db, $_POST['response'], $_POST['rLevel']);
                     exit();
                 } catch (Exception $e){
                     json_encode(array( 'error'  => 'Error posting response\nError: ' .  $e->getMessage() . "\n"));
