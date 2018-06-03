@@ -2,9 +2,7 @@
     // Provides surveyTaker login and verification
     class TakerLogin{
         public static function login($db){
-            $conn = $db->getConnection('taker');
-            $pin = new pin($conn);
-            $survey = json_decode($pin->getPin($_POST['pin']), true);
+            $survey = json_decode(Pin::getPin($db, $_POST['pin']));
 
             if(isset($survey['surName']) && isset($survey['acctName'])){
                 $surveyName = $survey['surName'];

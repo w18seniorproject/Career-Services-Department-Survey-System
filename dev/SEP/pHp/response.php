@@ -1,4 +1,9 @@
 <?php
+    /** 
+     * Response Class: 
+     *  Holds a static function that inserts new responses to a survey into the
+     *  DB and updates the proper notifications table.
+     **/
     class Response{ 
         private $conn;
         private $table = "results";
@@ -7,6 +12,7 @@
             $this->conn = $db->getConnection('taker');
         }
         
+        //Static function to send responses to DB/update notifcations
         public static function sendResponse($db, $surResults, $rLevel){
             $notifConn = $db->getConnection("taker");
             $acctName = $_SESSION['acctName'];
@@ -24,6 +30,7 @@
             unset($_SESSION['startTime']);
         }
         
+        //Helper function that builds the query for sendResponse
         private function buildQuery($surResults, $rLevel){
             if(isset($_SESSION["surName"]) && isset($_SESSION["acctName"])){
                 if(!isset($_SESSION["groupName"])){

@@ -1,6 +1,5 @@
 <?php
     //Single entry point for the whole system. All .html files are directed here, and redirected appropriately.
-    error_reporting(E_ALL);
     session_start();
 
     $root = $_SERVER['DOCUMENT_ROOT'];

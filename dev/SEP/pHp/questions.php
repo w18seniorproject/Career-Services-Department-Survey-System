@@ -1,18 +1,25 @@
 <?php
+    /** 
+     * Questions Class: 
+     *  Holds a static function that returns all questions for a given survey.
+     **/
     class Questions{ 
         private $conn;
         private $table = "questions";
 
-        public function __construct($conn){
+        private function __construct($conn){
             $this->conn = $conn;
         }
         
+        //Static function that returns all questions for a given survey.
         public static function getQuestions($db){ 
             $quest = new Questions($db->getConnection('taker'));
             $questions = $quest->queryDB($_SESSION['surName'], $_SESSION['acctName']);
             return $questions;
         }
         
+        //Helper function that querys the DB for questions based on survey and
+        //user name and formats them into a JSON object.
         private function queryDB($surName, $acctName){
             $stmt = $this->buildQuery($surName, $acctName);
 
@@ -45,7 +52,8 @@
                 return json_encode(array("message" => "No questions."));
             }
         }
-
+        
+        //Helper function that builds the query for queryDB
         private function buildQuery($surName, $acctName){
             $query = "SELECT * FROM " . $this->table;
 
