@@ -12,7 +12,7 @@ var maxSec;
 var secBound;
 var secReqs;
 var qWeights;
-var questions
+var questions;
 
 function setupPage(){
     $("#header").load("../plainHeader.html");

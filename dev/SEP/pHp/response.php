@@ -54,11 +54,4 @@
                 throw new Exception('Variable not set.');
             }
         }
-    }
-
-	
-					
-					
-					
-
-					
+    }		

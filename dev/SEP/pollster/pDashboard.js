@@ -50,9 +50,9 @@ function layoutScreen(){
                                 </div>\
                             </div>");
     }
-    $("#surBtn").click(function(){showCreateSurvey()});
-    $("#acctBtn").click(function(){showMyAccount()});
-    $("#welcomeBtn").click(function(){showWelcome()});
+    $("#surBtn").click(function(){showCreateSurvey();});
+    $("#acctBtn").click(function(){showMyAccount();});
+    $("#welcomeBtn").click(function(){showWelcome();});
 }
 
 function handleResizeNotMobile(){
@@ -95,26 +95,26 @@ function displaySurveys(){
             else{
                 container.html(constructSurveyListHTML(response));
                 $(".manage").each(function(i, ele){
-                    $(ele).on("click", function(){showManageSurvey($(ele).parent().parent().attr("surName"))});
+                    $(ele).on("click", function(){showManageSurvey($(ele).parent().parent().attr("surName"));});
                 });
                 $(".edit").each(function(i, ele){
-                    $(ele).on("click", function(){showEditSurvey($(ele).parent().parent().attr("surName"))});
+                    $(ele).on("click", function(){showEditSurvey($(ele).parent().parent().attr("surName"));});
                 });
                 $(".survey-left").each(function(i, ele){
-                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"))});
+                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"));});
                 });
                 $(".survey-middle").each(function(i, ele){
-                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"))});
+                    $(ele).on("click", function(){showResults($(ele).parent().attr("surName"));});
                 });
                 $(".surveyListItem").each(function(i, ele){
-                    $(ele).on("click", function(){showSelectedItem(ele)});
-                })
+                    $(ele).on("click", function(){showSelectedItem(ele);});
+                });
             }
         },
         error: function(jxqr, status, exception){
             alert("Failing at displaySurveys() ajax call in pDashboard.js: " + exception);
         }
-    })
+    });
 }
 
 function constructSurveyListHTML(surveyJSON){
@@ -288,7 +288,7 @@ function getNotifications(){
         error: function(jxqr, status, exception){
             alert("Failure at getNotifications() ajax call in pDashboard.js: " + exception);
         }
-    })
+    });
 }
 
 function openNotifications(){

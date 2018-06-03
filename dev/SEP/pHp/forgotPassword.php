@@ -71,5 +71,3 @@ converted to hexadecimal, hashed, stored, and sent to the user via email in a li
             }
         }
     }
-
-

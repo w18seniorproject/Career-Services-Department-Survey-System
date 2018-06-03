@@ -80,7 +80,7 @@ function displayGroupButtons() {
             $(".gb").each(function (i, element) {
                 $(element).removeClass("btn-secondary");
                 $(element).addClass("btn-primary");
-            })
+            });
             $(ele).removeClass("btn-primary");
             $(ele).addClass("btn-secondary");
         });
@@ -361,7 +361,7 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response, qType) {
             toReturn += bar;
         }
     }
-    toReturn += "</div></br>"
+    toReturn += "</div></br>";
     return toReturn;
 }
 
@@ -386,7 +386,7 @@ function relationsButton() {
     if (!groupArray.includes(results[i].groupName)) {
         var gN=results[i].groupName;
         groupArray.push(gN);
-        tempArray[gN]= {"count":0, "total":0}
+        tempArray[gN]= {"count":0, "total":0};
     }
     tempArray["Overall"].total=tempArray["Overall"].total+(results[i].rLevel+1);
     tempArray["Overall"].count=tempArray["Overall"].count + 1;
@@ -396,7 +396,7 @@ function relationsButton() {
   for(var i=0; i<Object.values(tempArray).length; i++)
   {
     var avg=+(((Object.values(tempArray)[i].total)/(Object.values(tempArray)[i].count)).toFixed(2));
-    avgArray.push(avg)
+    avgArray.push(avg);
   }
 
 if (resultChart != null) {
@@ -473,7 +473,7 @@ if (resultChart != null) {
 //Exports All Responses To Questions Of Survey In A CSV File
 function exportResponsesToCSV() {
     let csvContent = "data:text/csv;charset=utf-8,";
-    var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+    var titleRowArray = ["Record Number", "Group Name", "Relation Level"];
     for (var i = 0; i < questions.length; i++) {
         titleRowArray.push("Question "+(i+1)+": "+questions[i].qText);
     }
@@ -501,7 +501,7 @@ function exportResponsesToCSV() {
 		itemResponses=itemResponses.join(";");
             row.push(itemResponses);
         }
-        let resultRow = row.join(",")
+        let resultRow = row.join(",");
 
         csvContent += resultRow + "\r\n";
     }
@@ -529,7 +529,7 @@ function getAverageRelLevels()
     if (!groupArray.includes(results[i].groupName)) {
         var gN=results[i].groupName;
         groupArray.push(gN);
-        tempArray[gN]= {"count":0, "total":0}
+        tempArray[gN]= {"count":0, "total":0};
     }
     tempArray["Overall"].total=tempArray["Overall"].total+(results[i].rLevel+1);
     tempArray["Overall"].count=tempArray["Overall"].count + 1;
@@ -552,7 +552,7 @@ function getAverageRelLevels()
 function getAndParseResults()
 {
   var normalContent = [];
-  var titleRowArray = ["Record Number", "Group Name", "Relation Level"]
+  var titleRowArray = ["Record Number", "Group Name", "Relation Level"];
   for (var i = 0; i < questions.length; i++) {
       titleRowArray.push("Question "+(i+1)+": "+questions[i].qText);
   }
@@ -693,7 +693,7 @@ function pdfReport()
       {
         image: url_base64,
         width: 500,
-	height: 300,
+	height: 300
       },
       {text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
       {

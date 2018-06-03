@@ -1,8 +1,5 @@
 <?php
-
     class Charts{
-
-
       public static function GetSurNames($db)
       {
           $conn = $db->getConnection("poll");
@@ -121,6 +118,4 @@
             echo "THERE ARE NO RESULTS TO BE HAD";
         }
       }
-
-
     }
