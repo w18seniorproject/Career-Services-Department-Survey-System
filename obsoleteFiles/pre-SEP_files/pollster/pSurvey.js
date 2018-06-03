@@ -166,6 +166,7 @@ function constructRadioHTML(tableAncestor){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' on='false' type='radio' name='r" + identifier + "'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th class='qCell center-th'>Points</th>\
                         <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='text'></th>\
                         <th class='qCell center-th'><input class='form-control qWeight' placeholder='Enter Weight' type='text'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
@@ -177,6 +178,7 @@ function constructCheckboxHTML(){
     var toReturn = "<tr>\
                         <th class='center-th'><input class='ans' type='checkbox'></th>\
                         <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+                        <th class='qCell center-th'>Points</th>\
                         <th class='qCell center-th'><input class='form-control qPoints' placeholder='Enter Points' type='text'></th>\
                         <th class='qCell center-th'><input class='form-control qWeight' placeholder='Enter Weight' type='text'></th>\
                         <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\

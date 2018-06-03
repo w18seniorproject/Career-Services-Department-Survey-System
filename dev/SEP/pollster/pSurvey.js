@@ -59,11 +59,11 @@ function constructQuestionHTML(){
     <th><h3 class='qLabel'></h3></th>\
     <th><span class='close qClose'>&#10799</span></th>\
     </tr></table>\
-    <input class='form-control input qText' placeholder='Enter Question Text' type='text'></br>\
-    <input class='form-control qWeight' value='0' type='number' min='0'>\
+    Question Text:<input class='form-control input qText' placeholder='Enter Question Text' type='text'></br>\
+    Weight:<input class='form-control qWeight' value='0' type='number' min='0'>\
     <input class='form-control qNum' type='hidden'>\
     </br>\
-    <select class='form-control select'>\
+    Type:<select class='form-control select'>\
     <option disabled='disabled' selected='selected'>Select a Question Type</option>\
     <option value='mc'>Multiple Choice (Select correct answer. If there isn't one, leave blank)</option>\
     <option value='chk'>Checkboxes (Select correct answers. If there are none, leave blank)</option>\
@@ -82,8 +82,8 @@ function constructSectionHTML(){
     <th><h2 class='sNum'></h2></th>\
     <th><span class='close sClose'>&#10799</span></th>\
     </tr></table>" +
-    "<input class='form-control input secName' placeholder='Enter a Section Title' type='text'></br>" +
-    "<input class='form-control minScore' value='0' type='number' min='0'>" +
+    "Section Name:<input class='form-control input secName' placeholder='Enter a Section Title' type='text'></br>" +
+    "Min. Score:<input class='form-control minScore' value='0' type='number' min='0'>" +
     "</div>\
     </br>\
     <hr>\
@@ -186,6 +186,7 @@ function constructRadioHTML(tableAncestor){
     var toReturn = "<tr>\
     <th class='center-th'><input class='ans' on='false' type='radio' name='r" + identifier + "'></th>\
     <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+    <th class='qCell center-th'>Points:</th>\
     <th class='qCell center-th'><input class='form-control qPoints' value='0' type='number' min='0'></th>\
     <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
     </tr>";
@@ -196,6 +197,7 @@ function constructCheckboxHTML(){
     var toReturn = "<tr>\
     <th class='center-th'><input class='ans' type='checkbox'></th>\
     <th class='qCell center-th'><input class='form-control qChoice' placeholder='Enter Choice' type='text'></th>\
+    <th class='qCell center-th'>Points:</th>\
     <th class='qCell center-th'><input class='form-control qPoints' value='0' type='number' min='0'></th>\
     <th class='center-th'><span class='add-choice'>+</span><span class='remove-choice'>&#10799</span></th>\
     </tr>";
@@ -221,36 +223,66 @@ function constructScaleHTML(tableAncestor){
     var toReturn = "<tr>\
     <th>\
     <input class='ans' on='false' value='sta' type='radio' name='r" + identifier + "'><label>Strongly Agree</label>\
+    </th>\
+    <th class='center-th'>\
+    Points:\
+    </th>\
+    <th>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
     </tr>\
     <tr>\
     <th>\
     <input class='ans' on='false' value='a' type='radio' name='r" + identifier + "'><label>Agree</label>\
+    </th>\
+    <th class='center-th'>\
+    Points:\
+    </th>\
+    <th>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
     </tr>\
     <tr>\
     <th>\
     <input class='ans' on='false' value='sla' type='radio' name='r" + identifier + "'><label>Slightly Agree</label>\
+    </th>\
+    <th class='center-th'>\
+    Points:\
+    </th>\
+    <th>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
     </tr>\
     <tr>\
     <th>\
     <input class='ans' on='false' value='sld' type='radio' name='r" + identifier + "'><label>Slightly Disagree</label>\
+    </th>\
+    <th class='center-th'>\
+    Points:\
+    </th>\
+    <th>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
     </tr>\
     <tr>\
     <th>\
     <input class='ans' on='false' value='d' type='radio' name='r" + identifier + "'><label>Disagree</label>\
+    </th>\
+    <th class='center-th'>\
+    Points:\
+    </th>\
+    <th>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
     </tr>\
     <tr>\
     <th>\
-    <input class='ans' on='false' value='std' type='radio' name='r" + identifier + "'><label>Strongly Disagree</label>\n\
+    <input class='ans' on='false' value='std' type='radio' name='r" + identifier + "'><label>Strongly Disagree</label>\
+    </th>\
+    <th class='center-th'>\
+    Points:\
+    </th>\
+    <th>\
     <input class='form-control qPoints' value='0' type='number' min='0'>\
     </th>\
     </tr>";
@@ -423,14 +455,12 @@ function submit(update){
                 var val = 'none';
                 var scores = '';
                 $(qWrapper).find(".qTable").find("tr").each(function(k,tr){
-                    $(tr).find("th").each(function(l, th){
-                        var choiceChecked = $(th).find("input").attr("on");
-                        var qPoints = $(th).find(".qPoints").val();
-                        if(choiceChecked === "true"){
-                            val = $(th).find("input").attr('value');
-                        }
-                        scores += (" " + qPoints);
-                    });
+                    var choiceChecked = $(tr).find("input").attr("on");
+                    var qPoints = $(tr).find(".qPoints").val();
+                    if(choiceChecked === "true"){
+                        val = $(tr).find("input").attr('value');
+                    }
+                    scores += (" " + qPoints);
                 });
                 scores = scores.substring(1);
                 survey.sections[i].questions[j].qAns = val;
