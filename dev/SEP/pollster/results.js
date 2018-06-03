@@ -164,8 +164,8 @@ function getResponsesAll(qNum, qType) {
     for (var i = 0; i < results.length; i++) {
         var surResults = results[i].surResults;
         rArr = JSON.parse(surResults);
-        rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
         try {
+            rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
             for (var key in toReturn) {
                 if (key == rAns.value.substr(0, rAns.value.length - 2) || key == rAns.value) { //Two different cases for scales and true/false for some reason. May need reworking on response side
                     toReturn[key]++;
@@ -193,9 +193,9 @@ function getResponsesCHKAll(qNum) {
         rAnsChoiceArr = JSON.parse(rArr[qNum]);
         toReturn.total++;
         for (var j = 0; j < rAnsChoiceArr.length; j++) {
-            var choice = rAnsChoiceArr[j];
-            rAns = JSON.parse(choice);
             try {
+                var choice = rAnsChoiceArr[j];
+                rAns = JSON.parse(choice);
                 for (var key in toReturn) {
                     if (key == rAns.value.substr(0, rAns.value.length - 2)) {
                         toReturn[key]++;
