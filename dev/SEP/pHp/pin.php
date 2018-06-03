@@ -1,12 +1,18 @@
 <?php
+    /** 
+     * Pin Class: 
+     *  Holds static functions for unique pin generation and for retrieving 
+     *  survey/acct combinations based on a given pin.
+     **/
     class Pin{ 
         private $conn;
         private $table = "pins";
 
-        public function __construct($conn){
+        private function __construct($conn){
             $this->conn = $conn;
         }
-
+        
+        //Static function that generates a unique pin
         public static function getUniquePin($stmt){
             $checkPin = true;
             while($checkPin){
@@ -16,10 +22,12 @@
             }
             return $pin;
         }
-
-        public function getPin($pin){
+        
+        //Static function that retrieves a survey info based on a given pin
+        public static function getPin($db, $pin){
+            $pinClass = new Pin($db->getConnection('taker'));
             try{
-                $stmt = $this->buildQuery($pin);
+                $stmt = $pinClass->buildQuery($pin);
             }catch(Exception $e){
                 return json_encode(array("message" => $e->getMessage()));
             }
@@ -50,7 +58,8 @@
                 }
             }
         }
-
+        
+        //Helper function the builds a DB query for getPin
         private function buildQuery($pin){
             $query = "SELECT * FROM " . $this->table;
 

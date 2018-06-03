@@ -1,6 +1,5 @@
 <?php
     //Single entry point for the whole system. All .html files are directed here, and redirected appropriately.
-    error_reporting(E_ALL);
     session_start();
 
     $root = $_SERVER['DOCUMENT_ROOT'];
@@ -49,6 +48,10 @@
                     }
                 }elseif(!isset($_SESSION['userName'])){
                     echo "NOT LOGGED IN";
+                    exit();
+                }
+                elseif(isset($_SESSION['userName'])){
+                    echo "TRUE";
                     exit();
                 }
             }
@@ -213,22 +216,21 @@
                         exit();
                     }
                 }
-                elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray']) && isset($_POST['update'])){
-                    if($_POST['update'] == true){
-                        try{    
-                            Survey::updateSurvey ($db);
-                        } catch (Exception $e){
-                            json_encode(array( 'error'  => 'Error updating survey\nError: ' .  $e->getMessage() . "\n"));
-                            exit();
-                        }
+                elseif(isset($_POST['update'])){
+                    try{    
+                        Survey::updateSurvey ($db);
+                    } catch (Exception $e){
+                        json_encode(array( 'error'  => 'Error updating survey\nError: ' .  $e->getMessage() . "\n"));
+                        exit();
                     }
-                    else{
-                        try{
-                            Survey::createSurvey($db);
-                        } catch (Exception $e){
-                            json_encode(array( 'error'  => 'Error creating survey\nError: ' .  $e->getMessage() . "\n"));
-                            exit();
-                        }
+                    exit();
+                }
+                elseif(isset($_SESSION['userName']) && isset($_POST['surText']) && isset($_POST['dataArray'])){
+                    try{
+                        Survey::createSurvey($db);
+                    } catch (Exception $e){
+                        json_encode(array( 'error'  => 'Error creating survey\nError: ' .  $e->getMessage() . "\n"));
+                        exit();
                     }
                     exit();
                 }
@@ -323,9 +325,9 @@
             }
             //check if taker is posting a response to a survey; if so, send
             //results and unset session variables
-            elseif(isset($_POST['response']) && isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
+            elseif(isset($_POST['response']) && isset($_POST['rLevel']) && isset($_SESSION['surName']) && isset($_SESSION['acctName'])){
                 try{
-                    Response::sendResponse($db, $_POST['response'], 0);
+                    Response::sendResponse($db, $_POST['response'], $_POST['rLevel']);
                     exit();
                 } catch (Exception $e){
                     json_encode(array( 'error'  => 'Error posting response\nError: ' .  $e->getMessage() . "\n"));

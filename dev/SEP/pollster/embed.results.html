@@ -1,4 +1,6 @@
 <script type='text/javascript' src='results.js'></script>
+<script type='text/javascript' src='../pdfMake/pdfmake.min.js'></script>
+<script type='text/javascript' src='../pdfMake/vfs_fonts.js'></script>
 <script type="text/javascript" src='../chart.js-2.7.2/package/dist/Chart.bundle.min.js'></script>
 <div id='groupButtonBar' class='shadow' style="padding: 10px; padding-right: 0px; background-color: #fafafa"></div>
 <div id='overallData' class='questions-wrapper shadow results-header'></div>
@@ -10,8 +12,11 @@
 </br>
 <div id="ContainerForResultsDisplay" style='margin: 0 auto; width: 100%; max-width: 800px;'>
     <input id='showChartsButton' onclick='relationsButton()' type='button' class='btn btn-block btn-primary btn-lg shadow' value='View Charts'>
-          <canvas id="chart"></canvas>
-    <input id='exportDataButton' type='button' onclick='exportResponsesToCSV()' class='btn btn-block btn-secondary shadow btn-lg' value='Export Data'>
+          <canvas id="chart" style="height: 0;"></canvas>
+    <a id="exportChartButton" role="button" class='btn btn-block btn-secondary shadow btn-lg' style="display:none">Download Chart As Image</a>
+    <input id='pdfReportButton' type='button' onclick='pdfReport()' class='btn btn-block btn-secondary shadow btn-lg' value='Export Chart And Data To PDF' style="display:none">
+    <input id='exportDataButton' type='button' onclick='exportResponsesToCSV()' class='btn btn-block btn-secondary shadow btn-lg' value='Export Responses To CSV'>
+    <input id='exportDataPDFButton' type='button' onclick='exportDataToPDF()' class='btn btn-block btn-secondary shadow btn-lg' value='Export Data To PDF'>
 </br>
 </br>
 </br>

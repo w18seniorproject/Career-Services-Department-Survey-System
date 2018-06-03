@@ -1,4 +1,9 @@
 <?php
+    /** 
+     * Response Class: 
+     *  Holds a static function that inserts new responses to a survey into the
+     *  DB and updates the proper notifications table.
+     **/
     class Response{ 
         private $conn;
         private $table = "results";
@@ -7,24 +12,23 @@
             $this->conn = $db->getConnection('taker');
         }
         
+        //Static function to send responses to DB/update notifcations
         public static function sendResponse($db, $surResults, $rLevel){
-            $notifConn = $db->getConnection("taker");
             $acctName = $_SESSION['acctName'];
 
-            $notifObject = "~`#" . json_encode(array('nType' => 'response', 'surName' => $_SESSION['surName']), JSON_FORCE_OBJECT);
-
             $resp = new Response($db);
-            $stmt = $resp->buildQuery($surResults, $rLevel);
-            $stmt->execute();
-
-            $sql = "UPDATE `notifications` SET count=count+1, notifications=CONCAT(notifications, ?) WHERE acctName=?;";
-            $result = $notifConn->prepare($sql);
-            $result->execute(array($notifObject, $acctName));
+            $resStmt = $resp->buildRespQuery($surResults, $rLevel);
+            $resStmt->execute();
+            
+            $notifObject = "~`#" . json_encode(array('nType' => 'response', 'surName' => $_SESSION['surName']), JSON_FORCE_OBJECT);
+            $notStmt = $resp->buildNotQuery($notifObject, $acctName);
+            $notStmt->execute();
 
             unset($_SESSION['startTime']);
         }
         
-        private function buildQuery($surResults, $rLevel){
+        //Helper function that builds the response table query for sendResponse
+        private function buildRespQuery($surResults, $rLevel){
             if(isset($_SESSION["surName"]) && isset($_SESSION["acctName"])){
                 if(!isset($_SESSION["groupName"])){
                     $_SESSION["groupName"] = "None";
@@ -47,11 +51,15 @@
                 throw new Exception('Variable not set.');
             }
         }
-    }
-
-	
-					
-					
-					
-
-					
+        
+        //Helper function that builds the notifications table query for sendResponse
+        private function buildNotQuery($notifObject, $acctName){
+            $sql = "UPDATE notifications SET count=count+1, notifications=CONCAT(notifications, ?) WHERE acctName=?;";
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->bindParam(1, $notifObject);
+            $stmt->bindParam(2, $acctName);
+                
+            return $stmt;
+        }
+    }		

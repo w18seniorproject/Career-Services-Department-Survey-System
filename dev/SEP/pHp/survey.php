@@ -5,7 +5,7 @@
         public static function createSurvey($db){
             $conn = $db->getConnection('poll');
 
-            $sql = "SELECT * FROM `pins` WHERE `pin`=?";
+            $sql = "SELECT * FROM `pins` WHERE `pin`=?;";
             $stmt = $conn->prepare($sql);
             
             $pin = Pin::getUniquePin($stmt);
@@ -18,7 +18,7 @@
 
             foreach($postData['sections'] as $section){  
                 foreach($section['questions'] as $question){
-                    if($question['type'] == "mc" || $question['type'] == "chk"){
+                    if($question['type'] == "mc" || $question['type'] == "chk" || $question['type'] == "s"){
                         Survey::choiceAddToDB($conn, $_SESSION['surName'], $question['num'], $question['type'], $question['text'], $question['answers'], $question['qAns'], $question['weight'], $section['secNum'], $section['secName'], $acctName);
                     }else{
                         Survey::otherAddToDB($conn, $_SESSION['surName'], $question['num'], $question['type'], $question['text'], $question['qAns'], $question['weight'], $section['secNum'], $section['secName'], $acctName);
@@ -44,29 +44,29 @@
             
             $oldSur = "[" . date ('Y-m-d h:i:s') . "] " . $postData['title'];
             
-            $sql = "UPDATE questions SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE questions SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "';";
             $result = $conn->prepare($sql);
             $result->execute();
             
-            $sql = "UPDATE comments SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE comments SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "';";
             $result = $conn->prepare($sql);
             $result->execute();
             
-            $sql = "UPDATE results SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE results SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "';";
             $result = $conn->prepare($sql);
             $result->execute();
             
-            $sql = "UPDATE pins SET surName = '" . $oldSur . "', live='0' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE pins SET surName = '" . $oldSur . "', live='0' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "';";
             $result = $conn->prepare($sql);
             $result->execute();
             
-            $sql = "UPDATE secReqs SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "'";
+            $sql = "UPDATE secReqs SET surName = '" . $oldSur . "' WHERE surName = '" . $postData['title'] . "' AND acctName = '" . $_SESSION['userName'] . "';";
             $result = $conn->prepare($sql);
             $result->execute();
             
             Survey::createSurvey($db);
             
-            $sql = "UPDATE secReqs, (SELECT * FROM secReqs WHERE surName = '". $oldSur ."' AND acctName = '" . $_SESSION['userName'] . "') AS old SET secReqs.resources = old.resources, secReqs.resourceMarkup = old.resourceMarkup WHERE secReqs.surName = '" . $postData['title'] . "' AND secReqs.acctName = '" . $_SESSION['userName'] . "' AND secReqs.rLevel = old.rLevel";
+            $sql = "UPDATE secReqs, (SELECT * FROM secReqs WHERE surName = '". $oldSur ."' AND acctName = '" . $_SESSION['userName'] . "') AS old SET secReqs.resources = old.resources, secReqs.resourceMarkup = old.resourceMarkup WHERE secReqs.surName = '" . $postData['title'] . "' AND secReqs.acctName = '" . $_SESSION['userName'] . "' AND secReqs.rLevel = old.rLevel;";
             $result = $conn->prepare($sql);
             $result->execute();
         }

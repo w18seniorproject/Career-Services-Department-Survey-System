@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `accounts` (
   `pass` text,
-  `email` varchar(30) NOT NULL,
-  `acctName` varchar(20) DEFAULT NULL,
+  `email` varchar(256) NOT NULL,
+  `acctName` varchar(256) DEFAULT NULL,
   `profpic` text,
   `active` BOOLEAN NOT NULL DEFAULT FALSE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -41,7 +41,7 @@ CREATE TABLE `accounts` (
 --
 
 CREATE TABLE `bans` (
-  `email` varchar(30) NOT NULL,
+  `email` varchar(256) NOT NULL,
   `desc` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -53,7 +53,7 @@ CREATE TABLE `bans` (
 
 CREATE TABLE `comments` (
   `recNum` int(11) NOT NULL,
-  `acctName` varchar(20),
+  `acctName` varchar(256),
   `surName` varchar(256),
   `comment` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -66,9 +66,9 @@ CREATE TABLE `comments` (
 
 CREATE TABLE `pins` (
   `pin` int(11) NOT NULL,
-  `surName` varchar(30) DEFAULT NULL,
-  `groupName` varchar(20) DEFAULT NULL,
-  `acctName` varchar(20) NOT NULL,
+  `surName` varchar(256) DEFAULT NULL,
+  `groupName` varchar(256) DEFAULT NULL,
+  `acctName` varchar(256) NOT NULL,
   `surText` varchar(256) DEFAULT NULL,
   `live` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -80,7 +80,7 @@ CREATE TABLE `pins` (
 --
 
 CREATE TABLE `questions` (
-  `surName` varchar(30) NOT NULL,
+  `surName` varchar(256) NOT NULL,
   `qNum` int(11) NOT NULL,
   `qType` varchar(20) DEFAULT NULL,
   `qText` text,
@@ -89,7 +89,7 @@ CREATE TABLE `questions` (
   `qWeight` int(11) DEFAULT NULL,
   `rLevel` int(11) DEFAULT NULL,
   `rName` text,
-  `acctName` varchar(20) NOT NULL
+  `acctName` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -99,9 +99,9 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `results` (
-  `acctName` varchar(20) NOT NULL,
-  `surName` varchar(30) NOT NULL,
-  `groupName` varchar(20) NOT NULL,
+  `acctName` varchar(256) NOT NULL,
+  `surName` varchar(256) NOT NULL,
+  `groupName` varchar(256) NOT NULL,
   `recNum` int(11) NOT NULL,
   `surResults` text,
   `rLevel` int(11) DEFAULT NULL,
@@ -115,8 +115,8 @@ CREATE TABLE `results` (
 --
 
 CREATE TABLE `secReqs` (
-  `acctName` varchar(20) CHARACTER SET latin1 NOT NULL,
-  `surName` varchar(30) CHARACTER SET latin1 NOT NULL,
+  `acctName` varchar(256) CHARACTER SET latin1 NOT NULL,
+  `surName` varchar(256) CHARACTER SET latin1 NOT NULL,
   `rLevel` int(11) NOT NULL,
   `minScore` int(11) NOT NULL,
   `resources` text COLLATE utf8mb4_bin,
@@ -130,7 +130,7 @@ CREATE TABLE `secReqs` (
 --
 
 CREATE TABLE `tokens` (
-  `acctName` varchar(20) NOT NULL,
+  `acctName` varchar(256) NOT NULL,
   `tokenHash` varchar(64) NOT NULL,
   `expiration` datetime NOT NULL,
   `tokenUsed` tinyint(1) NOT NULL
@@ -143,7 +143,7 @@ CREATE TABLE `tokens` (
 --
 
 CREATE TABLE `notifications` (
-  `acctName` varchar(20) NOT NULL,
+  `acctName` varchar(256) NOT NULL,
   `count` int(11) NOT NULL,
   `notifications` text COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -221,14 +221,12 @@ ALTER TABLE `comments`
   MODIFY `recNum` int(11) NOT NULL AUTO_INCREMENT;
 
 
-DELIMITER $$
 --
 -- Events
 --
 CREATE EVENT `deleteExpired` ON SCHEDULE EVERY 1 DAY STARTS '2018-04-25 00:00:00.000000' ON COMPLETION PRESERVE ENABLE 
 DO DELETE FROM tokens WHERE expiration < NOW();
 
-DELIMITER ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,18 +1,25 @@
 <?php
+    /**
+     * Section Requirements Class: 
+     *  Holds a static function that returns the section requirments for a given
+     *  survey. 
+     **/
     class SecReqs {
         private $conn;
         private $table = "secReqs";
 
-        public function __construct($conn){
+        private function __construct($conn){
             $this->conn = $conn;
         }
         
+        //Public static function to return SecReqs
         public static function getReqs($db){ 
             $reqs = new SecReqs($db->getConnection('taker'));
             $secReqs = $reqs->queryDB($_SESSION['surName'], $_SESSION['acctName']);
             return $secReqs;
         }
         
+        //Helper function that executes a DB query, returns results as JSON
         private function queryDB($surName, $acctName){
             $stmt = $this->buildQuery($surName, $acctName);
 
@@ -39,7 +46,8 @@
                 return json_encode(array("message" => "No questions."));
             }
         }
-
+        
+        //Helper function that builds the proper query for queryDB
         private function buildQuery($surName, $acctName){
             $query = "SELECT * FROM " . $this->table;
 
