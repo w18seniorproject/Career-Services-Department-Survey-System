@@ -117,12 +117,11 @@ function closeQuestion(element){
 }
 
 function selectType(element){
-    var type = $(element).prop("selectedIndex");
     var typeHTML = "";
     $(element).parent().find(".qTable").remove();
     typeHTML = constructTypeHTML();
     $(element).parent().append(typeHTML);
-    addChoice($(element).parent().find(".qTable"), type);
+    addChoice($(element).parent().find(".qTable"));
 }
 
 function constructTypeHTML(){
@@ -130,8 +129,9 @@ function constructTypeHTML(){
     return toReturn;
 }
 
-function addChoice(element, type){
+function addChoice(element){
     var choiceHTML;
+    var type = $(element).parent().find("select").prop("selectedIndex");
     if(type === 1){
         choiceHTML = constructRadioHTML(element);
     }
@@ -148,7 +148,7 @@ function addChoice(element, type){
     $('.add-choice').each(function(i, ele){
         $(ele).unbind('click');
         $(ele).on("click", function(){
-            addChoice($(ele).parent().parent().parent(), type);
+            addChoice($(ele).parent().parent().parent());
         });
     });
     $('.remove-choice').each(function(i, ele){
