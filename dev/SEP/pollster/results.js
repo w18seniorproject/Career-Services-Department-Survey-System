@@ -8,8 +8,8 @@ var resultChart = null;
 var curGroupName = "ALL_OF_THE_GROUPS";
 var surName;
 $(document).ready(function () {
-  temp = document.getElementById("chart");
-  ctx = temp.getContext("2d");
+    temp = document.getElementById("chart");
+    ctx = temp.getContext("2d");
 });
 function showData(surveyName) {
     surName = surveyName;
@@ -56,7 +56,7 @@ function displayAllGroups() {
             groupArr.push(results[num].groupName);
         }
         timeSum += results[num].time;
-        rSum += results[num].rLevel+1;
+        rSum += results[num].rLevel + 1;
         timeSumofSquares += results[num].time * results[num].time;
     }
     timeVar = (num * timeSumofSquares - timeSum * timeSum) / (num * num);
@@ -98,7 +98,7 @@ function displayGroup(groupNum) {
         if (groupArr.indexOf(results[i].groupName) === groupNum - 1) {
             num++;
             timeSum += results[i].time;
-            rSum += results[i].rLevel+1;
+            rSum += results[i].rLevel + 1;
             timeSumofSquares += results[i].time * results[i].time;
         }
     }
@@ -376,98 +376,94 @@ function displayComments() {
 }
 //Creates Chart On Canvas After Parsing
 function relationsButton() {
-  groupArray = [];
-  tempArray = [];
-  avgArray=[];
-  groupArray.push("Overall");
-  tempArray["Overall"]={"count":0, "total":0};
-  for(var i=0; i<results.length; i++)
-  {
-    if (!groupArray.includes(results[i].groupName)) {
-        var gN=results[i].groupName;
-        groupArray.push(gN);
-        tempArray[gN]= {"count":0, "total":0};
+    groupArray = [];
+    tempArray = [];
+    avgArray = [];
+    groupArray.push("Overall");
+    tempArray["Overall"] = { "count": 0, "total": 0 };
+    for (var i = 0; i < results.length; i++) {
+        if (!groupArray.includes(results[i].groupName)) {
+            var gN = results[i].groupName;
+            groupArray.push(gN);
+            tempArray[gN] = { "count": 0, "total": 0 };
+        }
+        tempArray["Overall"].total = tempArray["Overall"].total + (results[i].rLevel + 1);
+        tempArray["Overall"].count = tempArray["Overall"].count + 1;
+        tempArray[gN].total = tempArray[gN].total + (results[i].rLevel + 1);
+        tempArray[gN].count = tempArray[gN].count + 1;
     }
-    tempArray["Overall"].total=tempArray["Overall"].total+(results[i].rLevel+1);
-    tempArray["Overall"].count=tempArray["Overall"].count + 1;
-    tempArray[gN].total=tempArray[gN].total+(results[i].rLevel+1);
-    tempArray[gN].count=tempArray[gN].count+1;
-  }
-  for(var i=0; i<Object.values(tempArray).length; i++)
-  {
-    var avg=+(((Object.values(tempArray)[i].total)/(Object.values(tempArray)[i].count)).toFixed(2));
-    avgArray.push(avg);
-  }
+    for (var i = 0; i < Object.values(tempArray).length; i++) {
+        var avg = +(((Object.values(tempArray)[i].total) / (Object.values(tempArray)[i].count)).toFixed(2));
+        avgArray.push(avg);
+    }
 
-if (resultChart != null) {
-    resultChart.destroy();
-  }
-  resultChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      datasets: [{
-	label: 'Bar_Set',
-	backgroundColor: "rgba(250,0,0,0.5)",
-	borderColor: "rgba(250,0,0,0.75)",
-        data: avgArray
-      }, {
-        label: 'Line_Set',
-        data: avgArray,
-	borderColor: "rgba(0,250,0,0.8)",
-	backgroundColor: "rgba(250,0,0,0.0)",
-        type: 'line'
-      }],
-      labels: groupArray
-    },
-
-    options: {
-      animation: {
-          onComplete: function () {
-              var ctx = this.chart.ctx;
-              ctx.font = "10pt Arial";
-              ctx.fillStyle = "black";
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'bottom';
-
-              this.data.datasets.forEach(function (dataset)
-              {
-                  for (var i = 0; i < dataset.data.length; i++) {
-                      for(var key in dataset._meta)
-                      {
-                          var model = dataset._meta[key].data[i]._model;
-                          ctx.fillText(dataset.data[i], model.x, model.y);
-                      }
-                  }
-              });
-
-              var base64Chart=resultChart.toBase64Image();
-                document.getElementById("exportChartButton").download=surName+".jpeg";
-              document.getElementById("exportChartButton").href=base64Chart;
-              document.getElementById("exportChartButton").style.display="block";
-              document.getElementById("pdfReportButton").style.display="block";
-          }
-      },
-      title: {
-
-        display: true,
-        fontStyle:'bold',
-        fontSize: 20,
-        padding:10,
-        text: "Average Relation Level For Each Department"
-      },
-      scales: {
-        yAxes: [{
-          scaleLabel: {
-          display:true,
-          labelString: "Average Relation Level"
+    if (resultChart != null) {
+        resultChart.destroy();
+    }
+    resultChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: 'Bar_Set',
+                backgroundColor: "rgba(250,0,0,0.5)",
+                borderColor: "rgba(250,0,0,0.75)",
+                data: avgArray
+            }, {
+                label: 'Line_Set',
+                data: avgArray,
+                borderColor: "rgba(0,250,0,0.8)",
+                backgroundColor: "rgba(250,0,0,0.0)",
+                type: 'line'
+            }],
+            labels: groupArray
         },
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
+
+        options: {
+            animation: {
+                onComplete: function () {
+                    var ctx = this.chart.ctx;
+                    ctx.font = "10pt Arial";
+                    ctx.fillStyle = "black";
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+
+                    this.data.datasets.forEach(function (dataset) {
+                        for (var i = 0; i < dataset.data.length; i++) {
+                            for (var key in dataset._meta) {
+                                var model = dataset._meta[key].data[i]._model;
+                                ctx.fillText(dataset.data[i], model.x, model.y);
+                            }
+                        }
+                    });
+
+                    var base64Chart = resultChart.toBase64Image();
+                    document.getElementById("exportChartButton").download = surName + ".jpeg";
+                    document.getElementById("exportChartButton").href = base64Chart;
+                    document.getElementById("exportChartButton").style.display = "block";
+                    document.getElementById("pdfReportButton").style.display = "block";
+                }
+            },
+            title: {
+
+                display: true,
+                fontStyle: 'bold',
+                fontSize: 20,
+                padding: 10,
+                text: "Average Relation Level For Each Department"
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Average Relation Level"
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 }
 
 //Exports All Responses To Questions Of Survey In A CSV File
@@ -475,15 +471,15 @@ function exportResponsesToCSV() {
     let csvContent = "data:text/csv;charset=utf-8,";
     var titleRowArray = ["Record Number", "Group Name", "Relation Level"];
     for (var i = 0; i < questions.length; i++) {
-        titleRowArray.push("Question "+(i+1)+": "+questions[i].qText);
+        titleRowArray.push("Question " + (i + 1) + ": " + questions[i].qText);
     }
     let titleRow = titleRowArray.join(",");
     csvContent += titleRow + "\r\n";
     for (var i = 0; i < results.length; i++) {
         var row = [];
-        row.push(i+1);
+        row.push(i + 1);
         row.push(results[i].groupName);
-        row.push(results[i].rLevel+1);
+        row.push(results[i].rLevel + 1);
 
         var resultJSON = JSON.parse(results[i].surResults);
         for (var j = 0; j < resultJSON.length; j++) {
@@ -493,12 +489,12 @@ function exportResponsesToCSV() {
                 var response = JSON.parse(resultForQuestion[k]).value;
                 var tempIndex = response.indexOf(",");
                 var newString = response.substr(0, tempIndex);
-                if(newString == ""){
+                if (newString == "") {
                     newString = response.split(" ")[0];
                 }
                 itemResponses.push(newString);
             }
-		itemResponses=itemResponses.join(";");
+            itemResponses = itemResponses.join(";");
             row.push(itemResponses);
         }
         let resultRow = row.join(",");
@@ -508,7 +504,7 @@ function exportResponsesToCSV() {
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    var filename=surName.replace(" ", "_") + "_" + new Date().toLocaleDateString() + ".csv";
+    var filename = surName.replace(" ", "_") + "_" + new Date().toLocaleDateString() + ".csv";
     link.setAttribute("download", filename);
     link.innerHTML = "Click Here to download";
     document.body.appendChild(link); // Required for FF
@@ -517,240 +513,230 @@ function exportResponsesToCSV() {
 }
 
 //Gets Average Rel Levels For Every Group In An Array Format
-function getAverageRelLevels()
-{
-  groupArray = [];
-  tempArray = [];
-  avgArray=[];
-  groupArray.push("Overall");
-  tempArray["Overall"]={"count":0, "total":0};
-  for(var i=0; i<results.length; i++)
-  {
-    if (!groupArray.includes(results[i].groupName)) {
-        var gN=results[i].groupName;
-        groupArray.push(gN);
-        tempArray[gN]= {"count":0, "total":0};
+function getAverageRelLevels() {
+    groupArray = [];
+    tempArray = [];
+    avgArray = [];
+    groupArray.push("Overall");
+    tempArray["Overall"] = { "count": 0, "total": 0 };
+    for (var i = 0; i < results.length; i++) {
+        if (!groupArray.includes(results[i].groupName)) {
+            var gN = results[i].groupName;
+            groupArray.push(gN);
+            tempArray[gN] = { "count": 0, "total": 0 };
+        }
+        tempArray["Overall"].total = tempArray["Overall"].total + (results[i].rLevel + 1);
+        tempArray["Overall"].count = tempArray["Overall"].count + 1;
+        tempArray[gN].total = tempArray[gN].total + (results[i].rLevel + 1);
+        tempArray[gN].count = tempArray[gN].count + 1;
     }
-    tempArray["Overall"].total=tempArray["Overall"].total+(results[i].rLevel+1);
-    tempArray["Overall"].count=tempArray["Overall"].count + 1;
-    tempArray[gN].total=tempArray[gN].total+(results[i].rLevel+1);
-    tempArray[gN].count=tempArray[gN].count+1;
-  }
 
-  for(var i=0; i<Object.values(tempArray).length; i++)
-  {
-    var avg=+(((Object.values(tempArray)[i].total)/(Object.values(tempArray)[i].count)).toFixed(2));
-    avgArray.push(avg.toString());
-  }
-  overallArray=[];
-  overallArray.push(groupArray);
-  overallArray.push(avgArray);
-  return overallArray;
+    for (var i = 0; i < Object.values(tempArray).length; i++) {
+        var avg = +(((Object.values(tempArray)[i].total) / (Object.values(tempArray)[i].count)).toFixed(2));
+        avgArray.push(avg.toString());
+    }
+    overallArray = [];
+    overallArray.push(groupArray);
+    overallArray.push(avgArray);
+    return overallArray;
 }
 
 //Parses Results Into A Workable Array Format
-function getAndParseResults()
-{
-  var normalContent = [];
-  var titleRowArray = ["Record Number", "Group Name", "Relation Level"];
-  for (var i = 0; i < questions.length; i++) {
-      titleRowArray.push("Question "+(i+1)+": "+questions[i].qText);
-  }
-  normalContent.push(titleRowArray);
-  for (var i = 0; i < results.length; i++) {
-      var row = [];
-      row.push(i+1);
-      row.push(results[i].groupName);
-      row.push(results[i].rLevel+1);
+function getAndParseResults() {
+    var normalContent = [];
+    var titleRowArray = ["Record Number", "Group Name", "Relation Level"];
+    for (var i = 0; i < questions.length; i++) {
+        titleRowArray.push("Question " + (i + 1) + ": " + questions[i].qText);
+    }
+    normalContent.push(titleRowArray);
+    for (var i = 0; i < results.length; i++) {
+        var row = [];
+        row.push(i + 1);
+        row.push(results[i].groupName);
+        row.push(results[i].rLevel + 1);
 
-      var resultJSON = JSON.parse(results[i].surResults);
-      for (var j = 0; j < resultJSON.length; j++) {
-          var resultForQuestion = JSON.parse(resultJSON[j]);
-          var itemResponses = [];
-          for (var k = 0; k < resultForQuestion.length; k++) {
-              var response = JSON.parse(resultForQuestion[k]).value;
-              var tempIndex = response.indexOf(",");
-              var newString = response.substr(0, tempIndex);
-              if(newString == ""){
-                  newString = response.split(" ")[0];
-              }
-              itemResponses.push(newString);
-          }
-  itemResponses=itemResponses.join(";");
-          row.push(itemResponses);
-      }
+        var resultJSON = JSON.parse(results[i].surResults);
+        for (var j = 0; j < resultJSON.length; j++) {
+            var resultForQuestion = JSON.parse(resultJSON[j]);
+            var itemResponses = [];
+            for (var k = 0; k < resultForQuestion.length; k++) {
+                var response = JSON.parse(resultForQuestion[k]).value;
+                var tempIndex = response.indexOf(",");
+                var newString = response.substr(0, tempIndex);
+                if (newString == "") {
+                    newString = response.split(" ")[0];
+                }
+                itemResponses.push(newString);
+            }
+            itemResponses = itemResponses.join(";");
+            row.push(itemResponses);
+        }
 
-      normalContent.push(row);
+        normalContent.push(row);
 
-  }
-  return normalContent;
+    }
+    return normalContent;
 }
 //Creates And Exports A PDF Report Containing Average Relation Levels, and Complete Results From The Survey
-function exportDataToPDF()
-{
+function exportDataToPDF() {
 
-  var overallArray=getAverageRelLevels();
-  var normalContent=getAndParseResults();
+    var overallArray = getAverageRelLevels();
+    var normalContent = getAndParseResults();
 
-    var length=100.0/overallArray[0].length;
-    var colWidthsOverall=[];
-    for(var i=0; i<overallArray[0].length; i++)
-    {
-      colWidthsOverall.push(length+"%");
+    var length = 100.0 / overallArray[0].length;
+    var colWidthsOverall = [];
+    for (var i = 0; i < overallArray[0].length; i++) {
+        colWidthsOverall.push(length + "%");
     }
-    length=100.0/normalContent[0].length;
-    var colWidthsNormal=[];
-    for(var i=0; i<normalContent[0].length; i++)
-    {
-      colWidthsNormal.push(length+"%");
+    length = 100.0 / normalContent[0].length;
+    var colWidthsNormal = [];
+    for (var i = 0; i < normalContent[0].length; i++) {
+        colWidthsNormal.push(length + "%");
     }
-  var dd={
-    content:[
+    var dd = {
+        content: [
 
-      {text: surName+" Results", fontSize: 18, bold: true, margin: [0, 0, 0, 10]},
-      {text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-      {
-        table:{
-          headerRows: 1,
-          body: overallArray,
-          widths:colWidthsOverall
-        },
-        layout: {
-				      hLineWidth: function (i, node) {
-					           return (i === 0 || i === node.table.body.length) ? 2 : 1;
-				    },
-				    vLineWidth: function (i, node) {
-					     return (i === 0 || i === node.table.widths.length) ? 2 : 1;
-				    },
-				    hLineColor: function (i, node) {
-					         return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
-				    },
-				    vLineColor: function (i, node) {
-					         return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
-				    },
-          fillColor: function (i, node) {
-					       return (i % 2 === 0) ? '#CCCCCC' : null;
-				    }
-			   }
-      },
-      {text: "Complete Results", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-      {
-          table:{
-            headerRows:1,
-            body: normalContent,
-            widths:colWidthsNormal
-          },
-          layout: {
-  				      hLineWidth: function (i, node) {
-  					           return (i === 0 || i === node.table.body.length) ? 2 : 1;
-  				    },
-  				    vLineWidth: function (i, node) {
-  					     return (i === 0 || i === node.table.widths.length) ? 2 : 1;
-  				    },
-  				    hLineColor: function (i, node) {
-  					         return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
-  				    },
-  				    vLineColor: function (i, node) {
-  					         return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
-  				    },
-            fillColor: function (i, node) {
-  					       return (i % 2 === 0) ? '#CCCCCC' : null;
-  				    }
-  			   }
+            { text: surName + " Results", fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+            { text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: overallArray,
+                    widths: colWidthsOverall
+                },
+                layout: {
+                    hLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                    },
+                    vLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                    },
+                    hLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                    },
+                    vLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                    },
+                    fillColor: function (i, node) {
+                        return (i % 2 === 0) ? '#CCCCCC' : null;
+                    }
+                }
+            },
+            { text: "Complete Results", fontSize: 14, bold: true, margin: [0, 20, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: normalContent,
+                    widths: colWidthsNormal
+                },
+                layout: {
+                    hLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                    },
+                    vLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                    },
+                    hLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                    },
+                    vLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                    },
+                    fillColor: function (i, node) {
+                        return (i % 2 === 0) ? '#CCCCCC' : null;
+                    }
+                }
 
-      }
+            }
 
 
-    ]
-  };
+        ]
+    };
 
-  pdfMake.createPdf(dd).download(surName+"Results.pdf");
+    pdfMake.createPdf(dd).download(surName + "Results.pdf");
 
 }
 //Creates And Exports A PDF Report Containing The Currently Displayed Chart, Average Results, and Complete Results From The Survey
-function pdfReport()
-{
-  var overallArray=getAverageRelLevels();
-  var normalContent=getAndParseResults();
+function pdfReport() {
+    var overallArray = getAverageRelLevels();
+    var normalContent = getAndParseResults();
 
-  var length=100.0/overallArray[0].length;
-  var colWidthsOverall=[];
-  for(var i=0; i<overallArray[0].length; i++)
-  {
-    colWidthsOverall.push(length+"%");
-  }
-  length=100.0/normalContent[0].length;
-  var colWidthsNormal=[];
-  for(var i=0; i<normalContent[0].length; i++)
-  {
-    colWidthsNormal.push(length+"%");
-  }
-  var url_base64 = resultChart.toBase64Image();
-  var dd={
-    content:[
+    var length = 100.0 / overallArray[0].length;
+    var colWidthsOverall = [];
+    for (var i = 0; i < overallArray[0].length; i++) {
+        colWidthsOverall.push(length + "%");
+    }
+    length = 100.0 / normalContent[0].length;
+    var colWidthsNormal = [];
+    for (var i = 0; i < normalContent[0].length; i++) {
+        colWidthsNormal.push(length + "%");
+    }
+    var url_base64 = resultChart.toBase64Image();
+    var dd = {
+        content: [
 
-      {text: surName+" Report", fontSize: 24, bold: true, margin: [0, 0, 0, 10]},
-      {
-        image: url_base64,
-        width: 500,
-	height: 300
-      },
-      {text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-      {
-        table:{
-          headerRows: 1,
-          body: overallArray,
-          widths:colWidthsOverall
-        },
-        layout: {
-              hLineWidth: function (i, node) {
-                     return (i === 0 || i === node.table.body.length) ? 2 : 1;
+            { text: surName + " Report", fontSize: 24, bold: true, margin: [0, 0, 0, 10] },
+            {
+                image: url_base64,
+                width: 500,
+                height: 300
             },
-            vLineWidth: function (i, node) {
-               return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+            { text: "Average Relation Levels", fontSize: 14, bold: true, margin: [0, 20, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: overallArray,
+                    widths: colWidthsOverall
+                },
+                layout: {
+                    hLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                    },
+                    vLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                    },
+                    hLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                    },
+                    vLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                    },
+                    fillColor: function (i, node) {
+                        return (i % 2 === 0) ? '#CCCCCC' : null;
+                    }
+                }
             },
-            hLineColor: function (i, node) {
-                   return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
-            },
-            vLineColor: function (i, node) {
-                   return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
-            },
-          fillColor: function (i, node) {
-                 return (i % 2 === 0) ? '#CCCCCC' : null;
+            { text: "Complete Results", fontSize: 14, bold: true, margin: [0, 20, 0, 8] },
+            {
+                table: {
+                    headerRows: 1,
+                    body: normalContent,
+                    widths: colWidthsNormal
+                },
+                layout: {
+                    hLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                    },
+                    vLineWidth: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                    },
+                    hLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                    },
+                    vLineColor: function (i, node) {
+                        return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                    },
+                    fillColor: function (i, node) {
+                        return (i % 2 === 0) ? '#CCCCCC' : null;
+                    }
+                }
+
             }
-         }
-      },
-      {text: "Complete Results", fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-      {
-          table:{
-            headerRows:1,
-            body: normalContent,
-            widths:colWidthsNormal
-          },
-          layout: {
-                hLineWidth: function (i, node) {
-                       return (i === 0 || i === node.table.body.length) ? 2 : 1;
-              },
-              vLineWidth: function (i, node) {
-                 return (i === 0 || i === node.table.widths.length) ? 2 : 1;
-              },
-              hLineColor: function (i, node) {
-                     return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
-              },
-              vLineColor: function (i, node) {
-                     return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
-              },
-            fillColor: function (i, node) {
-                   return (i % 2 === 0) ? '#CCCCCC' : null;
-              }
-           }
-
-      }
 
 
-    ]
-  };
+        ]
+    };
 
-  pdfMake.createPdf(dd).download(surName+"Report.pdf");
+    pdfMake.createPdf(dd).download(surName + "Report.pdf");
 
 }
