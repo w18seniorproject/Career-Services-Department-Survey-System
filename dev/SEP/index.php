@@ -117,7 +117,17 @@
             }
             //Pollster Dashboard handling
             elseif($_POST['pReqType'] === 'DASH'){
-                if(isset($_POST['getNotificationCount'])){
+                if(isset($_POST['clearNotifications'])){
+                    try{
+                        PollsterDashboard::clearNotifications($db);
+                        echo "poop";
+                        exit();
+                    } catch (Exception $e){
+                        echo json_encode(array( 'error' => 'Error clearing notifications\nError: ' . $e->getMessage() . "\n"));
+                        exit();
+                    }
+                }
+                elseif(isset($_POST['getNotificationCount'])){
                     try{
                         PollsterDashboard::getNotificationCount($db);
                         exit();

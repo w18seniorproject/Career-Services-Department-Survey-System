@@ -11,7 +11,7 @@ function showNotifications(){
             var notifications = data.notifications.split("~`#");
             var count = data.count;
             var isNew = false;
-            for(var i = notifications.length-1; i >= 0; i--){   // running through notifications backwards because they come in chronological order
+            for(var i = notifications.length-1; i > 0; i--){   // running through notifications backwards because they come in chronological order
                 if(notifications.length-i <= count){
                     isNew = true;
                 }
@@ -37,5 +37,20 @@ function displayNotification(notificationJSON, isNew){
         $(ele).click(function(){
             window.location = "pDashboard.html?content=results&surName=" + encodeURIComponent(notification.surName);
         });
+    });
+}
+
+function clearNotifications(){
+    $.ajax({
+        url: "../index.php",
+        cache: false,
+        data:{pReqType: "DASH", aType: "POLL", clearNotifications: "TRUE"},
+        type: "POST",
+        success: function(response){
+            window.location = "pDashboard.html";
+        },
+        error: function(jqxr, status, exception){
+            alert("Failure at clearNotifications() ajax call in notifications.js: " + exception);
+        }
     });
 }

@@ -73,4 +73,14 @@
             echo json_encode($row);
             return;
         }
+
+        public static function clearNotifications($db){
+            $conn = $db->getConnection('poll');
+            $acctName = $_SESSION['userName'];
+
+            $sql = "UPDATE notifications SET notifications=' ' WHERE acctName=?;";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(array($acctName));
+            echo "poop";
+        }
     }
