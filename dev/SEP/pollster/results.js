@@ -260,7 +260,6 @@ function getResponsesGroup(qNum, qType, groupNum) {
                 rArr = JSON.parse(surResults);
                 rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
                 for (var key in toReturn) {
-                    alert(rAns.value);
                     if (key == rAns.value.substr(0, rAns.value.length - 2) || key == rAns.value) {
                         toReturn[key]++;
                     }
