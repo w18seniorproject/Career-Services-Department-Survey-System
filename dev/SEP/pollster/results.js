@@ -169,7 +169,7 @@ function getResponsesAll(qNum, qType) {
             rArr = JSON.parse(surResults);
             rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
             for (var key in toReturn) {
-                if (key == rAns.value.substr(0, rAns.value.indexOf(",")) || key == rAns.value) { //Two different cases for scales and true/false for some reason. May need reworking on response side
+                if (key == rAns.value.substr(0, rAns.value.indexOf(",")) || key == rAns.value || key == rAns.value.split(" ")[0]) { //Two different cases for scales and true/false for some reason. May need reworking on response side
                     toReturn[key]++;
                 }
             }
