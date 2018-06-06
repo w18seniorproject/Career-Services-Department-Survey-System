@@ -189,11 +189,11 @@ function getResponsesCHKAll(qNum) {
 
     for (var i = 0; i < results.length; i++) {
         var surResults = results[i].surResults;
-        rArr = JSON.parse(surResults);
-        rAnsChoiceArr = JSON.parse(rArr[qNum]);
-        toReturn.total++;
-        for (var j = 0; j < rAnsChoiceArr.length; j++) {
-            try {
+        try{
+            rArr = JSON.parse(surResults);
+            rAnsChoiceArr = JSON.parse(rArr[qNum]);
+            toReturn.total++;
+            for (var j = 0; j < rAnsChoiceArr.length; j++) {
                 var choice = rAnsChoiceArr[j];
                 rAns = JSON.parse(choice);
                 for (var key in toReturn) {
@@ -202,7 +202,9 @@ function getResponsesCHKAll(qNum) {
                     }
                 }
             }
-            catch (err) { continue; } // try/catch here because not all records will have all questions
+        }
+        catch(err){
+            continue;
         }
     }
     return toReturn;
@@ -255,10 +257,10 @@ function getResponsesGroup(qNum, qType, groupNum) {
     }
     for (var i = 0; i < results.length; i++) {
         if (groupArr.indexOf(results[i].groupName) === groupNum - 1) {
-            var surResults = results[i].surResults;
-            rArr = JSON.parse(surResults);
-            rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
-            try {
+            try{
+                var surResults = results[i].surResults;
+                rArr = JSON.parse(surResults);
+                rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
                 for (var key in toReturn) {
                     if (key == rAns.value.substr(0, rAns.value.length - 2) || key == rAns.value) {
                         toReturn[key]++;
@@ -266,7 +268,7 @@ function getResponsesGroup(qNum, qType, groupNum) {
                 }
                 toReturn.total++;
             }
-            catch (err) { continue; } // try/catch here because not all records will have all questions
+            catch(err){continue;}
         }
     }
     return toReturn;
