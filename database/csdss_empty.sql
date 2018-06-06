@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `accounts` (
   `pass` text,
   `email` varchar(256) NOT NULL,
-  `acctName` varchar(256) DEFAULT NULL,
+  `acctName` varchar(100) DEFAULT NULL,
   `profpic` text,
   `active` BOOLEAN NOT NULL DEFAULT FALSE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -53,7 +53,7 @@ CREATE TABLE `bans` (
 
 CREATE TABLE `comments` (
   `recNum` int(11) NOT NULL,
-  `acctName` varchar(256),
+  `acctName` varchar(100),
   `surName` varchar(256),
   `comment` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -68,7 +68,7 @@ CREATE TABLE `pins` (
   `pin` int(11) NOT NULL,
   `surName` varchar(256) DEFAULT NULL,
   `groupName` varchar(256) DEFAULT NULL,
-  `acctName` varchar(256) NOT NULL,
+  `acctName` varchar(100) NOT NULL,
   `surText` varchar(256) DEFAULT NULL,
   `live` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -89,7 +89,7 @@ CREATE TABLE `questions` (
   `qWeight` int(11) DEFAULT NULL,
   `rLevel` int(11) DEFAULT NULL,
   `rName` text,
-  `acctName` varchar(256) NOT NULL
+  `acctName` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -99,7 +99,7 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `results` (
-  `acctName` varchar(256) NOT NULL,
+  `acctName` varchar(100) NOT NULL,
   `surName` varchar(256) NOT NULL,
   `groupName` varchar(256) NOT NULL,
   `recNum` int(11) NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE `results` (
 --
 
 CREATE TABLE `secReqs` (
-  `acctName` varchar(256) CHARACTER SET latin1 NOT NULL,
+  `acctName` varchar(100) CHARACTER SET latin1 NOT NULL,
   `surName` varchar(256) CHARACTER SET latin1 NOT NULL,
   `rLevel` int(11) NOT NULL,
   `minScore` int(11) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE `secReqs` (
 --
 
 CREATE TABLE `tokens` (
-  `acctName` varchar(256) NOT NULL,
+  `acctName` varchar(100) NOT NULL,
   `tokenHash` varchar(64) NOT NULL,
   `expiration` datetime NOT NULL,
   `tokenUsed` tinyint(1) NOT NULL
@@ -143,7 +143,7 @@ CREATE TABLE `tokens` (
 --
 
 CREATE TABLE `notifications` (
-  `acctName` varchar(256) NOT NULL,
+  `acctName` varchar(100) NOT NULL,
   `count` int(11) NOT NULL,
   `notifications` text COLLATE utf8mb4_bin
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
