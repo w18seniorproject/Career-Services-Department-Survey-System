@@ -114,6 +114,9 @@ function closeQuestion(element){
     $('.qLabel').each(function(i, ele){
         $(ele).html(i+1+")");
     });
+    $('.qNum').each(function(i, ele){
+        $(ele).val(i + 1);
+    });
 }
 
 function selectType(element){
