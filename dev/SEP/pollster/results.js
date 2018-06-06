@@ -2,15 +2,16 @@
 // Also contains export to CSV functionality
 
 var questions, secReqs, results, comments, avgResultJSON, groupArr = Array();
-
 var ctx;
 var resultChart = null;
 var curGroupName = "ALL_OF_THE_GROUPS";
 var surName;
+
 $(document).ready(function () {
     temp = document.getElementById("chart");
     ctx = temp.getContext("2d");
 });
+
 function showData(surveyName) {
     surName = surveyName;
     $.ajax({
@@ -130,6 +131,7 @@ function displayQuestionDataAll() {
         var qType = questions[i].qType;
 
         var response;
+        
         if (qType == "chk") {
             response = getResponsesCHKAll(i);
         }
@@ -156,24 +158,23 @@ function getResponsesAll(qNum, qType) {
             var ans = questions[qNum].qChoices;
             var choiceArr = ans.split("~$#");                   //Split by arbitrary delimiter we chose
             for (var i = 0; i < choiceArr.length; i++) {
-                toReturn[choiceArr[i].substr(0, choiceArr[i].length - 3)] = 0;
+                toReturn[choiceArr[i].substr(0, choiceArr[i].indexOf("|`"))] = 0;
             }
         }
     }
 
     for (var i = 0; i < results.length; i++) {
         var surResults = results[i].surResults;
-        rArr = JSON.parse(surResults);
-        try {
+        if(surResults !== null){
+            rArr = JSON.parse(surResults);
             rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
             for (var key in toReturn) {
-                if (key == rAns.value.substr(0, rAns.value.length - 2) || key == rAns.value) { //Two different cases for scales and true/false for some reason. May need reworking on response side
+                if (key == rAns.value.substr(0, rAns.value.indexOf(",")) || key == rAns.value) { //Two different cases for scales and true/false for some reason. May need reworking on response side
                     toReturn[key]++;
                 }
             }
             toReturn.total++;
         }
-        catch (err) { continue; } // try/catch here because not all records will have all questions
     }
     return toReturn;
 }
@@ -189,7 +190,7 @@ function getResponsesCHKAll(qNum) {
 
     for (var i = 0; i < results.length; i++) {
         var surResults = results[i].surResults;
-        try{
+        if(surResults !== null){
             rArr = JSON.parse(surResults);
             rAnsChoiceArr = JSON.parse(rArr[qNum]);
             toReturn.total++;
@@ -202,9 +203,6 @@ function getResponsesCHKAll(qNum) {
                     }
                 }
             }
-        }
-        catch(err){
-            continue;
         }
     }
     return toReturn;
@@ -257,18 +255,18 @@ function getResponsesGroup(qNum, qType, groupNum) {
     }
     for (var i = 0; i < results.length; i++) {
         if (groupArr.indexOf(results[i].groupName) === groupNum - 1) {
-            try{
-                var surResults = results[i].surResults;
+            var surResults = results[i].surResults;
+            if(surResults !== null){
                 rArr = JSON.parse(surResults);
                 rAns = JSON.parse(JSON.parse(rArr[qNum])[0]);
                 for (var key in toReturn) {
+                    alert(rAns.value);
                     if (key == rAns.value.substr(0, rAns.value.length - 2) || key == rAns.value) {
                         toReturn[key]++;
                     }
                 }
                 toReturn.total++;
-            }
-            catch(err){continue;}
+            }  
         }
     }
     return toReturn;
@@ -346,7 +344,7 @@ function constructQuestHTML(qText, qNum, qAns, qWeight, response, qType) {
             if (qAns == key) {
                 cssClass += " correctAnswer";
             }
-            else if (qType == 'chk') {
+            else if (qType == 'chk' && qAns !== '') {
                 var ansArray = JSON.parse(qAns);
                 for (var k = 0; k < ansArray.length; k++) {
                     var ans = ansArray[k];
